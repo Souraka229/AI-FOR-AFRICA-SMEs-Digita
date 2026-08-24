@@ -1,0 +1,80 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap');
+  * { box-sizing: border-box; }
+  body { margin: 0; }
+</style>
+</helmet>
+<div style="width:1440px;height:1050px;background:#FBF4EC;position:relative;overflow:hidden;font-family:'IBM Plex Sans',sans-serif;padding:64px;">
+
+  <div style="display:flex;align-items:baseline;gap:16px;margin-bottom:8px;">
+    <div style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:13px;letter-spacing:0.16em;color:#C1502E;">05</div>
+    <div style="font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:30px;color:#211B17;">Composants d'interface</div>
+  </div>
+  <div style="font-size:14px;color:#8A7A6D;margin-bottom:36px;max-width:800px;line-height:1.6;">
+    Peu d'ombres, aucun glassmorphism, coins arrondis modérés (10–14px). Chaque couleur de statut porte un sens unique et jamais un autre.
+  </div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:20px;margin-bottom:28px;">
+
+    <!-- order/payment status card -->
+    <div style="background:#F3E7D8;border-radius:14px;padding:24px;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+        <div style="font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:15px;color:#211B17;">Commande #0842</div>
+        <div style="background:#E4F3EC;color:#12432E;font-size:11px;font-weight:600;padding:5px 10px;border-radius:20px;display:flex;align-items:center;gap:6px;">
+          <span style="width:7px;height:7px;border-radius:50%;background:#1F7A53;display:inline-block;"></span> Payée
+        </div>
+      </div>
+      <div style="font-size:13px;color:#5C4F45;margin-bottom:4px;">2× Poulet braisé · 1× Jus gingembre</div>
+      <div style="font-size:12px;color:#8A7A6D;margin-bottom:16px;">Table 4 · reçue il y a 3 min</div>
+      <div style="display:flex;justify-content:space-between;align-items:baseline;border-top:1px solid #E4D5C2;padding-top:14px;">
+        <div style="font-size:12px;color:#8A7A6D;">Total</div>
+        <div style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:20px;color:#211B17;">4 500 FCFA</div>
+      </div>
+    </div>
+
+    <!-- buttons + badges -->
+    <div style="background:#F3E7D8;border-radius:14px;padding:24px;">
+      <div style="font-size:12.5px;font-weight:600;color:#5C4F45;margin-bottom:16px;">Boutons</div>
+      <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:22px;">
+        <div style="background:#C1502E;color:#FBF4EC;font-size:13px;font-weight:600;padding:12px 18px;border-radius:10px;text-align:center;">Encaisser 4 500 FCFA</div>
+        <div style="background:transparent;border:1.5px solid #211B17;color:#211B17;font-size:13px;font-weight:600;padding:11px 18px;border-radius:10px;text-align:center;">Voir le détail</div>
+      </div>
+      <div style="font-size:12.5px;font-weight:600;color:#5C4F45;margin-bottom:12px;">Statuts Mobile Money</div>
+      <div style="display:flex;flex-direction:column;gap:8px;">
+        <div style="display:flex;align-items:center;gap:8px;font-size:12px;color:#12432E;"><span style="width:7px;height:7px;border-radius:50%;background:#1F7A53;display:inline-block;"></span> Confirmé — MTN MoMo</div>
+        <div style="display:flex;align-items:center;gap:8px;font-size:12px;color:#6B4A10;"><span style="width:7px;height:7px;border-radius:50%;background:#B8791C;display:inline-block;"></span> En attente — Moov Money</div>
+        <div style="display:flex;align-items:center;gap:8px;font-size:12px;color:#6E1F1F;"><span style="width:7px;height:7px;border-radius:50%;background:#C43B3B;display:inline-block;"></span> Échec — retenter</div>
+      </div>
+    </div>
+
+    <!-- receipt -->
+    <div style="background:#211B17;border-radius:14px;padding:24px;">
+      <div style="font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:14px;color:#FBF4EC;margin-bottom:14px;">Reçu</div>
+      <div style="border-top:1px dashed #4A3F38;padding-top:14px;display:flex;flex-direction:column;gap:8px;">
+        <div style="display:flex;justify-content:space-between;font-size:12px;color:#C9BCB0;"><span>Poulet braisé ×2</span><span>3 000</span></div>
+        <div style="display:flex;justify-content:space-between;font-size:12px;color:#C9BCB0;"><span>Jus gingembre</span><span>1 500</span></div>
+      </div>
+      <div style="border-top:1px dashed #4A3F38;margin-top:12px;padding-top:12px;display:flex;justify-content:space-between;align-items:baseline;">
+        <span style="font-size:12px;color:#B8A99B;">Total MTN MoMo</span>
+        <span style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:18px;color:#FBF4EC;">4 500 FCFA</span>
+      </div>
+    </div>
+  </div>
+
+  <div style="font-size:12px;color:#8A7A6D;max-width:900px;line-height:1.6;">
+    Règle : le badge vert « Confirmé » n'apparaît qu'après vérification serveur du webhook PSP — jamais sur une simple redirection navigateur (voir la documentation technique du projet, section architecture paiement).
+  </div>
+
+</div>
+</x-dc>
+</body>
+</html>

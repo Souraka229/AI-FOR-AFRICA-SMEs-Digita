@@ -1,0 +1,16 @@
+{
+  "artboards": [
+    { "file": "Main.dc.html", "x": 0, "y": 0, "w": 1440, "h": 900 },
+    { "file": "Logo.dc.html", "x": 1580, "y": 0, "w": 1440, "h": 1100 },
+    { "file": "Colors.dc.html", "x": 3160, "y": 0, "w": 1440, "h": 1000 },
+    { "file": "Typography.dc.html", "x": 4740, "y": 0, "w": 1440, "h": 1050 },
+    { "file": "Icons.dc.html", "x": 0, "y": 1260, "w": 1440, "h": 1000 },
+    { "file": "Components.dc.html", "x": 1580, "y": 1260, "w": 1440, "h": 1050 },
+    { "file": "Applications.dc.html", "x": 3160, "y": 1260, "w": 1440, "h": 1100 },
+    { "file": "Voice.dc.html", "x": 4740, "y": 1260, "w": 1440, "h": 900 }
+  ],
+  "annotations": [
+    { "id": "reading-order", "x": 0, "y": -110, "w": 320, "text": "Charte Afrosite — à lire de gauche à droite, puis ligne du bas.\n00 Couverture · 01 Logo · 02 Couleurs · 03 Typographie · 04 Icônes · 05 Composants · 06 Applications · 07 Voix & ton" }
+  ],
+  "launch": { "view": "canvas" }
+}

@@ -1,0 +1,161 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap');
+  * { box-sizing: border-box; }
+  body { margin: 0; }
+</style>
+</helmet>
+<div style="width:1440px;height:1100px;background:#FBF4EC;position:relative;overflow:hidden;font-family:'IBM Plex Sans',sans-serif;padding:64px;">
+
+  <div style="display:flex;align-items:baseline;gap:16px;margin-bottom:8px;">
+    <div style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:13px;letter-spacing:0.16em;color:#C1502E;">01</div>
+    <div style="font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:30px;color:#211B17;">Logo</div>
+  </div>
+  <div style="font-size:14px;color:#8A7A6D;margin-bottom:40px;max-width:760px;line-height:1.6;">
+    Le repère du marché : la silhouette d'un toit de kiosque forme la lettre A d'Afrosite, coiffée d'un nœud de signal — la boutique physique rejoint la couche numérique.
+  </div>
+
+  <!-- primary lockup showcase -->
+  <div style="background:#F3E7D8;border-radius:16px;padding:56px;display:flex;align-items:center;justify-content:center;gap:22px;margin-bottom:28px;">
+    <svg viewBox="0 0 100 100" width="72" height="72" fill="none">
+      <rect x="0" y="0" width="100" height="100" rx="22" fill="#C1502E"/>
+      <path d="M50 22 L78 78 L64 78 L50 50 L36 78 L22 78 Z" fill="#FBF4EC"/>
+      <circle cx="50" cy="14" r="6.5" fill="#D89B3C"/>
+    </svg>
+    <div style="font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:52px;letter-spacing:-0.02em;color:#211B17;">afrosite</div>
+  </div>
+
+  <!-- variations row -->
+  <div style="display:grid;grid-template-columns:repeat(4, minmax(0,1fr));gap:20px;margin-bottom:32px;">
+
+    <div style="background:#FBF4EC;border:1px solid #E4D5C2;border-radius:14px;padding:28px;display:flex;flex-direction:column;align-items:center;gap:18px;">
+      <svg viewBox="0 0 100 100" width="64" height="64" fill="none">
+        <rect x="0" y="0" width="100" height="100" rx="22" fill="#C1502E"/>
+        <path d="M50 22 L78 78 L64 78 L50 50 L36 78 L22 78 Z" fill="#FBF4EC"/>
+        <circle cx="50" cy="14" r="6.5" fill="#D89B3C"/>
+      </svg>
+      <div style="font-size:12px;font-weight:600;color:#5C4F45;">Icône seule</div>
+    </div>
+
+    <div style="background:#211B17;border-radius:14px;padding:28px;display:flex;flex-direction:column;align-items:center;gap:18px;">
+      <svg viewBox="0 0 100 100" width="64" height="64" fill="none">
+        <path d="M50 22 L78 78 L64 78 L50 50 L36 78 L22 78 Z" fill="#FBF4EC"/>
+        <circle cx="50" cy="14" r="6.5" fill="#D89B3C"/>
+      </svg>
+      <div style="font-size:12px;font-weight:600;color:#C9BCB0;">Sur fond sombre</div>
+    </div>
+
+    <div style="background:#FBF4EC;border:1px solid #E4D5C2;border-radius:14px;padding:28px;display:flex;flex-direction:column;align-items:center;gap:18px;">
+      <svg viewBox="0 0 100 100" width="64" height="64" fill="none">
+        <path d="M50 22 L78 78 L64 78 L50 50 L36 78 L22 78 Z" fill="#211B17"/>
+        <circle cx="50" cy="14" r="6.5" fill="#211B17"/>
+      </svg>
+      <div style="font-size:12px;font-weight:600;color:#5C4F45;">Monochrome charbon</div>
+    </div>
+
+    <div style="background:#C1502E;border-radius:14px;padding:28px;display:flex;flex-direction:column;align-items:center;gap:18px;">
+      <svg viewBox="0 0 100 100" width="64" height="64" fill="none">
+        <path d="M50 22 L78 78 L64 78 L50 50 L36 78 L22 78 Z" fill="#FBF4EC"/>
+        <circle cx="50" cy="14" r="6.5" fill="#FBF4EC"/>
+      </svg>
+      <div style="font-size:12px;font-weight:600;color:#FBE9E1;">Monochrome sur terracotta</div>
+    </div>
+  </div>
+
+  <!-- clear space + min size -->
+  <div style="display:grid;grid-template-columns:1.3fr 1fr;gap:20px;margin-bottom:32px;">
+
+    <div style="background:#F3E7D8;border-radius:14px;padding:32px;">
+      <div style="font-size:13px;font-weight:600;color:#5C4F45;margin-bottom:18px;">Zone de protection</div>
+      <div style="display:flex;align-items:center;justify-content:center;padding:30px 0;">
+        <div style="position:relative;border:1.5px dashed #C1A98B;border-radius:10px;padding:26px;">
+          <svg viewBox="0 0 100 100" width="56" height="56" fill="none">
+            <rect x="0" y="0" width="100" height="100" rx="22" fill="#C1502E"/>
+            <path d="M50 22 L78 78 L64 78 L50 50 L36 78 L22 78 Z" fill="#FBF4EC"/>
+            <circle cx="50" cy="14" r="6.5" fill="#D89B3C"/>
+          </svg>
+        </div>
+      </div>
+      <div style="font-size:12.5px;color:#8A7A6D;line-height:1.6;">Espace minimum autour du logo = hauteur du point signal (x). Aucun élément — texte, bordure, autre logo — ne doit entrer dans cette zone.</div>
+    </div>
+
+    <div style="background:#F3E7D8;border-radius:14px;padding:32px;">
+      <div style="font-size:13px;font-weight:600;color:#5C4F45;margin-bottom:18px;">Tailles minimales</div>
+      <div style="display:flex;align-items:center;gap:22px;margin-bottom:16px;">
+        <svg viewBox="0 0 100 100" width="24" height="24" fill="none">
+          <rect x="0" y="0" width="100" height="100" rx="22" fill="#C1502E"/>
+          <path d="M50 22 L78 78 L64 78 L50 50 L36 78 L22 78 Z" fill="#FBF4EC"/>
+          <circle cx="50" cy="14" r="6.5" fill="#D89B3C"/>
+        </svg>
+        <div style="font-size:12.5px;color:#5C4F45;">24 px — icône seule, écran (favicon, app)</div>
+      </div>
+      <div style="display:flex;align-items:center;gap:22px;">
+        <svg viewBox="0 0 100 100" width="24" height="24" fill="none">
+          <path d="M50 22 L78 78 L64 78 L50 50 L36 78 L22 78 Z" fill="#211B17"/>
+          <circle cx="50" cy="14" r="6.5" fill="#211B17"/>
+        </svg>
+        <div style="font-size:12.5px;color:#5C4F45;">12 mm — icône seule, impression</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- misuse -->
+  <div>
+    <div style="font-size:13px;font-weight:600;color:#5C4F45;margin-bottom:16px;">À ne jamais faire</div>
+    <div style="display:grid;grid-template-columns:repeat(5, minmax(0,1fr));gap:14px;">
+
+      <div style="background:#FBF4EC;border:1px solid #E4D5C2;border-radius:12px;padding:20px;display:flex;flex-direction:column;align-items:center;gap:12px;">
+        <svg viewBox="0 0 130 100" width="60" height="46" fill="none">
+          <rect x="15" y="0" width="100" height="100" rx="22" fill="#C1502E" transform="scale(1.3,0.7)"/>
+        </svg>
+        <div style="font-size:11.5px;color:#8A7A6D;text-align:center;">Déformer</div>
+      </div>
+
+      <div style="background:#FBF4EC;border:1px solid #E4D5C2;border-radius:12px;padding:20px;display:flex;flex-direction:column;align-items:center;gap:12px;">
+        <svg viewBox="0 0 100 100" width="46" height="46" fill="none">
+          <rect x="0" y="0" width="100" height="100" rx="22" fill="#1F7A53"/>
+          <path d="M50 22 L78 78 L64 78 L50 50 L36 78 L22 78 Z" fill="#FBF4EC"/>
+          <circle cx="50" cy="14" r="6.5" fill="#4A3F38"/>
+        </svg>
+        <div style="font-size:11.5px;color:#8A7A6D;text-align:center;">Recolorer hors palette</div>
+      </div>
+
+      <div style="background:#FBF4EC;border:1px solid #E4D5C2;border-radius:12px;padding:20px;display:flex;flex-direction:column;align-items:center;gap:12px;">
+        <svg viewBox="0 0 100 100" width="46" height="46" fill="none">
+          <rect x="0" y="0" width="100" height="100" rx="22" fill="#C1502E" style="filter:drop-shadow(3px 5px 0px rgba(0,0,0,0.35))"/>
+          <path d="M50 22 L78 78 L64 78 L50 50 L36 78 L22 78 Z" fill="#FBF4EC"/>
+        </svg>
+        <div style="font-size:11.5px;color:#8A7A6D;text-align:center;">Ajouter ombre / effet</div>
+      </div>
+
+      <div style="background:#FBF4EC;border:1px solid #E4D5C2;border-radius:12px;padding:20px;display:flex;flex-direction:column;align-items:center;gap:12px;">
+        <svg viewBox="0 0 100 100" width="46" height="46" fill="none" style="transform:rotate(18deg);">
+          <rect x="0" y="0" width="100" height="100" rx="22" fill="#C1502E"/>
+          <path d="M50 22 L78 78 L64 78 L50 50 L36 78 L22 78 Z" fill="#FBF4EC"/>
+        </svg>
+        <div style="font-size:11.5px;color:#8A7A6D;text-align:center;">Faire pivoter</div>
+      </div>
+
+      <div style="background:#2C6E8F;border-radius:12px;padding:20px;display:flex;flex-direction:column;align-items:center;gap:12px;">
+        <svg viewBox="0 0 100 100" width="46" height="46" fill="none">
+          <rect x="0" y="0" width="100" height="100" rx="22" fill="#C1502E"/>
+          <path d="M50 22 L78 78 L64 78 L50 50 L36 78 L22 78 Z" fill="#FBF4EC"/>
+        </svg>
+        <div style="font-size:11.5px;color:#DCE9EF;text-align:center;">Poser sur fond conflictuel</div>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+</x-dc>
+</body>
+</html>
