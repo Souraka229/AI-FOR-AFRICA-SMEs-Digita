@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 150" role="img" aria-label="Repères : moins d'une heure du prompt à la boutique en ligne, 100 % des paiements réconciliés, zéro ligne de code, marge brute cible d'au moins 70 %">
+  <defs>
+    <style>
+      .v{fill:#211B17;font:700 42px 'Segoe UI',system-ui,-apple-system,Roboto,Helvetica,Arial,sans-serif;letter-spacing:-1px}
+      .l{fill:#5C4F45;font:400 14px 'Segoe UI',system-ui,sans-serif}
+      .sep{stroke:#E6D1B6;stroke-width:1}
+      .accent{fill:#C1502E}
+      .c{opacity:0;transform:translateY(14px);animation:rise .7s cubic-bezier(.2,.7,.2,1) forwards}
+      .c2{animation-delay:.1s}.c3{animation-delay:.2s}.c4{animation-delay:.3s}
+      @keyframes rise{to{opacity:1;transform:translateY(0)}}
+      @media (prefers-color-scheme:dark){
+        .v{fill:#F3E8D8}.l{fill:#C7B7A3}.sep{stroke:#3B2F24}.accent{fill:#E27E55}
+      }
+      @media (prefers-reduced-motion:reduce){ .c{animation:none;opacity:1;transform:none} }
+    </style>
+  </defs>
+
+  <g transform="translate(80,58)">
+    <text class="c v">&lt; 1 h</text>
+    <text class="c l" y="34">du prompt à la boutique en ligne</text>
+  </g>
+  <line class="sep" x1="360" y1="30" x2="360" y2="120"/>
+
+  <g transform="translate(400,58)">
+    <text class="c c2 v">100 %</text>
+    <text class="c c2 l" y="34">des paiements réconciliés</text>
+  </g>
+  <line class="sep" x1="660" y1="30" x2="660" y2="120"/>
+
+  <g transform="translate(700,58)">
+    <text class="c c3 v"><tspan class="accent">0</tspan> ligne</text>
+    <text class="c c3 l" y="34">de code à écrire</text>
+  </g>
+  <line class="sep" x1="960" y1="30" x2="960" y2="120"/>
+
+  <g transform="translate(1000,58)">
+    <text class="c c4 v">≥ 70 %</text>
+    <text class="c c4 l" y="34">de marge brute, par client</text>
+  </g>
+</svg>

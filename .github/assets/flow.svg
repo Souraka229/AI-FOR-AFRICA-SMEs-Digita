@@ -1,58 +1,77 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 130" role="img" aria-label="Pipeline : prompt vers production avec six garde-fous">
-  <defs><style>
-    .bg{fill:none}
-    .line{stroke:#E6D1B6;stroke-width:2}
-    .node{fill:#FEFBF6;stroke:#E6D1B6;stroke-width:1.5}
-    .t{fill:#5C4F45;font:600 15px 'Segoe UI',system-ui,Roboto,Helvetica,Arial,sans-serif}
-    .k{fill:#8B7A68;font:400 12px ui-monospace,'SFMono-Regular',Menlo,Consolas,monospace}
-    .spark{fill:#C1502E;animation:run 5s cubic-bezier(.65,0,.35,1) infinite}
-    .glow{fill:#C1502E;opacity:.18;animation:run 5s cubic-bezier(.65,0,.35,1) infinite}
-    @keyframes run{
-      0%{transform:translateX(0)}
-      12%{transform:translateX(0)}
-      22%{transform:translateX(250px)}
-      34%{transform:translateX(250px)}
-      44%{transform:translateX(500px)}
-      56%{transform:translateX(500px)}
-      66%{transform:translateX(750px)}
-      78%{transform:translateX(750px)}
-      90%,100%{transform:translateX(1000px)}
-    }
-    @media (prefers-color-scheme:dark){
-      .line{stroke:#3B2F24}
-      .node{fill:#271F18;stroke:#3B2F24}
-      .t{fill:#C7B7A3}
-      .k{fill:#94816D}
-      .spark{fill:#E27E55}
-      .glow{fill:#E27E55}
-    }
-    @media (prefers-reduced-motion:reduce){
-      .spark,.glow{animation:none;transform:translateX(1000px)}
-    }
-  </style></defs>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 210" role="img" aria-label="Pipeline : prompt en langage naturel vers production, avec six garde-fous automatiques">
+  <defs>
+    <style>
+      .rail{stroke:#E6D1B6;stroke-width:2}
+      .node{fill:#FEFBF6;stroke:#C1502E;stroke-width:2}
+      .nlabel{fill:#211B17;font:600 15px 'Segoe UI',system-ui,-apple-system,Roboto,Helvetica,Arial,sans-serif}
+      .nsub{fill:#8B7A68;font:400 12px ui-monospace,Menlo,Consolas,monospace}
+      .gate{fill:#8B7A68;font:500 11px 'Segoe UI',system-ui,sans-serif}
+      .tick{stroke:#1F7A53;stroke-width:2.5;stroke-linecap:round}
+      .spark{fill:#C1502E;animation:run 6s cubic-bezier(.7,0,.3,1) infinite}
+      .halo{fill:#C1502E;opacity:.16;animation:run 6s cubic-bezier(.7,0,.3,1) infinite}
+      .g6{opacity:0;animation:show 6s ease-in-out infinite}
+      @keyframes run{
+        0%,6%{transform:translateX(0)}
+        16%,26%{transform:translateX(275px)}
+        38%,52%{transform:translateX(595px)}
+        62%,72%{transform:translateX(915px)}
+        84%,100%{transform:translateX(1190px)}
+      }
+      @keyframes show{0%,34%{opacity:0}40%,58%{opacity:1}64%,100%{opacity:0}}
+      @media (prefers-color-scheme:dark){
+        .rail{stroke:#3B2F24}
+        .node{fill:#241C15;stroke:#E27E55}
+        .nlabel{fill:#F3E8D8}
+        .nsub{fill:#94816D}
+        .gate{fill:#C7B7A3}
+        .tick{stroke:#55BC8D}
+        .spark{fill:#E27E55}
+        .halo{fill:#E27E55}
+      }
+      @media (prefers-reduced-motion:reduce){
+        .spark,.halo{animation:none;transform:translateX(1190px)}
+        .g6{animation:none;opacity:1}
+      }
+    </style>
+  </defs>
 
-  <line class="line" x1="100" y1="55" x2="1100" y2="55"/>
+  <line class="rail" x1="90" y1="70" x2="1190" y2="70"/>
 
   <g>
-    <circle class="node" cx="100"  cy="55" r="9"/>
-    <circle class="node" cx="350"  cy="55" r="9"/>
-    <circle class="node" cx="600"  cy="55" r="9"/>
-    <circle class="node" cx="850"  cy="55" r="9"/>
-    <circle class="node" cx="1100" cy="55" r="9"/>
+    <circle class="node" cx="90"   cy="70" r="10"/>
+    <circle class="node" cx="365"  cy="70" r="10"/>
+    <circle class="node" cx="685"  cy="70" r="10"/>
+    <circle class="node" cx="1005" cy="70" r="10"/>
+    <circle class="node" cx="1190" cy="70" r="10"/>
   </g>
 
-  <g class="glow"><circle cx="100" cy="55" r="16"/></g>
-  <g class="spark"><circle cx="100" cy="55" r="6"/></g>
+  <g class="halo"><circle cx="90" cy="70" r="18"/></g>
+  <g class="spark"><circle cx="90" cy="70" r="6"/></g>
 
-  <text class="t" x="100"  y="92" text-anchor="middle">Prompt</text>
-  <text class="t" x="350"  y="92" text-anchor="middle">Blueprint</text>
-  <text class="t" x="600"  y="92" text-anchor="middle">6 garde-fous</text>
-  <text class="t" x="850"  y="92" text-anchor="middle">Preview</text>
-  <text class="t" x="1100" y="92" text-anchor="middle">Production</text>
+  <g text-anchor="middle">
+    <text class="nlabel" x="90"   y="110">Prompt</text>
+    <text class="nsub"   x="90"   y="130">langage naturel</text>
 
-  <text class="k" x="100"  y="112" text-anchor="middle">langage naturel</text>
-  <text class="k" x="350"  y="112" text-anchor="middle">JSON validé</text>
-  <text class="k" x="600"  y="112" text-anchor="middle">schéma · sécu · paiement</text>
-  <text class="k" x="850"  y="112" text-anchor="middle">tests + capture</text>
-  <text class="k" x="1100" y="112" text-anchor="middle">rollback prêt</text>
+    <text class="nlabel" x="365"  y="110">Blueprint JSON</text>
+    <text class="nsub"   x="365"  y="130">schéma validé</text>
+
+    <text class="nlabel" x="685"  y="110">6 garde-fous</text>
+    <text class="nsub"   x="685"  y="130">bloquants, automatiques</text>
+
+    <text class="nlabel" x="1005" y="110">Preview</text>
+    <text class="nsub"   x="1005" y="130">tests + capture</text>
+
+    <text class="nlabel" x="1190" y="110">Production</text>
+    <text class="nsub"   x="1190" y="130">rollback prêt</text>
+  </g>
+
+  <!-- the six gates -->
+  <g class="g6" transform="translate(685,158)" text-anchor="middle">
+    <g transform="translate(-250,0)"><path class="tick" d="M-5 4 l4 4 l7 -10"/><text class="gate" x="0" y="24">schéma</text></g>
+    <g transform="translate(-150,0)"><path class="tick" d="M-5 4 l4 4 l7 -10"/><text class="gate" x="0" y="24">code</text></g>
+    <g transform="translate(-50,0)"><path class="tick" d="M-5 4 l4 4 l7 -10"/><text class="gate" x="0" y="24">sécurité</text></g>
+    <g transform="translate(50,0)"><path class="tick" d="M-5 4 l4 4 l7 -10"/><text class="gate" x="0" y="24">paiement</text></g>
+    <g transform="translate(150,0)"><path class="tick" d="M-5 4 l4 4 l7 -10"/><text class="gate" x="0" y="24">préprod</text></g>
+    <g transform="translate(250,0)"><path class="tick" d="M-5 4 l4 4 l7 -10"/><text class="gate" x="0" y="24">prod</text></g>
+  </g>
 </svg>

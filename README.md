@@ -1,54 +1,66 @@
-<p align="center">
-  <img src=".github/assets/header.svg" alt="Afrosite" width="100%">
-</p>
+<div align="center">
 
-<h1 align="center">Afrosite</h1>
+<img src=".github/assets/header.svg" alt="Afrosite — décrivez votre activité, vendez et encaissez en Mobile Money, sans une ligne de code" width="100%">
 
-<p align="center">
-  <b>Décrivez votre activité. Repartez avec de quoi vendre et encaisser en Mobile Money —<br>
-  en français, en FCFA, sans une ligne de code.</b>
-</p>
+<br><br>
 
-<p align="center">
-  <img alt="Statut" src="https://img.shields.io/badge/statut-pr%C3%A9--lancement-C1502E?style=flat-square">
-  <img alt="Marché" src="https://img.shields.io/badge/march%C3%A9-B%C3%A9nin%20%C2%B7%20UEMOA-A2711F?style=flat-square">
-  <img alt="Paiement" src="https://img.shields.io/badge/paiement-Mobile%20Money-1F7A53?style=flat-square">
-  <img alt="Devise" src="https://img.shields.io/badge/devise-FCFA-211B17?style=flat-square">
-  <img alt="Langue" src="https://img.shields.io/badge/langue-fran%C3%A7ais-5C4F45?style=flat-square">
-</p>
+<img alt="Statut" src="https://img.shields.io/badge/statut-pr%C3%A9--lancement-C1502E?style=for-the-badge">&nbsp;
+<img alt="Marché" src="https://img.shields.io/badge/march%C3%A9-Cotonou%20%E2%86%92%20UEMOA-A2711F?style=for-the-badge">&nbsp;
+<img alt="Paiement" src="https://img.shields.io/badge/paiement-Mobile%20Money-1F7A53?style=for-the-badge">&nbsp;
+<img alt="Devise" src="https://img.shields.io/badge/devise-FCFA-211B17?style=for-the-badge">&nbsp;
+<img alt="Documentation" src="https://img.shields.io/badge/docs-13%20documents-A2711F?style=for-the-badge">
 
----
+<br><br>
 
-## Le produit
+### Afrosite ne génère pas un site de plus.
 
-Les TPE/PME africaines — commerçants, restaurants, prestataires — tournent avec WhatsApp, un cahier et Excel. Les créateurs d'apps par IA du marché ne parlent pas Mobile Money, facturent en dollars et s'arrêtent au site vitrine.
+On transforme une activité informelle en **entreprise digitale opérable** :<br>
+créer · encaisser en Mobile Money · piloter — sur un socle unique, décliné en **trois métiers**.<br>
+Français natif. FCFA natif. Sans une ligne de code.
 
-**Afrosite** part d'une phrase en langage naturel et personnalise un **blueprint métier éprouvé** (Commerce, Restaurant, Services) — 80 % de composants testés, 20 % de génération contrôlée. Résultat : un mini‑site, la prise de commande, la caisse, le paiement Mobile Money (MTN MoMo, Moov Money), la réconciliation du soir et un résumé WhatsApp. Le socle est identique entre les trois métiers ; seuls les modules spécifiques changent.
+</div>
 
-> **Principe** : un prompt ne déclenche jamais une action risquée directement. L'IA propose, des règles contrôlent, les tests vérifient, l'humain valide. Afrosite n'est **jamais** dépositaire des fonds — orchestrateur au‑dessus d'un PSP agréé BCEAO.
+<img src=".github/assets/divider.svg" alt="" width="100%">
 
-<p align="center">
-  <img src=".github/assets/flow.svg" alt="Pipeline prompt vers production avec six garde-fous" width="100%">
-</p>
+## Le problème → la réponse
 
----
+Les TPE/PME africaines tournent avec WhatsApp, un cahier et Excel. Les créateurs d'apps par IA du marché ne parlent pas Mobile Money, facturent en dollars, et s'arrêtent au site vitrine.
+
+| Aujourd'hui | Avec Afrosite |
+|---|---|
+| Commandes éparpillées sur WhatsApp | Prise de commande centralisée, en temps réel |
+| Erreurs de caisse, monnaie approximative | Caisse reliée au catalogue, montants recalculés côté serveur |
+| « Merci » comme seule preuve de paiement | Reçu signé, vérifié serveur, **réconcilié automatiquement** |
+| Aucune vision des encaissements | Réconciliation du soir + résumé WhatsApp quotidien |
+| Facturé en USD, interface anglaise | FCFA natif, français natif, pensé pour Android sur réseau lent |
+| Un site vitrine, rien derrière | Catalogue, commandes, caisse, CRM, rapports — un vrai outil |
+
+> **Le principe.** Un prompt ne déclenche jamais une action risquée directement. L'IA propose, des règles contrôlent, les tests vérifient, l'humain valide. Afrosite n'est **jamais** dépositaire des fonds — orchestrateur au-dessus d'un PSP agréé BCEAO.
+
+<br>
+
+<div align="center">
+<img src=".github/assets/flow.svg" alt="Pipeline : prompt en langage naturel vers production, avec six garde-fous automatiques" width="100%">
+</div>
+
+<img src=".github/assets/divider.svg" alt="" width="100%">
 
 ## L'équipe
 
 <table>
   <tr>
     <td align="center" width="33%">
-      <img src=".github/assets/souraka.jpg" width="150" height="150" alt="Souraka HAMIDA"><br><br>
-      <b>Souraka HAMIDA</b><br>
+      <img src=".github/assets/avatar-souraka.svg" width="168" alt="Souraka HAMIDA"><br>
+      <b>Souraka&nbsp;HAMIDA</b><br>
       <sub>Product Lead · Front‑end · Data / Recherche</sub>
     </td>
     <td align="center" width="33%">
-      <img src=".github/assets/chitou.jpg" width="150" height="150" alt="CHITOU"><br><br>
+      <img src=".github/assets/avatar-chitou.svg" width="168" alt="CHITOU"><br>
       <b>CHITOU</b><br>
       <sub>Design Lead · Design System · Design Engineering</sub>
     </td>
     <td align="center" width="33%">
-      <img src=".github/assets/serge.jpg" width="150" height="150" alt="SERGE"><br><br>
+      <img src=".github/assets/avatar-serge.svg" width="168" alt="SERGE"><br>
       <b>SERGE</b><br>
       <sub>Backend · Infra · Paiement · Agents IA</sub>
     </td>
@@ -84,19 +96,40 @@ Les TPE/PME africaines — commerçants, restaurants, prestataires — tournent 
 
 </details>
 
----
+<img src=".github/assets/divider.svg" alt="" width="100%">
 
-## Démarrage rapide — la landing
+<div align="center">
+<img src=".github/assets/metrics.svg" alt="Repères : moins d'une heure du prompt à la boutique en ligne, 100 % des paiements réconciliés, zéro ligne de code, marge brute cible d'au moins 70 %" width="100%">
+</div>
 
-```bash
-# depuis la racine du dépôt
-python -m http.server 5173 --directory landing
-# → http://localhost:5173
-```
+## Trois métiers, un socle
 
-Détails et checklist : [`landing/README.md`](landing/README.md).
+Le socle commun — catalogue, commande, encaissement, CRM léger, dashboard — est **identique en code** entre les trois blueprints. Seuls les modules spécifiques changent.
 
----
+| Commerce | Restaurant | Services |
+|---|---|---|
+| Boutique en ligne, commandes WhatsApp centralisées, facturation automatique | Menu QR, caisse, écran cuisine, livraison, fidélité | Rendez‑vous, devis, factures, rappels clients automatiques |
+| `+` stock simple, suivi de livraison | `+` KDS, gestion des tables / à emporter | `+` agenda, relances avant rendez‑vous |
+
+<img src=".github/assets/divider.svg" alt="" width="100%">
+
+## Stack
+
+<p>
+<img alt="Next.js" src="https://img.shields.io/badge/Next.js-000000?style=for-the-badge&logo=nextdotjs&logoColor=white">
+<img alt="TypeScript" src="https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white">
+<img alt="FastAPI" src="https://img.shields.io/badge/FastAPI-009688?style=for-the-badge&logo=fastapi&logoColor=white">
+<img alt="PostgreSQL" src="https://img.shields.io/badge/PostgreSQL-4169E1?style=for-the-badge&logo=postgresql&logoColor=white">
+<img alt="Redis" src="https://img.shields.io/badge/Redis-DC382D?style=for-the-badge&logo=redis&logoColor=white">
+<img alt="Docker" src="https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white">
+<img alt="GitHub Actions" src="https://img.shields.io/badge/GitHub%20Actions-2088FF?style=for-the-badge&logo=githubactions&logoColor=white">
+</p>
+
+`LangGraph` (agents) · `Temporal` (workflows argent / provisioning) · `LiteLLM` (routeur IA) · `Playwright` (E2E) · `Coolify` (déploiement).
+
+Arborescence complète du monorepo : [playbook §6.1](docs/11-playbook-equipe.md#61--structure-des-dossiers-arborescence-complète-du-monorepo).
+
+<img src=".github/assets/divider.svg" alt="" width="100%">
 
 ## Documentation
 
@@ -114,16 +147,9 @@ Détails et checklist : [`landing/README.md`](landing/README.md).
 | 09 | [Branding, logo & positionnement](docs/09-branding-logo-positionnement.md) | Charte visuelle (version texte) |
 | 10 | [Ressources de A à Z](docs/10-ressources-de-a-a-z.md) | Toutes les ressources externes, dans l'ordre d'usage |
 | 11 | [Playbook d'équipe](docs/11-playbook-equipe.md) | Rôles, RACI, Kanban/Notion, structure des dossiers, branches Git, système de prompts, plan 90 jours |
+| 12 | [Pitch — Hackathon Cursor × Devs Days](docs/12-pitch-hackathon.md) | Accroche, candidature, script vidéo, pitch de finale, Q&A jury, périmètre de build |
 
----
-
-## Stack cible
-
-`Next.js` · `TypeScript` · `FastAPI` · `PostgreSQL` · `Redis` · `LangGraph` · `Temporal` · `LiteLLM` · `Playwright` · `Docker Compose` · `Coolify` · `GitHub Actions`
-
-Arborescence complète du monorepo : [playbook §6.1](docs/11-playbook-equipe.md#61--structure-des-dossiers-arborescence-complète-du-monorepo).
-
----
+<img src=".github/assets/divider.svg" alt="" width="100%">
 
 ## Feuille de route — 90 jours
 
@@ -135,6 +161,31 @@ Arborescence complète du monorepo : [playbook §6.1](docs/11-playbook-equipe.md
 
 Décision de fin de phase : les 5 pilotes utilisent‑ils Afrosite **tous les jours** ? Sinon, diagnostiquer avant d'ajouter la moindre fonctionnalité.
 
----
+<img src=".github/assets/divider.svg" alt="" width="100%">
 
-<p align="center"><sub>FCFA · Mobile Money · Français · Cotonou, Bénin — © 2026 Afrosite</sub></p>
+## Démarrage rapide — la landing
+
+```bash
+# depuis la racine du dépôt
+python -m http.server 5173 --directory landing
+# → http://localhost:5173
+```
+
+Détails et checklist : [`landing/README.md`](landing/README.md).
+
+## Principes non négociables
+
+- **Un prompt n'exécute jamais une action risquée** — workflow testable, réversible, observé.
+- **80 % éprouvé / 20 % généré** — on personnalise des blueprints, on ne régénère pas de zéro.
+- **Afrosite ne détient jamais de fonds** — orchestrateur au‑dessus d'un PSP agréé BCEAO.
+- **La redirection navigateur ne prouve rien** — seul un webhook signé + `verify()` serveur confirme un paiement.
+- **Réversibilité en un clic** — export intégral du code et des données, à tout moment.
+- **3 blueprints maximum au MVP** — tout nouveau vertical se valide d'abord sur le socle.
+
+<br>
+
+<div align="center">
+<img src=".github/assets/divider.svg" alt="" width="100%">
+<br><br>
+<sub><b>Conçu à Cotonou, Bénin</b>&nbsp;&nbsp;·&nbsp;&nbsp;FCFA&nbsp;&nbsp;·&nbsp;&nbsp;Mobile Money&nbsp;&nbsp;·&nbsp;&nbsp;Français&nbsp;&nbsp;·&nbsp;&nbsp;© 2026 Afrosite</sub>
+</div>
