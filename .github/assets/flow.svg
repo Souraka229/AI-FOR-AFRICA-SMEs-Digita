@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 130" role="img" aria-label="Pipeline : prompt vers production avec six garde-fous">
+  <defs><style>
+    .bg{fill:none}
+    .line{stroke:#E6D1B6;stroke-width:2}
+    .node{fill:#FEFBF6;stroke:#E6D1B6;stroke-width:1.5}
+    .t{fill:#5C4F45;font:600 15px 'Segoe UI',system-ui,Roboto,Helvetica,Arial,sans-serif}
+    .k{fill:#8B7A68;font:400 12px ui-monospace,'SFMono-Regular',Menlo,Consolas,monospace}
+    .spark{fill:#C1502E;animation:run 5s cubic-bezier(.65,0,.35,1) infinite}
+    .glow{fill:#C1502E;opacity:.18;animation:run 5s cubic-bezier(.65,0,.35,1) infinite}
+    @keyframes run{
+      0%{transform:translateX(0)}
+      12%{transform:translateX(0)}
+      22%{transform:translateX(250px)}
+      34%{transform:translateX(250px)}
+      44%{transform:translateX(500px)}
+      56%{transform:translateX(500px)}
+      66%{transform:translateX(750px)}
+      78%{transform:translateX(750px)}
+      90%,100%{transform:translateX(1000px)}
+    }
+    @media (prefers-color-scheme:dark){
+      .line{stroke:#3B2F24}
+      .node{fill:#271F18;stroke:#3B2F24}
+      .t{fill:#C7B7A3}
+      .k{fill:#94816D}
+      .spark{fill:#E27E55}
+      .glow{fill:#E27E55}
+    }
+    @media (prefers-reduced-motion:reduce){
+      .spark,.glow{animation:none;transform:translateX(1000px)}
+    }
+  </style></defs>
+
+  <line class="line" x1="100" y1="55" x2="1100" y2="55"/>
+
+  <g>
+    <circle class="node" cx="100"  cy="55" r="9"/>
+    <circle class="node" cx="350"  cy="55" r="9"/>
+    <circle class="node" cx="600"  cy="55" r="9"/>
+    <circle class="node" cx="850"  cy="55" r="9"/>
+    <circle class="node" cx="1100" cy="55" r="9"/>
+  </g>
+
+  <g class="glow"><circle cx="100" cy="55" r="16"/></g>
+  <g class="spark"><circle cx="100" cy="55" r="6"/></g>
+
+  <text class="t" x="100"  y="92" text-anchor="middle">Prompt</text>
+  <text class="t" x="350"  y="92" text-anchor="middle">Blueprint</text>
+  <text class="t" x="600"  y="92" text-anchor="middle">6 garde-fous</text>
+  <text class="t" x="850"  y="92" text-anchor="middle">Preview</text>
+  <text class="t" x="1100" y="92" text-anchor="middle">Production</text>
+
+  <text class="k" x="100"  y="112" text-anchor="middle">langage naturel</text>
+  <text class="k" x="350"  y="112" text-anchor="middle">JSON validé</text>
+  <text class="k" x="600"  y="112" text-anchor="middle">schéma · sécu · paiement</text>
+  <text class="k" x="850"  y="112" text-anchor="middle">tests + capture</text>
+  <text class="k" x="1100" y="112" text-anchor="middle">rollback prêt</text>
+</svg>

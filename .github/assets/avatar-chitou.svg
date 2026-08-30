@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" role="img" aria-label="CHITOU">
+  <defs><style>
+    .bg{fill:#F5E9D9}
+    .mo{fill:#A2711F;font:700 74px 'Segoe UI',system-ui,Roboto,Helvetica,Arial,sans-serif}
+    .ring{fill:none;stroke:#D89B3C;stroke-width:6;stroke-linecap:round;stroke-dasharray:150 400;transform-origin:100px 100px;animation:spin 4.2s linear infinite}
+    @keyframes spin{to{transform:rotate(360deg)}}
+    @media (prefers-color-scheme:dark){.bg{fill:#271F18}.mo{fill:#E1AD58}.ring{stroke:#E1AD58}}
+    @media (prefers-reduced-motion:reduce){.ring{animation:none;stroke-dasharray:none;opacity:.85}}
+  </style></defs>
+  <rect class="bg" x="8" y="8" width="184" height="184" rx="46"/>
+  <circle class="ring" cx="100" cy="100" r="84"/>
+  <text class="mo" x="101" y="127" text-anchor="middle">CH</text>
+</svg>
