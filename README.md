@@ -38,17 +38,17 @@ Les TPE/PME africaines — commerçants, restaurants, prestataires — tournent 
 <table>
   <tr>
     <td align="center" width="33%">
-      <img src=".github/assets/avatar-souraka.svg" width="150" alt="Souraka HAMIDA"><br><br>
+      <img src=".github/assets/souraka.jpg" width="150" height="150" alt="Souraka HAMIDA"><br><br>
       <b>Souraka HAMIDA</b><br>
       <sub>Product Lead · Front‑end · Data / Recherche</sub>
     </td>
     <td align="center" width="33%">
-      <img src=".github/assets/avatar-chitou.svg" width="150" alt="CHITOU"><br><br>
+      <img src=".github/assets/chitou.jpg" width="150" height="150" alt="CHITOU"><br><br>
       <b>CHITOU</b><br>
       <sub>Design Lead · Design System · Design Engineering</sub>
     </td>
     <td align="center" width="33%">
-      <img src=".github/assets/avatar-serge.svg" width="150" alt="SERGE"><br><br>
+      <img src=".github/assets/serge.jpg" width="150" height="150" alt="SERGE"><br><br>
       <b>SERGE</b><br>
       <sub>Backend · Infra · Paiement · Agents IA</sub>
     </td>
@@ -83,9 +83,6 @@ Les TPE/PME africaines — commerçants, restaurants, prestataires — tournent 
 - Sécurité applicative (SAST, scans, 6 gates), ledger immuable, réconciliation
 
 </details>
-
-> Les avatars ci‑dessus sont des espaces réservés animés. Pour mettre une vraie photo :
-> déposez `souraka.jpg` / `chitou.jpg` / `serge.jpg` dans `.github/assets/` et remplacez le `src` correspondant.
 
 ---
 
