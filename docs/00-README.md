@@ -25,6 +25,7 @@ Les documents sont numérotés dans l'ordre où ils doivent être lus/validés �
 | 09 | [Branding, logo & positionnement](09-branding-logo-positionnement.md) | Règles d'usage du logo, système de marque (couleurs/typo/icônes), positionnement et voix — version texte de la charte visuelle | Toi, marketing, tout prestataire externe |
 | 10 | [Ressources de A à Z](10-ressources-de-a-a-z.md) | Toutes les ressources externes nécessaires — légal, paiement, stack technique, SEO, design, marketing, financement — dans l'ordre où elles deviennent utiles | Toi, développeurs, toute nouvelle recrue |
 | 11 | [Playbook d'équipe](11-playbook-equipe.md) | Rôles (Souraka / CHITOU / SERGE), RACI, méthode Kanban + Notion, structure des dossiers, liste maître des branches Git, système de prompts réutilisables, plan 90 jours par personne, intégration Genius Pay | Toute l'équipe, au quotidien |
+| 12 | [Pitch — Hackathon Cursor × Devs Days](12-pitch-hackathon.md) | Accroche, fiche de candidature, script vidéo, pitch de finale slide par slide, déroulé de démo, Q&A jury, périmètre de build, répartition équipe | Toute l'équipe, pour l'événement du 9–10 sept. 2026 |
 
 ## Statut du projet
 
