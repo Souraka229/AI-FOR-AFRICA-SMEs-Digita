@@ -1,0 +1,89 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 260" role="img" aria-label="Afrosite — vendez et encaissez en Mobile Money, sans une ligne de code">
+  <defs>
+    <pattern id="lat" width="22" height="22" patternUnits="userSpaceOnUse">
+      <path d="M11 0 L22 11 L11 22 L0 11 Z" fill="none" stroke="#A83F1F" stroke-width="1"/>
+    </pattern>
+    <style>
+      .bg{fill:#FBF4EC}
+      .ink{fill:#211B17}
+      .soft{fill:#5C4F45}
+      .faint{fill:#8B7A68}
+      .brand{fill:#C1502E}
+      .gold{fill:#D89B3C}
+      .card{fill:#FEFBF6;stroke:#E6D1B6}
+      .lat{opacity:.16}
+      .wm{font:700 58px 'Segoe UI',system-ui,Roboto,Helvetica,Arial,sans-serif;letter-spacing:-1.5px}
+      .tag{font:400 19px 'Segoe UI',system-ui,Roboto,Helvetica,Arial,sans-serif}
+      .mono{font:500 14px ui-monospace,'SFMono-Regular',Menlo,Consolas,monospace}
+      .amt{font:700 28px 'Segoe UI',system-ui,Roboto,Helvetica,Arial,sans-serif}
+      .st{font:600 15px 'Segoe UI',system-ui,Roboto,Helvetica,Arial,sans-serif}
+      .lbl{font:400 13px 'Segoe UI',system-ui,Roboto,Helvetica,Arial,sans-serif;letter-spacing:1px}
+      .dot{animation:pulse 2.4s ease-in-out infinite}
+      .latmove{animation:drift 14s linear infinite}
+      .g-new{animation:c1 6s ease-in-out infinite}
+      .g-pen{animation:c2 6s ease-in-out infinite}
+      .g-paid{animation:c3 6s ease-in-out infinite}
+      @keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
+      @keyframes drift{to{transform:translate(22px,22px)}}
+      @keyframes c1{0%,26%{opacity:1}30%,96%{opacity:0}100%{opacity:1}}
+      @keyframes c2{0%,26%{opacity:0}30%,54%{opacity:1}58%,100%{opacity:0}}
+      @keyframes c3{0%,56%{opacity:0}60%,96%{opacity:1}100%{opacity:0}}
+      @media (prefers-color-scheme:dark){
+        .bg{fill:#16110E}
+        .ink{fill:#F3E8D8}
+        .soft{fill:#C7B7A3}
+        .faint{fill:#94816D}
+        .brand{fill:#E27E55}
+        .gold{fill:#E1AD58}
+        .card{fill:#271F18;stroke:#3B2F24}
+        .lat{opacity:.22}
+      }
+      @media (prefers-reduced-motion:reduce){
+        .dot,.latmove,.g-new,.g-pen,.g-paid{animation:none}
+        .g-new,.g-pen{opacity:0}
+        .g-paid{opacity:1}
+      }
+    </style>
+  </defs>
+
+  <rect class="bg" width="1200" height="260"/>
+  <g class="lat"><g class="latmove"><rect x="-22" y="-22" width="1244" height="304" fill="url(#lat)"/></g></g>
+
+  <!-- kiosk-roof "A" mark + signal dot -->
+  <g transform="translate(66,92)">
+    <path class="brand" d="M37 6 L70 70 H56 L37 34 L18 70 H4 Z"/>
+    <circle class="gold dot" cx="37" cy="0" r="6"/>
+  </g>
+
+  <!-- wordmark + tagline -->
+  <text class="wm ink" x="170" y="132">afrosite</text>
+  <text class="tag soft" x="172" y="170">Vendez et encaissez en Mobile Money —</text>
+  <text class="tag soft" x="172" y="198">catalogue, commandes, caisse, réconciliation. Sans une ligne de code.</text>
+
+  <!-- live ticket -->
+  <g transform="translate(824,44)">
+    <rect class="card" width="336" height="172" rx="20" stroke-width="1.5"/>
+    <text class="mono faint" x="24" y="38">Commande #A-2048</text>
+    <line x1="24" y1="54" x2="312" y2="54" stroke="#E6D1B6" stroke-dasharray="3 4"/>
+    <text class="lbl soft" x="24" y="90">TOTAL</text>
+    <text class="amt ink" x="312" y="96" text-anchor="end">24 500</text>
+
+    <g transform="translate(24,116)">
+      <g class="g-new">
+        <rect width="288" height="42" rx="12" fill="none" stroke="#C9B693"/>
+        <circle cx="22" cy="21" r="5" fill="#8B7A68"/>
+        <text class="st soft" x="40" y="26">Nouvelle commande</text>
+      </g>
+      <g class="g-pen" opacity="0">
+        <rect width="288" height="42" rx="12" fill="#B8791C22" stroke="#B8791C"/>
+        <circle cx="22" cy="21" r="5" fill="#B8791C"/>
+        <text class="st" x="40" y="26" fill="#B8791C">Paiement Mobile Money…</text>
+      </g>
+      <g class="g-paid" opacity="0">
+        <rect width="288" height="42" rx="12" fill="#1F7A5322" stroke="#1F7A53"/>
+        <path d="M16 21 l5 5 l10 -12" fill="none" stroke="#1F7A53" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+        <text class="st" x="40" y="26" fill="#1F7A53">Paiement confirmé</text>
+      </g>
+    </g>
+  </g>
+</svg>
