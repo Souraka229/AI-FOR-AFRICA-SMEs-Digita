@@ -1,0 +1,1281 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Playbook d'équipe Afrosite</title>
+<meta name="description" content="Qui fait quoi, dans quel ordre, avec quel niveau de qualité — pour construire le MVP avancé d'Afrosite à trois.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
+
+<style>
+  :root {
+    --ground:      #FBF4EC;
+    --surface:     #F5E9D9;
+    --surface-2:   #EFDFC9;
+    --border:      #E4CFB4;
+    --border-soft: #EEDFC8;
+    --ink:         #211B17;
+    --ink-soft:    #5C4F45;
+    --ink-faint:   #8B7A68;
+    --brand:       #C1502E;
+    --brand-ink:   #9C3D20;
+    --gold:        #A97724;
+    --gold-bright: #D89B3C;
+    --confirmed:   #1F7A53;
+    --shadow: 0 1px 2px rgba(33,27,23,.05), 0 10px 30px -16px rgba(33,27,23,.22);
+    --maxprose: 68ch;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --ground:      #17120F;
+      --surface:     #201A15;
+      --surface-2:   #2B231C;
+      --border:      #3C3025;
+      --border-soft: #2E251D;
+      --ink:         #F2E7D7;
+      --ink-soft:    #C4B4A1;
+      --ink-faint:   #92806D;
+      --brand:       #E17E55;
+      --brand-ink:   #EC9270;
+      --gold:        #E0AC57;
+      --gold-bright: #E0AC57;
+      --confirmed:   #52B98B;
+      --shadow: 0 1px 2px rgba(0,0,0,.45), 0 16px 40px -18px rgba(0,0,0,.7);
+    }
+  }
+  :root[data-theme="dark"] {
+    --ground:      #17120F;
+    --surface:     #201A15;
+    --surface-2:   #2B231C;
+    --border:      #3C3025;
+    --border-soft: #2E251D;
+    --ink:         #F2E7D7;
+    --ink-soft:    #C4B4A1;
+    --ink-faint:   #92806D;
+    --brand:       #E17E55;
+    --brand-ink:   #EC9270;
+    --gold:        #E0AC57;
+    --gold-bright: #E0AC57;
+    --confirmed:   #52B98B;
+    --shadow: 0 1px 2px rgba(0,0,0,.45), 0 16px 40px -18px rgba(0,0,0,.7);
+  }
+
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; scroll-padding-top: 2rem; }
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+
+  body {
+    margin: 0;
+    background: var(--ground);
+    color: var(--ink);
+    font-family: "IBM Plex Sans", system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+    font-size: 16px;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .skip {
+    position: absolute; left: -999px; top: 0;
+    background: var(--brand); color: #fff; padding: .6rem 1rem; border-radius: 0 0 .4rem 0;
+    z-index: 50; font-weight: 600;
+  }
+  .skip:focus { left: 0; }
+
+  a { color: var(--brand-ink); text-underline-offset: 2px; }
+  a:focus-visible, button:focus-visible, summary:focus-visible {
+    outline: 2px solid var(--brand); outline-offset: 3px; border-radius: 3px;
+  }
+
+  code, kbd, .mono {
+    font-family: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: .875em;
+  }
+  :not(pre) > code {
+    background: var(--surface-2);
+    padding: .12em .4em;
+    border-radius: .3em;
+    border: 1px solid var(--border-soft);
+  }
+
+  /* ---------- Shell ---------- */
+  .shell {
+    max-width: 1220px;
+    margin: 0 auto;
+    padding: 2.5rem 1.4rem 6rem;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+  }
+  @media (min-width: 1080px) {
+    .shell {
+      grid-template-columns: 244px minmax(0, 900px);
+      justify-content: center;
+      gap: 3.5rem;
+      padding-top: 3.5rem;
+    }
+  }
+
+  /* ---------- TOC ---------- */
+  .toc {
+    font-size: .9rem;
+  }
+  .toc__inner {
+    border: 1px solid var(--border);
+    border-radius: .7rem;
+    background: var(--surface);
+    padding: 1rem 1rem 1.1rem;
+  }
+  @media (min-width: 1080px) {
+    .toc { position: sticky; top: 2rem; align-self: start; max-height: calc(100vh - 4rem); overflow: auto; }
+    .toc__inner { background: transparent; border: none; padding: 0; }
+    .toc summary { display: none; }
+    .toc__list { display: block !important; }
+  }
+  .toc summary {
+    cursor: pointer;
+    font-family: "Space Grotesk", sans-serif;
+    font-weight: 600;
+    letter-spacing: .02em;
+  }
+  .toc__eyebrow {
+    font-size: .7rem; text-transform: uppercase; letter-spacing: .14em;
+    color: var(--ink-faint); font-weight: 600;
+    margin: 0 0 .6rem;
+  }
+  .toc__list { list-style: none; margin: .4rem 0 0; padding: 0; }
+  .toc__list li { margin: 0; }
+  .toc__list a {
+    display: flex; gap: .55rem;
+    padding: .3rem 0;
+    color: var(--ink-soft);
+    text-decoration: none;
+    border-left: 2px solid transparent;
+    padding-left: .1rem;
+    line-height: 1.35;
+  }
+  .toc__list a:hover { color: var(--brand-ink); }
+  .toc__list a .n {
+    font-family: "Space Grotesk", sans-serif;
+    color: var(--gold);
+    font-variant-numeric: tabular-nums;
+    font-weight: 600;
+    min-width: 1.4ch;
+  }
+
+  /* ---------- Masthead ---------- */
+  .mast { margin-bottom: 2.5rem; }
+  .mast__logo {
+    display: inline-flex; align-items: center; gap: .6rem;
+    font-family: "Space Grotesk", sans-serif; font-weight: 700;
+    letter-spacing: .01em;
+    text-transform: lowercase;
+    font-size: 1rem;
+  }
+  .mast__mark {
+    width: 26px; height: 26px; display: block; flex: none;
+  }
+  .mast h1 {
+    font-family: "Space Grotesk", sans-serif;
+    font-weight: 700;
+    font-size: clamp(1.9rem, 1.35rem + 2.4vw, 2.7rem);
+    line-height: 1.08;
+    letter-spacing: -.01em;
+    text-wrap: balance;
+    margin: 1.1rem 0 .6rem;
+  }
+  .mast .lede {
+    font-size: 1.12rem;
+    color: var(--ink-soft);
+    max-width: var(--maxprose);
+    margin: 0 0 1.4rem;
+  }
+  .meta {
+    display: flex; flex-wrap: wrap; gap: .5rem .5rem;
+    font-size: .8rem;
+  }
+  .chip {
+    display: inline-flex; align-items: center; gap: .4rem;
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 2rem; padding: .3rem .75rem;
+    color: var(--ink-soft);
+  }
+  .chip b { color: var(--ink); font-weight: 600; }
+
+  /* ---------- Sections ---------- */
+  section { margin: 3.4rem 0 0; scroll-margin-top: 2rem; }
+  .s-head {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 1rem;
+    align-items: baseline;
+    padding-bottom: .5rem;
+  }
+  .s-head .num {
+    font-family: "Space Grotesk", sans-serif;
+    font-weight: 700;
+    font-size: 1.6rem;
+    color: var(--gold);
+    font-variant-numeric: tabular-nums;
+    line-height: 1;
+  }
+  .s-head h2 {
+    font-family: "Space Grotesk", sans-serif;
+    font-weight: 600;
+    font-size: clamp(1.35rem, 1.1rem + 1vw, 1.7rem);
+    line-height: 1.15;
+    letter-spacing: -.005em;
+    margin: 0;
+    text-wrap: balance;
+  }
+  section > p, section > ul, section > ol { max-width: var(--maxprose); }
+  section h3 {
+    font-family: "Space Grotesk", sans-serif;
+    font-weight: 600;
+    font-size: 1.1rem;
+    margin: 2rem 0 .4rem;
+  }
+  section h4 {
+    font-family: "IBM Plex Sans", sans-serif;
+    font-weight: 600;
+    font-size: .95rem;
+    margin: 1.4rem 0 .3rem;
+    color: var(--ink);
+  }
+
+  .rule {
+    height: 10px;
+    margin: 3.4rem 0 0;
+    background-image:
+      repeating-linear-gradient(45deg,  var(--border) 0 1px, transparent 1px 9px),
+      repeating-linear-gradient(-45deg, var(--border) 0 1px, transparent 1px 9px);
+    opacity: .55;
+  }
+
+  ul, ol { padding-left: 1.2rem; }
+  li { margin: .3rem 0; }
+  li::marker { color: var(--gold); }
+  ol li::marker { color: var(--ink-faint); font-family: "Space Grotesk", sans-serif; }
+
+  strong { font-weight: 600; }
+  .lead-in { font-weight: 600; color: var(--ink); }
+
+  /* ---------- Callout ---------- */
+  .note {
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--brand);
+    background: var(--surface);
+    border-radius: .5rem;
+    padding: 1rem 1.1rem;
+    margin: 1.5rem 0;
+    max-width: var(--maxprose);
+  }
+  .note p { margin: .4rem 0; }
+  .note .tag {
+    font-size: .7rem; text-transform: uppercase; letter-spacing: .13em;
+    font-weight: 700; color: var(--brand-ink);
+  }
+
+  /* ---------- Tables ---------- */
+  .tw { overflow-x: auto; margin: 1.3rem 0; border: 1px solid var(--border); border-radius: .6rem; }
+  table { border-collapse: collapse; width: 100%; font-size: .9rem; }
+  th, td { text-align: left; padding: .6rem .8rem; vertical-align: top; border-bottom: 1px solid var(--border-soft); }
+  thead th {
+    background: var(--surface-2);
+    font-family: "Space Grotesk", sans-serif;
+    font-weight: 600;
+    font-size: .78rem;
+    text-transform: uppercase;
+    letter-spacing: .07em;
+    color: var(--ink-soft);
+    white-space: nowrap;
+  }
+  tbody tr:last-child td { border-bottom: none; }
+  tbody tr:hover { background: var(--surface); }
+  td .mono { color: var(--ink-soft); }
+  .raci td + td, .raci th + th { text-align: center; }
+  .r  { font-weight: 700; color: var(--brand-ink); }
+  .a  { font-weight: 700; color: var(--gold); }
+  .cc { color: var(--ink-soft); }
+  .ii { color: var(--ink-faint); }
+
+  .owner {
+    display: inline-block;
+    font-size: .72rem; font-weight: 600;
+    padding: .1rem .5rem; border-radius: 2rem;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    white-space: nowrap;
+  }
+
+  /* ---------- Role cards ---------- */
+  .roles { display: grid; gap: 1rem; margin: 1.5rem 0; }
+  @media (min-width: 720px) { .roles { grid-template-columns: repeat(3, 1fr); } }
+  .role {
+    border: 1px solid var(--border);
+    border-radius: .7rem;
+    background: var(--surface);
+    padding: 1.1rem 1.1rem 1.2rem;
+  }
+  .role h3 { margin: 0 0 .1rem; font-size: 1.05rem; }
+  .role .who { font-size: .8rem; color: var(--gold); font-weight: 600; letter-spacing: .03em; margin-bottom: .7rem; }
+  .role ul { padding-left: 1.05rem; margin: .4rem 0 0; font-size: .88rem; }
+  .role .cap { font-size: .72rem; text-transform: uppercase; letter-spacing: .1em; color: var(--ink-faint); font-weight: 600; margin-top: .9rem; }
+
+  /* ---------- Steps / pipeline ---------- */
+  .flow { display: grid; gap: .5rem; margin: 1.4rem 0; max-width: var(--maxprose); }
+  .flow li {
+    list-style: none;
+    display: grid; grid-template-columns: auto 1fr auto; gap: .8rem; align-items: center;
+    border: 1px solid var(--border); border-radius: .5rem;
+    background: var(--surface); padding: .6rem .8rem;
+    font-size: .9rem;
+  }
+  .flow li .k {
+    font-family: "Space Grotesk", sans-serif; font-weight: 700;
+    color: var(--gold); font-variant-numeric: tabular-nums;
+  }
+
+  /* ---------- Checklist ---------- */
+  .check { list-style: none; padding: 0; margin: 1.2rem 0; max-width: var(--maxprose); }
+  .check li {
+    display: grid; grid-template-columns: 1.3rem 1fr; gap: .6rem;
+    padding: .35rem 0;
+    align-items: start;
+    font-size: .92rem;
+  }
+  .check li::before {
+    content: "";
+    width: 1.05rem; height: 1.05rem; margin-top: .18rem;
+    border: 1.5px solid var(--brand);
+    border-radius: .28rem;
+    display: block;
+  }
+
+  /* ---------- Phase blocks ---------- */
+  .phase {
+    border: 1px solid var(--border);
+    border-radius: .7rem;
+    overflow: hidden;
+    margin: 1.4rem 0;
+  }
+  .phase > h3 {
+    margin: 0;
+    background: var(--surface-2);
+    padding: .8rem 1rem;
+    font-size: 1rem;
+    display: flex; flex-wrap: wrap; gap: .6rem; align-items: baseline;
+    border-bottom: 1px solid var(--border);
+  }
+  .phase > h3 .span { font-size: .78rem; color: var(--ink-faint); font-weight: 500; font-family: "IBM Plex Sans", sans-serif; }
+  .phase .body { padding: .4rem 1rem 1rem; }
+  .phase .body table { font-size: .88rem; }
+  .phase .tw { border: none; border-radius: 0; margin: .6rem 0 0; }
+
+  .kbd-legend { font-size: .82rem; color: var(--ink-soft); margin-top: .6rem; }
+  .kbd-legend span { margin-right: 1.1rem; white-space: nowrap; }
+
+  footer {
+    margin-top: 4rem;
+    padding-top: 1.4rem;
+    border-top: 1px solid var(--border);
+    font-size: .82rem;
+    color: var(--ink-faint);
+    max-width: var(--maxprose);
+  }
+
+  .pill-confirmed {
+    display: inline-flex; align-items: center; gap: .35rem;
+    font-size: .74rem; font-weight: 600;
+    color: var(--confirmed);
+    border: 1px solid var(--confirmed);
+    border-radius: 2rem; padding: .05rem .5rem;
+  }
+  .pill-confirmed::before { content: ""; width: .45rem; height: .45rem; border-radius: 50%; background: var(--confirmed); }
+</style>
+</head>
+<body>
+
+<a class="skip" href="#main">Aller au contenu</a>
+
+<div class="shell">
+
+  <nav class="toc" aria-label="Sommaire">
+    <details open>
+      <summary>Sommaire</summary>
+      <div class="toc__inner">
+        <p class="toc__eyebrow">Playbook — 17 sections</p>
+        <ul class="toc__list">
+          <li><a href="#s1"><span class="n">1</span> Principes non négociables</a></li>
+          <li><a href="#s2"><span class="n">2</span> L'équipe — qui possède quoi</a></li>
+          <li><a href="#s3"><span class="n">3</span> RACI par chantier</a></li>
+          <li><a href="#s4"><span class="n">4</span> Dépôts &amp; open source sans perte de qualité</a></li>
+          <li><a href="#s5"><span class="n">5</span> Le pipeline prompt → production</a></li>
+          <li><a href="#s6"><span class="n">6</span> Plan 90 jours, par personne</a></li>
+          <li><a href="#s7"><span class="n">7</span> Paiement — Genius Pay</a></li>
+          <li><a href="#s8"><span class="n">8</span> Design system &amp; critique visuelle</a></li>
+          <li><a href="#s9"><span class="n">9</span> Data, coûts IA &amp; recherche</a></li>
+          <li><a href="#s10"><span class="n">10</span> Qualité — Definition of Done</a></li>
+          <li><a href="#s11"><span class="n">11</span> Rituels &amp; journal de décisions</a></li>
+          <li><a href="#s12"><span class="n">12</span> Sécurité — responsabilités</a></li>
+          <li><a href="#s13"><span class="n">13</span> Risques &amp; propriétaire</a></li>
+          <li><a href="#s14"><span class="n">14</span> Cette semaine — action par personne</a></li>
+          <li><a href="#s15"><span class="n">15</span> Structure des dossiers</a></li>
+          <li><a href="#s16"><span class="n">16</span> Système de prompts</a></li>
+          <li><a href="#s17"><span class="n">17</span> Liste maître des branches</a></li>
+        </ul>
+      </div>
+    </details>
+  </nav>
+
+  <main id="main">
+    <header class="mast">
+      <span class="mast__logo" aria-label="afrosite">
+        <svg class="mast__mark" viewBox="0 0 48 48" role="img" aria-hidden="true">
+          <rect x="1.5" y="1.5" width="45" height="45" rx="10" fill="var(--brand)"/>
+          <path d="M24 13 L36 35 H29 L24 25 L19 35 H12 Z" fill="var(--ground)"/>
+          <circle cx="24" cy="9.5" r="2.6" fill="var(--gold-bright)"/>
+        </svg>
+        afrosite
+      </span>
+
+      <h1>Playbook d'équipe Afrosite</h1>
+      <p class="lede">Qui fait quoi, dans quel ordre, avec quel niveau de qualité — pour livrer un MVP <em>avancé</em> à trois : socle commun + 3 blueprints, pipeline IA gouverné, paiement Mobile Money en production.</p>
+
+      <div class="meta">
+        <span class="chip"><b>Version</b> 1.0 · 30 août 2026</span>
+        <span class="chip"><b>Version complète</b> docs/11-playbook-equipe.md</span>
+        <span class="chip"><b>Équipe</b> Souraka · CHITOU · SERGE</span>
+        <span class="chip"><b>Horizon</b> 90 jours → 5 pilotes Cotonou</span>
+      </div>
+    </header>
+
+    <p><span class="lead-in">Comment lire ce document.</span> Il ne remplace pas la documentation projet : il la traduit en responsabilités et en tâches datées. En cas de contradiction, les docs numérotés font foi — signale l'écart dans le canal d'équipe et ouvre un ADR (§11). « Avancé » ne veut pas dire « plus de périmètre » : le périmètre reste 3 blueprints (doc 01 §5.4). L'avancé est dans la <em>rigueur</em> du pipeline — gates, agents, audit trail, streaming, boucle de critique visuelle, couche paiement multi-PSP, tolérance réseau.</p>
+
+    <div class="note">
+      <span class="tag">Version canonique</span>
+      <p>Cette page est la vue d'ensemble. La version complète et versionnée dans le dépôt est <code>docs/11-playbook-equipe.md</code> — elle contient l'intégralité de la bibliothèque de prompts par rôle, l'arborescence détaillée et la liste exhaustive des branches. Les §15 à §17 ci-dessous en sont l'essentiel.</p>
+    </div>
+
+    <!-- 1 -->
+    <section id="s1">
+      <div class="s-head"><span class="num">1</span><h2>Principes non négociables</h2></div>
+      <p>Affichés au mur. Toute PR, tout blueprint, toute décision d'archi se relit à travers cette liste.</p>
+      <div class="tw">
+        <table>
+          <thead><tr><th>Règle</th><th>Ce que ça impose concrètement</th><th>Réf.</th></tr></thead>
+          <tbody>
+            <tr><td>Un prompt n'exécute jamais une action risquée</td><td>Le prompt déclenche un workflow testable, réversible, observé. L'IA propose, les règles contrôlent, les tests vérifient, l'humain valide.</td><td class="mono">06 §intro</td></tr>
+            <tr><td>80 % éprouvé / 20 % généré</td><td>On personnalise des blueprints versionnés — on ne régénère pas une app de zéro à chaque prompt.</td><td class="mono">06 §12</td></tr>
+            <tr><td>Afrosite ne détient jamais de fonds</td><td>Couche d'orchestration au-dessus d'un PSP agréé BCEAO. Ledger interne ≠ flux réels. Jamais de PAN/CVV stockés.</td><td class="mono">01 §7 · 06 §6</td></tr>
+            <tr><td>La redirection navigateur ne prouve rien</td><td>Seul un webhook signé + vérification serveur du PSP confirme un paiement. Idempotency key partout. Montants recalculés serveur.</td><td class="mono">06 §6</td></tr>
+            <tr><td>Streaming systématique</td><td>Chaque étape (analyse, génération, test, déploiement) streame son statut dès qu'elle démarre — exigence technique, pas option.</td><td class="mono">deep 04 §2A</td></tr>
+            <tr><td>Cache de prompts activé par défaut</td><td>Configuration par défaut du routeur LiteLLM, pas une option. Cible marge brute ≥ 70 %.</td><td class="mono">deep 04 §2C</td></tr>
+            <tr><td>Offline-tolerant</td><td>Prise de commande et caisse fonctionnent en mode dégradé : file locale, synchro différée.</td><td class="mono">01 §6</td></tr>
+            <tr><td>FCFA &amp; français natifs</td><td>Jamais d'USD affiché au client final. Jamais de traduction approximative.</td><td class="mono">01 §7 · 04 §4</td></tr>
+            <tr><td>Jamais de push généré sur <code>main</code></td><td>Branche <code>feature/generated-&lt;id&gt;</code> + PR + CI (lint, tests, scan) avant merge.</td><td class="mono">06 §8</td></tr>
+            <tr><td>Réversibilité en un clic</td><td>Export intégral code + BDD + assets + config, disponible à tout moment.</td><td class="mono">01 §6</td></tr>
+            <tr><td>3 blueprints max au MVP</td><td>Tout 4ᵉ vertical demandé se valide d'abord sur le socle commun. Pas avant les 3 premiers prouvés.</td><td class="mono">01 §5.4 · 07</td></tr>
+            <tr><td>Aucun secret dans le contexte LLM</td><td>Jeton temporaire et limité par agent, liste blanche d'outils, toute donnée externe traitée comme non fiable.</td><td class="mono">06 §6</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <div class="rule" role="presentation"></div>
+
+    <!-- 2 -->
+    <section id="s2">
+      <div class="s-head"><span class="num">2</span><h2>L'équipe — qui possède quoi</h2></div>
+      <p>Trois personnes, un MVP avancé. Chaque chantier a <strong>un</strong> propriétaire redevable (le « A » du RACI §3) même quand plusieurs contribuent. Le propriétaire n'exécute pas tout : il garantit que le chantier avance, respecte les gates et n'est jamais bloqué en silence.</p>
+
+      <div class="roles">
+        <div class="role">
+          <h3>Souraka HAMIDA</h3>
+          <p class="who">Product Lead · Front-end · Data / Recherche</p>
+          <ul>
+            <li>Vision produit, backlog, priorisation, arbitrages de périmètre</li>
+            <li>Contrat <code>Blueprint JSON</code> — schéma partagé front/back (la frontière)</li>
+            <li>Architecture front-end (Next.js, routing, data-fetching, SSR/SEO)</li>
+            <li>Qualité des prompts &amp; <em>eval harness</em> des agents</li>
+            <li>Instrumentation des coûts IA/infra par client, quotas, crédits</li>
+            <li>Observabilité produit (OpenTelemetry → Grafana), tableau de bord unit economics</li>
+            <li>Veille &amp; recherche (tenir à jour <code>deeprecherche_important/</code>)</li>
+            <li>Go-to-market pilotes + onboarding (jusqu'à une recrue commerciale)</li>
+          </ul>
+          <p class="cap">Casquettes de secours : PM · MLOps · Analytics</p>
+        </div>
+
+        <div class="role">
+          <h3>CHITOU</h3>
+          <p class="who">Design Lead · Design System · Design Engineering</p>
+          <ul>
+            <li>Design system Afrosite : foundations, tokens sémantiques, composants</li>
+            <li>Bibliothèque de composants (shadcn/ui personnalisé) livrée en code</li>
+            <li>Patterns par blueprint : POSLayout, KitchenBoard, QRMenu, MobileCheckout…</li>
+            <li>Direction artistique : rejet du « slop » IA (doc 09 §3.4), conformité charte</li>
+            <li>Boucle de critique visuelle : critères écrits, agent UI Critic / Vision Critic</li>
+            <li>Montage des écrans produit avec Souraka ; accessibilité &amp; Core Web Vitals mobile</li>
+          </ul>
+          <p class="cap">Casquettes de secours : QA UI · Contenu / micro-copy</p>
+        </div>
+
+        <div class="role">
+          <h3>SERGE</h3>
+          <p class="who">Backend · Infra · Paiement · Agents</p>
+          <ul>
+            <li>API (FastAPI), modèle de données PostgreSQL, migrations, RBAC</li>
+            <li>Orchestration agents (LangGraph) — implémentation, outils, garde-fous</li>
+            <li>Workflows durables (Temporal) : paiement, provisioning, webhooks, retry</li>
+            <li>Intégration <strong>Genius Pay</strong> derrière la couche <code>PaymentProvider</code> (§7)</li>
+            <li>CI/CD (GitHub Actions), déploiement (Docker Compose + Coolify), sauvegardes</li>
+            <li>Sécurité applicative : SAST, scan dépendances/secrets, gates, sandbox d'exécution</li>
+            <li>Ledger interne immuable, réconciliation quotidienne</li>
+          </ul>
+          <p class="cap">Casquettes de secours : SRE / DevOps · Sécurité (+ audit externe avant go-live)</p>
+        </div>
+      </div>
+
+      <div class="note">
+        <span class="tag">Réalité de l'effectif</span>
+        <p>Trois personnes ne couvrent pas nativement SRE, QA dédiée, MLOps ni sécurité offensive. Mitigations retenues :</p>
+        <p>1. Coolify + Compose maintient l'infra <em>légère</em> — pas de Kubernetes, Vault ni cluster GPU au MVP (doc 06 §2, 07).<br>
+        2. QA = responsabilité partagée et outillée : Playwright bloquant en CI, pas de QA manuelle systématique.<br>
+        3. Un <strong>audit sécurité externe</strong> est budgété avant l'activation des clés PSP en production (§12).<br>
+        4. Toute tâche hors compétence de l'équipe passe en risque suivi (§13) avec une date de décision « on forme / on sous-traite / on reporte ».</p>
+      </div>
+    </section>
+
+    <div class="rule" role="presentation"></div>
+
+    <!-- 3 -->
+    <section id="s3">
+      <div class="s-head"><span class="num">3</span><h2>RACI par chantier</h2></div>
+      <p><span class="r">R</span> réalise · <span class="a">A</span> redevable / approuve · <span class="cc">C</span> consulté · <span class="ii">I</span> informé. Un seul <span class="a">A</span> par ligne.</p>
+      <div class="tw">
+        <table class="raci">
+          <thead><tr><th>Chantier</th><th>Souraka</th><th>CHITOU</th><th>SERGE</th></tr></thead>
+          <tbody>
+            <tr><td>Vision produit &amp; priorisation backlog</td><td class="a">A/R</td><td class="cc">C</td><td class="cc">C</td></tr>
+            <tr><td>Contrat <span class="mono">Blueprint JSON</span> &amp; <span class="mono">packages/contracts</span></td><td class="a">A</td><td class="cc">C</td><td class="r">R</td></tr>
+            <tr><td>Design system, tokens, composants</td><td class="cc">C</td><td class="a">A/R</td><td class="ii">I</td></tr>
+            <tr><td>Architecture front-end (Next.js, SSR, SEO)</td><td class="a">A/R</td><td class="r">R</td><td class="cc">C</td></tr>
+            <tr><td>Montage des écrans produit</td><td class="cc">C</td><td class="a">A/R</td><td class="cc">C</td></tr>
+            <tr><td>API, modèle de données, migrations, RBAC</td><td class="cc">C</td><td class="ii">I</td><td class="a">A/R</td></tr>
+            <tr><td>Agents LangGraph (implémentation, outils)</td><td class="cc">C</td><td class="ii">I</td><td class="a">A/R</td></tr>
+            <tr><td>Prompts &amp; eval harness des agents</td><td class="a">A/R</td><td class="cc">C</td><td class="cc">C</td></tr>
+            <tr><td>Workflows Temporal (paiement, provisioning)</td><td class="ii">I</td><td class="ii">I</td><td class="a">A/R</td></tr>
+            <tr><td>Intégration Genius Pay &amp; couche PSP</td><td class="cc">C</td><td class="ii">I</td><td class="a">A/R</td></tr>
+            <tr><td>Ledger interne &amp; réconciliation quotidienne</td><td class="cc">C</td><td class="ii">I</td><td class="a">A/R</td></tr>
+            <tr><td>Gates de sécurité &amp; sandbox d'exécution</td><td class="cc">C</td><td class="ii">I</td><td class="a">A/R</td></tr>
+            <tr><td>CI/CD, déploiement, sauvegardes</td><td class="cc">C</td><td class="ii">I</td><td class="a">A/R</td></tr>
+            <tr><td>Observabilité &amp; coûts IA / unit economics</td><td class="a">A/R</td><td class="ii">I</td><td class="cc">C</td></tr>
+            <tr><td>Tests E2E Playwright</td><td class="a">A</td><td class="r">R (UI)</td><td class="r">R (flux)</td></tr>
+            <tr><td>SEO natif par blueprint (doc 08)</td><td class="a">A/R</td><td class="cc">C</td><td class="cc">C</td></tr>
+            <tr><td>Recherche &amp; veille</td><td class="a">A/R</td><td class="cc">C</td><td class="cc">C</td></tr>
+            <tr><td>Pilotes, onboarding, support terrain</td><td class="a">A/R</td><td class="cc">C</td><td class="ii">I</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <div class="rule" role="presentation"></div>
+
+    <!-- 4 -->
+    <section id="s4">
+      <div class="s-head"><span class="num">4</span><h2>Dépôts &amp; open source sans perte de qualité</h2></div>
+      <p>La consigne : réutiliser les briques qui existent déjà (doc 06 §2) <strong>sans</strong> hériter de leur dette ni casser la cohérence. La méthode tient en une phrase : <span class="lead-in">on dépend des briques, on ne les fork pas, et on les isole toutes derrière une couche d'adaptation maison.</span></p>
+
+      <h3>4.1 — Un monorepo, une frontière typée</h3>
+      <p>Un seul dépôt <code>afrosite/</code> : une CI, des types partagés, des PR atomiques front + back. Frontière explicite = <code>packages/contracts</code> (schémas Zod ↔ Pydantic générés d'une même source).</p>
+      <div class="tw"><table>
+        <thead><tr><th>Chemin</th><th>Contenu</th><th>Propriétaire</th></tr></thead>
+        <tbody>
+          <tr><td class="mono">apps/web</td><td>Next.js — site marketing, app tenant, dashboard</td><td><span class="owner">Souraka + CHITOU</span></td></tr>
+          <tr><td class="mono">packages/design-system</td><td>Tokens, composants, patterns (shadcn/ui personnalisé)</td><td><span class="owner">CHITOU</span></td></tr>
+          <tr><td class="mono">packages/blueprints</td><td>Les 3 blueprints versionnés (Commerce, Restaurant, Services)</td><td><span class="owner">partagé</span></td></tr>
+          <tr><td class="mono">packages/contracts</td><td>Schéma Blueprint JSON, DTO API, types d'événements — <em>source unique</em></td><td><span class="owner">Souraka</span></td></tr>
+          <tr><td class="mono">services/api</td><td>FastAPI — auth, catalogue, commandes, CRM, dashboard, ledger</td><td><span class="owner">SERGE</span></td></tr>
+          <tr><td class="mono">services/agents</td><td>Graphes LangGraph + définitions d'outils par agent</td><td><span class="owner">SERGE</span></td></tr>
+          <tr><td class="mono">services/workflows</td><td>Workers Temporal : paiement, provisioning, webhooks</td><td><span class="owner">SERGE</span></td></tr>
+          <tr><td class="mono">packages/llm</td><td>Couche d'adaptation LiteLLM — <code>generate()</code> / <code>stream()</code></td><td><span class="owner">SERGE + Souraka</span></td></tr>
+          <tr><td class="mono">infra/</td><td>docker-compose, config Coolify, IaC (OpenTofu, plus tard)</td><td><span class="owner">SERGE</span></td></tr>
+          <tr><td class="mono">docs/adr/</td><td>Journal de décisions d'architecture (§11)</td><td><span class="owner">partagé</span></td></tr>
+        </tbody>
+      </table></div>
+
+      <h3>4.2 — Les 10 briques prioritaires et leur règle d'usage</h3>
+      <p>Priorisation doc 06 §2. Pour chacune : on l'isole, on l'épingle, on la teste avec un <em>smoke test</em> maison qui tourne en CI.</p>
+      <div class="tw"><table>
+        <thead><tr><th>Brique</th><th>Rôle</th><th>Couche d'isolation maison</th><th>Cadence upgrade</th></tr></thead>
+        <tbody>
+          <tr><td class="mono">BerriAI/litellm</td><td>Routeur multi-modèles, fallback, coût</td><td><code>packages/llm</code> — aucune app n'importe litellm directement</td><td>Mensuelle, PR manuelle</td></tr>
+          <tr><td class="mono">langchain-ai/langgraph</td><td>Orchestration d'agents stateful</td><td><code>services/agents/runtime</code> — graphes définis en interne</td><td>Mensuelle, PR manuelle</td></tr>
+          <tr><td class="mono">temporalio/temporal</td><td>Workflows critiques (argent, provisioning)</td><td><code>services/workflows</code> — activities maison, jamais de logique métier dans le SDK</td><td>Trimestrielle, sur release stable</td></tr>
+          <tr><td class="mono">OpenHands/software-agent-sdk</td><td>Agent qui manipule le code</td><td>Wrappé dans le <code>Code Agent</code>, exécuté <em>uniquement</em> en sandbox Docker</td><td>Suivi, pas d'upgrade auto</td></tr>
+          <tr><td class="mono">postgres/postgres</td><td>Source de vérité, ledger, audit</td><td>Managé (fournisseur) ; accès via repository pattern</td><td>Version LTS, patchs auto</td></tr>
+          <tr><td class="mono">redis/redis</td><td>Cache, files, rate limiting, verrous</td><td>Client centralisé <code>services/api/cache</code></td><td>Version LTS, patchs auto</td></tr>
+          <tr><td class="mono">minio/minio</td><td>Objets S3 (assets, backups, exports)</td><td>Interface <code>ObjectStore</code> — swappable vers S3 réel</td><td>Trimestrielle</td></tr>
+          <tr><td class="mono">microsoft/playwright</td><td>Tests E2E + captures pour critique visuelle</td><td>Helpers <code>e2e/</code> ; mêmes captures consommées par le Vision Critic</td><td>Mensuelle</td></tr>
+          <tr><td class="mono">open-telemetry/collector</td><td>Traces, logs, métriques</td><td>SDK OTel derrière <code>packages/telemetry</code></td><td>Trimestrielle</td></tr>
+          <tr><td class="mono">prometheus + grafana</td><td>Surveillance, alertes</td><td>Dashboards versionnés dans <code>infra/observability</code></td><td>Trimestrielle</td></tr>
+        </tbody>
+      </table></div>
+
+      <h3>4.3 — Les 8 règles d'hygiène des dépendances</h3>
+      <ol>
+        <li><span class="lead-in">Jamais <code>latest</code>.</span> Versions épinglées (lockfiles committés) et images Docker par <em>digest</em> <code>sha256:</code>, pas par tag.</li>
+        <li><span class="lead-in">Un fichier <code>THIRDPARTY.md</code>.</span> Par brique : version, pourquoi on l'utilise, mainteneur interne nommé, cadence d'upgrade, checklist de test pré-upgrade, plan de sortie (par quoi on la remplace si elle meurt).</li>
+        <li><span class="lead-in">Zéro fork du cœur.</span> Un besoin non couvert → on contribue en amont ou on l'ajoute dans <em>notre</em> couche d'adaptation. Un fork local n'est autorisé qu'avec un ADR et une date de dé-fork.</li>
+        <li><span class="lead-in">Un smoke test maison par brique critique</span>, bloquant en CI : Temporal → un workflow paiement de bout en bout sur sandbox ; LiteLLM → un appel + un fallback simulé ; LangGraph → un graphe minimal avec reprise après échec.</li>
+        <li><span class="lead-in">Renovate/Dependabot en PR groupées hebdo.</span> Auto-merge autorisé <em>seulement</em> pour les patchs de dépendances non critiques qui passent toute la CI. Jamais d'auto-merge sur litellm, temporal, langgraph, SDK Genius Pay.</li>
+        <li><span class="lead-in">Vendoring seulement pour un patch porté en amont</span> (<code>vendor/</code> + lien vers la PR upstream). Sinon, dépendance normale.</li>
+        <li><span class="lead-in">Un <code>README</code> « golden path » par service</span> : une seule commande pour lancer en local (<code>docker compose up</code>), une pour les tests, une pour les migrations. Si un nouveau contributeur ne démarre pas en 15 min, c'est un bug.</li>
+        <li><span class="lead-in">Séparation stricte des rôles d'orchestration</span> : Temporal pour tout ce qui touche l'argent et le provisioning ; LangGraph pour le raisonnement d'agents. On ne met jamais de logique de paiement dans un graphe d'agent.</li>
+      </ol>
+
+      <div class="note">
+        <span class="tag">Le vrai levier qualité</span>
+        <p><code>packages/contracts</code> est la pièce la plus importante du dépôt. Le schéma <code>Blueprint JSON</code> y est défini une fois ; front (Zod) et back (Pydantic) en dérivent. Un validateur rejette tout JSON non conforme <em>avant</em> qu'un workflow démarre (doc 06 §5). Tant que la frontière est typée et testée, front et back peuvent avancer en parallèle sans se casser.</p>
+      </div>
+    </section>
+
+    <div class="rule" role="presentation"></div>
+
+    <!-- 5 -->
+    <section id="s5">
+      <div class="s-head"><span class="num">5</span><h2>Le pipeline prompt → production</h2></div>
+      <p>Chaque étage a un propriétaire et une gate à franchir (doc 06 §4-5, deep 04 §2B pour l'ajout Vision Critic). Rien ne passe à l'étage suivant tant que la gate n'est pas verte.</p>
+      <ul class="flow">
+        <li><span class="k">01</span><span><strong>Prompt → Blueprint JSON</strong> — Intent Agent normalise, Product Architect structure. Gate 1 : schéma conforme, budget IA sous plafond, pas de donnée sensible.</span><span class="owner">Souraka</span></li>
+        <li><span class="k">02</span><span><strong>Génération dans une branche Git</strong> — Code Agent (OpenHands SDK) en sandbox, jamais sur <code>main</code>. Gate 2 : lint/typecheck, tests unitaires, build, zéro secret.</span><span class="owner">SERGE</span></li>
+        <li><span class="k">03</span><span><strong>Sécurité</strong> — Security Agent : SAST, scan dépendances/secrets, RBAC, rate limiting, CSRF/XSS/injection. Gate 3 bloquante.</span><span class="owner">SERGE</span></li>
+        <li><span class="k">04</span><span><strong>Paiement</strong> — Payment Agent : sandbox Genius Pay, webhooks signés vérifiés, idempotency key, montants recalculés serveur. Gate 4.</span><span class="owner">SERGE</span></li>
+        <li><span class="k">05</span><span><strong>Tests</strong> — QA Agent : unitaires + Playwright E2E. Gate 5 : migration testée sur copie, backup vérifié, rollback prêt.</span><span class="owner">Souraka (A) · CHITOU/SERGE (R)</span></li>
+        <li><span class="k">06</span><span><strong>Preview déployée</strong> + capture d'écran automatique (Playwright).</span><span class="owner">SERGE</span></li>
+        <li><span class="k">07</span><span><strong>Vision Critic Agent</strong> — lit la capture, évalue polish / cohérence / typographie contre des critères écrits. Score insuffisant → itération ciblée du Code Agent.</span><span class="owner">CHITOU</span></li>
+        <li><span class="k">08</span><span><strong>Validation utilisateur</strong> — plan, coût estimé, état en direct, audit trail visibles (doc 06 §10).</span><span class="owner">Souraka</span></li>
+        <li><span class="k">09</span><span><strong>Production</strong> — Gate 6 : confirmation explicite admin, déploiement progressif, monitoring actif, rollback automatique.</span><span class="owner">SERGE</span></li>
+      </ul>
+      <p>Streaming à chaque étage (deep 04 §2A) : l'interface montre l'étape en cours dès qu'elle démarre, pas seulement à la fin. TTFT &lt; 500 ms est l'objectif perçu (deep 01 §3).</p>
+    </section>
+
+    <div class="rule" role="presentation"></div>
+
+    <!-- 6 -->
+    <section id="s6">
+      <div class="s-head"><span class="num">6</span><h2>Plan 90 jours, par personne</h2></div>
+      <p>Aligné sur le doc 07. Objectif : 5 pilotes à Cotonou (2 restaurant, 2 commerce, 1 service) utilisant Afrosite <em>tous les jours</em>, paiement réel, à J+90.</p>
+      <p class="kbd-legend"><span><strong>S</strong> = Souraka</span><span><strong>C</strong> = CHITOU</span><span><strong>B</strong> = SERGE</span></p>
+
+      <div class="phase">
+        <h3>Phase 1 — Fondation fiable <span class="span">Jours 1 → 30</span></h3>
+        <div class="body">
+          <p>But : le socle commun + 3 blueprints existent, testés, déployables. Aucune IA générative encore — on construit ce que l'IA personnalisera ensuite.</p>
+          <div class="tw"><table>
+            <thead><tr><th>Qui</th><th>Livrables de la phase</th></tr></thead>
+            <tbody>
+              <tr><td><strong>S</strong></td><td>Domaine + identité arrêtés · schéma <code>Blueprint JSON</code> v1 dans <code>packages/contracts</code> · archi front Next.js (SSR, Metadata API, sitemap dynamique par tenant — doc 08 §2) · liste des 100 établissements cibles (zone Cadjehoun/Fidjrossè) · plan d'instrumentation des coûts</td></tr>
+              <tr><td><strong>C</strong></td><td>Design system v1 : foundations + tokens sémantiques + 12 composants de base (Button, Input, Card, DataTable, EmptyState, Money, PaymentStatus, OrderStatus…) · 3 patterns clés (POSLayout, QRMenu, MobileCheckout) · charte de critique visuelle écrite (critères de rejet doc 09 §3.4)</td></tr>
+              <tr><td><strong>B</strong></td><td>Monorepo + CI GitHub Actions (tests, CodeQL, scan secrets/dépendances, preview par PR) · PostgreSQL + sauvegardes quotidiennes testées + logs centralisés · socle API : auth/RBAC, catalogue, commande/réservation, CRM léger, dashboard · <strong>Genius Pay en sandbox uniquement</strong>, derrière <code>PaymentProvider</code> · politiques de permissions + règles des 6 gates</td></tr>
+            </tbody>
+          </table></div>
+          <p><strong>Gate de sortie phase 1 :</strong> les 3 blueprints partagent un socle <em>identique en code</em> (seuls les modules spécifiques diffèrent — doc 01 §9) ; une commande crée un tenant de démo fonctionnel ; un paiement sandbox est réconcilié automatiquement.</p>
+        </div>
+      </div>
+
+      <div class="phase">
+        <h3>Phase 2 — Automatisation IA <span class="span">Jours 31 → 60</span></h3>
+        <div class="body">
+          <div class="tw"><table>
+            <thead><tr><th>Qui</th><th>Livrables de la phase</th></tr></thead>
+            <tbody>
+              <tr><td><strong>S</strong></td><td>Intent Agent + Product Architect Agent : prompt → Blueprint JSON validé · eval harness (jeu de 30+ prompts réels par vertical, scoring automatique) · écran de validation client + audit trail lisible · cache de prompts activé par défaut sur <code>packages/llm</code> · démarrage vente terrain : 15–25 visites/semaine</td></tr>
+              <tr><td><strong>C</strong></td><td>Vision Critic Agent branché sur les captures Playwright · itération design system → 3 blueprints « polis dès la sortie » · patterns restants (KitchenBoard/KDS, Agenda RDV, suivi livraison) · check Core Web Vitals (LCP ≤ 2,5 s / INP &lt; 200 ms / CLS &lt; 0,1) intégré aux gates</td></tr>
+              <tr><td><strong>B</strong></td><td>Blueprint → branche Git → génération contrôlée (Code Agent en sandbox) · Security Agent + correction auto avant merge · génération + exécution Playwright automatiques · preview auto après chaque génération · workflows Temporal : provisioning tenant, cycle de vie webhook paiement · installation des 5 pilotes en sandbox de paiement</td></tr>
+            </tbody>
+          </table></div>
+          <p><strong>Gate de sortie phase 2 :</strong> un prompt réel produit une preview fonctionnelle et « propre » en &lt; 5 min sans intervention manuelle ; les 6 gates s'exécutent automatiquement ; usage quotidien mesuré chez au moins 3 pilotes en sandbox.</p>
+        </div>
+      </div>
+
+      <div class="phase">
+        <h3>Phase 3 — Commercialisation <span class="span">Jours 61 → 90</span></h3>
+        <div class="body">
+          <div class="tw"><table>
+            <thead><tr><th>Qui</th><th>Livrables de la phase</th></tr></thead>
+            <tbody>
+              <tr><td><strong>S</strong></td><td>Mesure : coût IA/client, coût cloud, temps de support, rétention J+30 · ajustement crédits &amp; plafonds sur coûts réels · vente des frais de lancement puis abonnement · ≥ 3 témoignages sur 5 pilotes · décision Phase 2 produit : quel(s) vertical(aux) approfondir</td></tr>
+              <tr><td><strong>C</strong></td><td>Passe finale de polish sur les écrans à fort usage (prise de commande, KDS, réconciliation du soir) · résumé quotidien WhatsApp lisible · boucle d'apprentissage UX : mesurer temps de tâche / abandon / erreurs → 1 variante A/B documentée</td></tr>
+              <tr><td><strong>B</strong></td><td>Bascule des 5 pilotes en <strong>production paiement réel</strong> après tests webhooks + remboursement + réconciliation · activation Mobile Money par tenant validé · résumé quotidien WhatsApp au gérant · export CSV en libre-service · monitoring + alertes paiement/base/déploiement actifs · <strong>audit sécurité externe passé</strong></td></tr>
+            </tbody>
+          </table></div>
+          <p><strong>Décision de fin de phase (doc 07) :</strong> les 5 pilotes utilisent-ils Afrosite tous les jours ? Oui → répliquer le playbook commercial. Non → diagnostiquer avant d'ajouter la moindre fonctionnalité.</p>
+        </div>
+      </div>
+
+      <h4>À ne pas faire pendant ces 90 jours</h4>
+      <ul>
+        <li>Ajouter un 4ᵉ blueprint avant d'avoir validé les 3 premiers.</li>
+        <li>Activer une clé PSP en production avant d'avoir testé webhooks, échecs et remboursements en sandbox.</li>
+        <li>Construire Kubernetes, Vault ou un cluster GPU.</li>
+        <li>Donner un accès IA illimité sur l'offre gratuite.</li>
+        <li>Pousser du code généré sur <code>main</code> sans branche + revue.</li>
+      </ul>
+    </section>
+
+    <div class="rule" role="presentation"></div>
+
+    <!-- 7 -->
+    <section id="s7">
+      <div class="s-head"><span class="num">7</span><h2>Paiement — Genius Pay</h2></div>
+
+      <div class="note">
+        <span class="tag">Décision d'équipe à consigner</span>
+        <p>Les docs 03 §5, 06 et 10 §F nomment KKiaPay / FedaPay / CinetPay. <strong>Décision :</strong> Genius Pay devient le PSP <em>primaire</em> du MVP (clés API + doc en main). Il s'intègre derrière la couche <code>PaymentProvider</code> pour que FedaPay/KKiaPay restent des <em>fallback</em> activables (routage multi-PSP prévu en Phase 2, doc 01 §5.2). <strong>Action Souraka :</strong> ouvrir un ADR et mettre à jour docs 03 §5, 06 §5-6, 10 §F pour cohérence.</p>
+      </div>
+
+      <h3>7.1 — Ce qui ne change pas, quel que soit le PSP</h3>
+      <ul>
+        <li>Afrosite n'est jamais dépositaire de fonds. Couche d'orchestration au-dessus d'un acteur agréé BCEAO.</li>
+        <li>Aucune donnée de carte (PAN/CVV) ne transite ou n'est stockée chez nous — champs/pages hébergés du PSP uniquement.</li>
+        <li>La redirection navigateur ne prouve jamais le paiement. Seuls le webhook signé <em>et</em> la vérification serveur du statut le confirment.</li>
+        <li>Ledger interne immuable, distinct des flux réels. Réconciliation quotidienne : encaissé par canal (cash, MoMo, carte), impayés.</li>
+      </ul>
+
+      <h3>7.2 — La couche <code>PaymentProvider</code> (contrat maison)</h3>
+      <p>Toute la logique métier parle à cette interface, jamais au SDK Genius Pay directement. Changer de PSP = une seule implémentation à écrire.</p>
+      <div class="tw"><table>
+        <thead><tr><th>Méthode</th><th>Rôle</th><th>Garde-fous</th></tr></thead>
+        <tbody>
+          <tr><td class="mono">createTransaction(order, idemKey)</td><td>Crée la transaction côté serveur, renvoie une référence + URL/handle de checkout</td><td>Montant recalculé serveur depuis le panier ; <code>idemKey</code> obligatoire ; devise = XOF</td></tr>
+          <tr><td class="mono">verify(reference)</td><td>Interroge le PSP pour le statut réel</td><td>Appelé avant toute écriture « payé » ; jamais confiance au retour client</td></tr>
+          <tr><td class="mono">handleWebhook(payload, signature)</td><td>Vérifie la signature, normalise l'événement</td><td>Rejet si signature invalide ; rejeu idempotent ; horloge tolérante</td></tr>
+          <tr><td class="mono">refund(reference, amount, reason)</td><td>Remboursement total ou partiel</td><td>Confirmation admin explicite ; tracé dans l'audit trail</td></tr>
+          <tr><td class="mono">reconcile(dateRange)</td><td>Rapproche transactions PSP ↔ ledger interne</td><td>Job quotidien ; alerte si écart &gt; 0</td></tr>
+        </tbody>
+      </table></div>
+
+      <h3>7.3 — Séquence d'un encaissement</h3>
+      <ul class="flow">
+        <li><span class="k">1</span><span>Client valide le panier → API Afrosite crée une transaction serveur (montant recalculé, <code>idemKey</code>).</span><span class="owner">services/api</span></li>
+        <li><span class="k">2</span><span>Redirection vers la page / le SDK sécurisé de Genius Pay.</span><span class="owner">apps/web</span></li>
+        <li><span class="k">3</span><span>Client paie (MTN MoMo / Moov Money). Le navigateur revient — statut affiché « en attente ».</span><span class="owner">apps/web</span></li>
+        <li><span class="k">4</span><span>Webhook signé Genius Pay → workflow Temporal : vérifie signature, appelle <code>verify()</code>, écrit dans le ledger.</span><span class="owner">services/workflows</span></li>
+        <li><span class="k">5</span><span>Transaction marquée <span class="pill-confirmed">paiement confirmé</span> · notification WhatsApp au gérant.</span><span class="owner">services/workflows</span></li>
+        <li><span class="k">6</span><span>Job de réconciliation du soir : PSP ↔ ledger, tout écart lève une alerte.</span><span class="owner">services/workflows</span></li>
+      </ul>
+
+      <h3>7.4 — Checklist d'intégration (SERGE, à cocher avant Gate 4)</h3>
+      <ul class="check">
+        <li>Clés sandbox et production stockées en secret (jamais en base, jamais dans un prompt, jamais côté client).</li>
+        <li><code>createTransaction</code> recalcule le montant serveur ; le montant client est ignoré.</li>
+        <li><code>idemKey</code> unique par tentative ; un rejeu renvoie la transaction existante, ne recrée rien.</li>
+        <li>Signature du webhook vérifiée avec le secret Genius Pay ; payload non signé rejeté et loggé.</li>
+        <li>Webhook idempotent : recevoir deux fois le même événement ne double pas l'écriture ledger.</li>
+        <li>Statut confirmé uniquement après <code>verify()</code> serveur — jamais sur le seul retour de redirection.</li>
+        <li>Cas testés en sandbox : succès, échec, expiration, double webhook, webhook en retard, remboursement total, remboursement partiel.</li>
+        <li>Réconciliation quotidienne implémentée ; écart PSP/ledger → alerte (Grafana OnCall / canal d'équipe).</li>
+        <li>Aucune donnée PAN/CVV dans les logs, la base, les traces ou Sentry (scrubbing vérifié).</li>
+        <li>Runbook « paiement bloqué » écrit : comment diagnostiquer, qui appeler chez Genius Pay, comment rembourser manuellement.</li>
+        <li>Passage prod = approbation explicite (doc 06 gate 6) + doc 07 : jamais avant tests sandbox complets.</li>
+      </ul>
+    </section>
+
+    <div class="rule" role="presentation"></div>
+
+    <!-- 8 -->
+    <section id="s8">
+      <div class="s-head"><span class="num">8</span><h2>Design system &amp; critique visuelle</h2></div>
+      <p>Propriétaire : CHITOU. La qualité visuelle ne vient pas d'un meilleur prompt mais d'une <em>boucle générateur → critique</em> avec vision réelle du rendu (deep 02).</p>
+
+      <h3>8.1 — Structure (doc 06 §11)</h3>
+      <div class="tw"><table>
+        <thead><tr><th>Dossier</th><th>Contenu</th></tr></thead>
+        <tbody>
+          <tr><td class="mono">/foundations</td><td>colors, typography, spacing, shadows, motion</td></tr>
+          <tr><td class="mono">/tokens</td><td><code>tokens.json</code>, <code>semantic-tokens.json</code> — ex. <code>--status-payment-confirmed</code>, jamais une couleur directe</td></tr>
+          <tr><td class="mono">/components</td><td>Button, Input, Card, DataTable, EmptyState, PaymentStatus, OrderStatus, Money</td></tr>
+          <tr><td class="mono">/patterns</td><td>RestaurantDashboard, POSLayout, KitchenBoard, QRMenu, MobileCheckout</td></tr>
+          <tr><td class="mono">/rules</td><td>ux-principles, accessibility, responsive, visual-identity</td></tr>
+        </tbody>
+      </table></div>
+
+      <h3>8.2 — Les 4 agents de conception</h3>
+      <p>Product Agent (besoin) · UX Agent (parcours) · Art Director Agent (palette, ton, contraintes) · UI Critic Agent (rejet). Séparer la direction artistique de l'exécution — les mélanger produit le « design IA générique ».</p>
+
+      <h3>8.3 — Critères de rejet écrits (charte doc 09 §3.4)</h3>
+      <ul>
+        <li>Dégradé violet/bleu par défaut, glassmorphism décoratif, carte à barre de couleur à gauche.</li>
+        <li>Polices hors marque (Inter, Roboto, Arial). Marque = Space Grotesk (titres, montants, stats) + IBM Plex Sans (interface, texte long).</li>
+        <li>Émoji comme icône fonctionnelle. Icônes au trait uniquement, grille 24 px, trait 1,75 px.</li>
+        <li>Vert utilisé ailleurs que pour le statut <span class="pill-confirmed">paiement confirmé</span>.</li>
+        <li>Montants pas en chiffres tabulaires, ou en italique.</li>
+        <li>Dashboard sans priorité opérationnelle ; contraste &lt; 4,5:1 ; cartes répétitives sans hiérarchie.</li>
+        <li>Photo de banque d'images corporate au lieu d'une personne réelle en activité.</li>
+      </ul>
+
+      <h3>8.4 — La boucle (ajout deep 04 §2B)</h3>
+      <ul class="flow">
+        <li><span class="k">1</span><span>Code Agent génère l'écran à partir du design system (pas d'une page blanche).</span></li>
+        <li><span class="k">2</span><span>Déploiement preview → capture d'écran automatique Playwright.</span></li>
+        <li><span class="k">3</span><span>Vision Critic Agent lit l'image : polish visuel → cohérence → typographie (ordre de fréquence des défauts).</span></li>
+        <li><span class="k">4</span><span>Score insuffisant → itération ciblée du Code Agent sur les points relevés, pas un « refais mieux » générique.</span></li>
+        <li><span class="k">5</span><span>Score OK → validation utilisateur.</span></li>
+      </ul>
+      <p>Boucle d'apprentissage : mesurer temps de tâche, abandon, erreurs, questions support → hypothèse UX → variante → A/B → décision <em>documentée dans le design system</em>.</p>
+    </section>
+
+    <div class="rule" role="presentation"></div>
+
+    <!-- 9 -->
+    <section id="s9">
+      <div class="s-head"><span class="num">9</span><h2>Data, coûts IA &amp; recherche</h2></div>
+      <p>Propriétaire : Souraka. La compétitivité IA d'Afrosite ne vient pas du modèle mais de l'ingénierie produit autour (deep 04 §3) — c'est exactement ce qu'une petite équipe contrôle.</p>
+
+      <h3>9.1 — Instrumenter dès le jour 1 (doc 02 §5)</h3>
+      <ul>
+        <li>Coût par génération / prompt (tokens IA), attribué au tenant.</li>
+        <li>Coût stockage + bande passante par projet actif.</li>
+        <li>Coût des environnements de preview.</li>
+        <li>Coût SMS / WhatsApp / email par notification.</li>
+        <li>Temps de support humain par ticket.</li>
+        <li>Frais PSP — jamais absorbés sans refacturation transparente.</li>
+      </ul>
+      <p>Cible : marge brute ≥ 70 %. Client Business à 15 000 FCFA/mois → coût variable direct ≤ 4 500–6 000 FCFA/mois. Au-delà : basculer vers crédits additionnels, modèle plus léger, ou traitement asynchrone.</p>
+
+      <h3>9.2 — Routage IA (doc 06 §9)</h3>
+      <div class="tw"><table>
+        <thead><tr><th>Tâche</th><th>Classe de modèle</th></tr></thead>
+        <tbody>
+          <tr><td>Classification d'intention, résumé, extraction, traduction, reformulation de menu</td><td>Modèle léger / peu coûteux</td></tr>
+          <tr><td>Architecture produit, plan complexe, débogage difficile, revue de code</td><td>Modèle puissant (raisonnement étendu activé)</td></tr>
+          <tr><td>Composants, migrations, tests, APIs, corrections</td><td>Modèle spécialisé code</td></tr>
+          <tr><td>Tâches répétitives + données sensibles (quand le volume le justifie)</td><td>Modèle local / open source</td></tr>
+        </tbody>
+      </table></div>
+      <p>Fallback via LiteLLM vers un second fournisseur ou un modèle local en cas d'échec. Décodage spéculatif : souvent déjà activé côté API — le vérifier, pas le réimplémenter.</p>
+
+      <h3>9.3 — Eval harness</h3>
+      <ul>
+        <li>30+ prompts réels par vertical (collectés en visites terrain), rejoués à chaque changement d'agent ou de modèle.</li>
+        <li>Scoring : conformité du Blueprint JSON, coût en crédits, temps prompt → preview, score Vision Critic, taux de passage des gates du premier coup.</li>
+        <li>Un changement de prompt ou de modèle qui fait régresser un indicateur clé est bloqué comme une régression de code.</li>
+      </ul>
+
+      <h3>9.4 — Cadence de recherche</h3>
+      <p>Une demi-journée par semaine. Tenir à jour <code>deeprecherche_important/</code> : toute nouvelle info qui contredit une décision d'archi ouvre un ADR. Sujets ouverts : PI-SPI (BCEAO, paiements instantanés interopérables), évolution des SDK d'agents de code, coûts d'inférence, KYC/AML UEMOA.</p>
+    </section>
+
+    <div class="rule" role="presentation"></div>
+
+    <!-- 10 -->
+    <section id="s10">
+      <div class="s-head"><span class="num">10</span><h2>Qualité — Definition of Done</h2></div>
+
+      <h3>10.1 — DoD d'une PR</h3>
+      <ul class="check">
+        <li>Lint + typecheck + build verts.</li>
+        <li>Tests unitaires sur la logique ajoutée ; tests E2E si un parcours utilisateur change.</li>
+        <li>Zéro secret (TruffleHog / scan CI). Aucune clé dans le code, les tests, les fixtures.</li>
+        <li>CodeQL + Semgrep sans nouvelle alerte haute.</li>
+        <li>Migration réversible et testée sur copie si le schéma change.</li>
+        <li>Pas de couleur/police hors design system ; tokens sémantiques utilisés.</li>
+        <li>Textes en français, orientés résultat, sans jargon (voix doc 09 §4.5).</li>
+        <li>Relue par une autre personne. PR &lt; ~400 lignes si possible.</li>
+        <li>ADR joint si la PR change une décision d'architecture.</li>
+      </ul>
+
+      <h3>10.2 — DoD d'un blueprint</h3>
+      <ul class="check">
+        <li>Socle commun <em>identique en code</em> aux deux autres blueprints ; seuls les modules spécifiques diffèrent (doc 01 §9).</li>
+        <li>SSR + Metadata API + sitemap par tenant + JSON-LD Schema.org + canonical auto (doc 08 §2).</li>
+        <li>Core Web Vitals : LCP ≤ 2,5 s, INP &lt; 200 ms, CLS &lt; 0,1 sur mobile 3G/4G.</li>
+        <li>Mode dégradé testé : coupure réseau → file locale → synchro différée.</li>
+        <li>Parcours paiement sandbox complet vert (les 8 cas du §7.4).</li>
+        <li>Export CSV (transactions, clients, ventes) sans support technique.</li>
+        <li>Résumé quotidien WhatsApp généré.</li>
+        <li>Score Vision Critic au-dessus du seuil ; passe la checklist de conformité charte (doc 09 §5).</li>
+      </ul>
+
+      <h3>10.3 — Go-live d'un pilote</h3>
+      <ul class="check">
+        <li>Webhooks, remboursement et réconciliation testés en sandbox.</li>
+        <li>Audit sécurité externe passé (au moins pour le périmètre paiement).</li>
+        <li>Sauvegarde restaurée avec succès au moins une fois (pas seulement « le backup tourne »).</li>
+        <li>Rollback répété à blanc.</li>
+        <li>Monitoring + alertes paiement / base / déploiement actifs.</li>
+        <li>Formation de l'équipe du client faite ; canal WhatsApp de support ouvert.</li>
+        <li>Runbook incident accessible aux 3 membres.</li>
+      </ul>
+    </section>
+
+    <div class="rule" role="presentation"></div>
+
+    <!-- 11 -->
+    <section id="s11">
+      <div class="s-head"><span class="num">11</span><h2>Rituels &amp; journal de décisions</h2></div>
+      <div class="tw"><table>
+        <thead><tr><th>Rituel</th><th>Quand</th><th>Format</th></tr></thead>
+        <tbody>
+          <tr><td>Point quotidien</td><td>15 min, async ou visio</td><td>Chacun : fait / prévu / bloqué. Un bloqué = on s'arrête dessus après le point.</td></tr>
+          <tr><td>Revue hebdo</td><td>Vendredi, 45 min</td><td>Indicateurs doc 07 : temps prompt→preview, coût IA/client, taux de réconciliation auto, usage quotidien par pilote, recommandations obtenues.</td></tr>
+          <tr><td>Revue de blueprint</td><td>À chaque DoD blueprint</td><td>Les 3 membres passent la DoD §10.2 ensemble.</td></tr>
+          <tr><td>ADR</td><td>À chaque décision d'archi</td><td>1 fichier <code>docs/adr/NNNN-titre.md</code> : contexte, options, décision, conséquences. Court.</td></tr>
+          <tr><td>Rétro pilote</td><td>Fin de chaque phase 90 j</td><td>Ce qui marche / ce qui coince / ce qu'on change. Décisions tracées.</td></tr>
+          <tr><td>Post-mortem incident</td><td>Sous 48 h d'un incident</td><td>Sans blâme : chronologie, cause racine, actions. Voir §12.</td></tr>
+        </tbody>
+      </table></div>
+      <p>Toute contradiction entre ce playbook et les docs 01–10 se règle par un ADR — et le doc concerné est mis à jour dans la foulée.</p>
+    </section>
+
+    <div class="rule" role="presentation"></div>
+
+    <!-- 12 -->
+    <section id="s12">
+      <div class="s-head"><span class="num">12</span><h2>Sécurité — responsabilités</h2></div>
+      <p>Règles non négociables (doc 06 §6) :</p>
+      <div class="tw"><table>
+        <tbody>
+          <tr><td>Prompt ≠ permission illimitée</td><td>IA ≠ accès root</td></tr>
+          <tr><td>Génération ≠ déploiement production</td><td>Succès du code ≠ sécurité validée</td></tr>
+          <tr><td colspan="2">Paiement initié ≠ paiement confirmé</td></tr>
+        </tbody>
+      </table></div>
+      <div class="tw"><table>
+        <thead><tr><th>Sujet</th><th>Propriétaire</th><th>Ce qui est attendu</th></tr></thead>
+        <tbody>
+          <tr><td>Secrets</td><td><span class="owner">SERGE</span></td><td>Aucun secret en base ni dans un prompt. Coffre (variables Coolify au MVP → Vault quand le volume le justifie). Rotation, révocation à la déconnexion.</td></tr>
+          <tr><td>Isolation des agents</td><td><span class="owner">SERGE</span></td><td>Jeton temporaire et limité par agent, liste blanche d'outils, sandbox Docker/Firecracker pour tout code généré.</td></tr>
+          <tr><td>Injection de prompt</td><td><span class="owner">Souraka</span></td><td>Toute donnée externe (web, PDF, email, utilisateur) traitée comme non fiable. Jamais injectée telle quelle dans un contexte à privilèges.</td></tr>
+          <tr><td>Confirmation humaine</td><td><span class="owner">SERGE</span></td><td>Obligatoire pour : déploiement prod, paiements live, emails massifs, suppression, changement d'accès.</td></tr>
+          <tr><td>Audit trail</td><td><span class="owner">SERGE</span></td><td>Complet : prompt, plan, outils exécutés, version de code, test, auteur, résultat, horodatage.</td></tr>
+          <tr><td>Scans CI</td><td><span class="owner">SERGE</span></td><td>SAST (CodeQL, Semgrep), scan dépendances, scan secrets (TruffleHog) à chaque déploiement. ZAP sur les previews.</td></tr>
+          <tr><td>Audit externe</td><td><span class="owner">Souraka (budget)</span></td><td>Un audit tiers du périmètre paiement + auth avant l'activation des clés Genius Pay en production.</td></tr>
+          <tr><td>Conformité BCEAO</td><td><span class="owner">Souraka</span></td><td>Afrosite reste orchestrateur, jamais dépositaire de fonds. Ledger interne séparé des flux. Consentement + journalisation RGPD-like.</td></tr>
+        </tbody>
+      </table></div>
+      <p>Référentiel de base : OWASP ASVS comme checklist minimale du MVP (doc 10 §H).</p>
+    </section>
+
+    <div class="rule" role="presentation"></div>
+
+    <!-- 13 -->
+    <section id="s13">
+      <div class="s-head"><span class="num">13</span><h2>Risques &amp; propriétaire</h2></div>
+      <div class="tw"><table>
+        <thead><tr><th>Risque</th><th>Signal d'alerte</th><th>Mitigation</th><th>Propr.</th></tr></thead>
+        <tbody>
+          <tr><td>Coûts IA non gouvernés</td><td>Coût variable/client &gt; 6 000 FCFA récurrent</td><td>Quotas, crédits, routage modèle léger, cache de prompts, tâches asynchrones</td><td>S</td></tr>
+          <tr><td>Dépendance à un seul PSP</td><td>Panne / lenteur Genius Pay</td><td>Couche <code>PaymentProvider</code> prête pour FedaPay/KKiaPay en fallback</td><td>B</td></tr>
+          <tr><td>Effectif : pas de SRE/QA/MLOps dédié</td><td>Un incident prod non couvert &gt; 2 h</td><td>Infra légère (Coolify), QA outillée bloquante, audit externe, runbooks</td><td>B</td></tr>
+          <tr><td>Dérive de périmètre (4ᵉ blueprint tôt)</td><td>Demande client / tentation interne</td><td>Règle 3 blueprints max ; tout vertical se valide d'abord sur le socle</td><td>S</td></tr>
+          <tr><td>Dette de fork open source</td><td>Un patch local sans date de dé-fork</td><td><code>THIRDPARTY.md</code>, contribution amont, ADR obligatoire pour tout fork</td><td>B</td></tr>
+          <tr><td>« Slop » visuel IA</td><td>Vision Critic sous le seuil de façon répétée</td><td>Critères de rejet écrits, Art Director distinct de l'exécution</td><td>C</td></tr>
+          <tr><td>Réseau instable côté client</td><td>Commandes perdues, caisse figée</td><td>Mode dégradé testé : file locale + synchro différée</td><td>B</td></tr>
+          <tr><td>Rétention faible malgré la croissance</td><td>Usage quotidien &lt; 5 j/7 chez un pilote</td><td>Diagnostiquer avant d'ajouter des fonctionnalités (doc 07)</td><td>S</td></tr>
+          <tr><td>Changement réglementaire BCEAO</td><td>Communication BCEAO / PSP</td><td>Ne jamais détenir les fonds ; veille réglementaire hebdo</td><td>S</td></tr>
+          <tr><td>Concurrent (fintech OS-pour-PME) entre en UEMOA francophone</td><td>Annonce Moniepoint/Orda ou Yoco/Dyner sur la zone</td><td>Vitesse d'implantation + moat distribution/paiement/données local</td><td>S</td></tr>
+        </tbody>
+      </table></div>
+    </section>
+
+    <div class="rule" role="presentation"></div>
+
+    <!-- 14 -->
+    <section id="s14">
+      <div class="s-head"><span class="num">14</span><h2>Cette semaine — action par personne</h2></div>
+      <p>Sept jours. À la fin : le dépôt existe, la CI tourne, le contrat de blueprint est écrit, le design system a démarré, Genius Pay répond en sandbox.</p>
+
+      <div class="roles">
+        <div class="role">
+          <h3>Souraka</h3>
+          <p class="who">Cadre &amp; frontière</p>
+          <ul>
+            <li>Ouvrir l'ADR 0001 « Genius Pay = PSP primaire » + planifier la MAJ docs 03/06/10.</li>
+            <li>Rédiger <code>packages/contracts</code> : schéma <code>Blueprint JSON</code> v0 (les 3 verticaux, exemple doc 06 §5) + validateur Zod/Pydantic.</li>
+            <li>Poser le squelette <code>apps/web</code> (Next.js, SSR, Metadata API, route sitemap par tenant).</li>
+            <li>Écrire le plan d'instrumentation des coûts (quelles métriques, où, quel dashboard).</li>
+            <li>Commencer la liste des 100 établissements cibles.</li>
+          </ul>
+        </div>
+        <div class="role">
+          <h3>CHITOU</h3>
+          <p class="who">Design system</p>
+          <ul>
+            <li>Créer <code>packages/design-system</code> : <code>tokens.json</code> + <code>semantic-tokens.json</code> depuis la charte (doc 09 §3).</li>
+            <li>Livrer 6 composants en code : Button, Input, Card, Money, PaymentStatus, OrderStatus.</li>
+            <li>Écrire <code>/rules/visual-identity.md</code> : la liste des critères de rejet du Vision Critic.</li>
+            <li>Maquette du pattern MobileCheckout (c'est le parcours qui touche l'argent).</li>
+          </ul>
+        </div>
+        <div class="role">
+          <h3>SERGE</h3>
+          <p class="who">Dépôt, CI, PSP sandbox</p>
+          <ul>
+            <li>Initialiser le monorepo + <code>docker-compose</code> (Postgres, Redis, MinIO) + golden-path README.</li>
+            <li>CI GitHub Actions : lint, typecheck, tests, CodeQL, TruffleHog, preview par PR.</li>
+            <li>Squelette <code>services/api</code> : auth + RBAC + modèle de données du socle commun.</li>
+            <li>Écrire l'interface <code>PaymentProvider</code> + une implémentation <code>GeniusPayProvider</code> qui fait <code>createTransaction</code> + <code>verify</code> en <strong>sandbox</strong>.</li>
+            <li>Créer <code>THIRDPARTY.md</code> avec les 10 briques prioritaires, versions épinglées.</li>
+          </ul>
+        </div>
+      </div>
+
+      <p><strong>Revue vendredi :</strong> démo d'un tenant vide qui se crée, d'un composant Money rendu depuis les tokens, et d'un appel Genius Pay sandbox qui revient avec un statut. Si l'un des trois manque, c'est le sujet n°1 de la semaine suivante.</p>
+    </section>
+
+    <div class="rule" role="presentation"></div>
+
+    <style>
+      pre.tree, pre.ctx {
+        font-family: "IBM Plex Mono", ui-monospace, monospace;
+        font-size: .8rem; line-height: 1.55;
+        background: var(--surface); border: 1px solid var(--border);
+        border-radius: .6rem; padding: 1rem 1.1rem; margin: 1.3rem 0;
+        overflow-x: auto; color: var(--ink-soft);
+        white-space: pre;
+      }
+      pre.ctx { white-space: pre-wrap; }
+      .proc { counter-reset: proc; list-style: none; padding: 0; margin: 1.3rem 0; max-width: var(--maxprose); }
+      .proc li { display: grid; grid-template-columns: 1.7rem 1fr; gap: .7rem; padding: .4rem 0; font-size: .92rem; align-items: start; }
+      .proc li::before {
+        counter-increment: proc; content: counter(proc);
+        font-family: "Space Grotesk", sans-serif; font-weight: 700;
+        color: var(--gold); font-variant-numeric: tabular-nums;
+      }
+    </style>
+
+    <!-- 15 -->
+    <section id="s15">
+      <div class="s-head"><span class="num">15</span><h2>Structure des dossiers</h2></div>
+      <p>Un seul dépôt <code>afrosite/</code>. Paquets : <strong>pnpm workspaces + Turborepo</strong> (TS) et <strong>uv workspace</strong> (Python). Une CI, des types partagés, des PR atomiques front + back. Arborescence exhaustive dans <code>docs/11 §6.1</code>.</p>
+      <pre class="tree">afrosite/
+├─ apps/
+│  └─ web/                        Next.js (App Router) — Souraka + CHITOU
+│     ├─ app/(marketing)/         site vitrine (SSG)
+│     ├─ app/(tenant)/[tenant]/   mini-site public client (SSR, SEO, sitemap PAR tenant)
+│     ├─ app/dashboard/           espace gérant (commandes, caisse, CRM, réconciliation)
+│     ├─ app/studio/              prompt → blueprint, plan, coût, état live, audit trail
+│     ├─ lib/                     fetchers, auth, i18n FR, offline queue
+│     └─ e2e/                     specs Playwright (UI) + helpers captures
+│
+├─ packages/
+│  ├─ contracts/                  ★ FRONTIÈRE — source unique — Souraka
+│  │  ├─ src/blueprint.schema.ts  Zod : Blueprint JSON (3 verticaux)
+│  │  ├─ src/dto/  src/events/     DTO API · types d'événements
+│  │  └─ python/afrosite_contracts/  sortie Pydantic (codegen depuis Zod)
+│  ├─ design-system/              CHITOU
+│  │  ├─ src/foundations/         colors, typography, spacing, shadows, motion
+│  │  ├─ tokens/{tokens,semantic-tokens}.json
+│  │  ├─ src/components/          Button, Input, Card, DataTable, EmptyState,
+│  │  │                          Money, PaymentStatus, OrderStatus, ...
+│  │  ├─ src/patterns/           POSLayout, KitchenBoard, QRMenu, MobileCheckout,
+│  │  │                          RestaurantDashboard, AgendaRDV
+│  │  └─ rules/                   visual-identity.md (critères de rejet Vision Critic), a11y, ...
+│  ├─ blueprints/                 partagé — 80 % éprouvé / 20 % généré
+│  │  ├─ _core/                   SOCLE COMMUN identique aux 3
+│  │  ├─ commerce/  restaurant/  services/   modules spécifiques par vertical
+│  ├─ llm/                        SERGE + Souraka — adaptation LiteLLM
+│  │  ├─ src/router.py            generate() / stream() — SEULE porte vers les modèles
+│  │  ├─ src/cache.py             cache de prompts ACTIVÉ PAR DÉFAUT
+│  │  └─ src/routing.py           léger / puissant / code / local
+│  └─ telemetry/                  OpenTelemetry wrappé
+│
+├─ services/
+│  ├─ api/                        SERGE — FastAPI
+│  │  └─ afrosite_api/{auth,tenants,catalog,orders,crm,dashboard,exports,
+│  │                   payments/{provider.py,providers/geniuspay.py},ledger,common}
+│  │  └─ migrations/              Alembic — toujours réversibles
+│  ├─ agents/                     SERGE — LangGraph
+│  │  ├─ runtime/                 graphes internes
+│  │  ├─ {intent,product_architect,code,security,qa,deployment,payment,observability,cost}/
+│  │  ├─ tools/                   liste blanche d'outils PAR agent
+│  │  └─ eval/                    harness : commerce/ restaurant/ services/ + run.py
+│  └─ workflows/                  SERGE — Temporal (argent + provisioning UNIQUEMENT)
+│     └─ {provision_tenant,confirm_payment,refund,reconcile_daily,daily_summary_whatsapp}/
+│
+├─ infra/                         docker-compose · coolify/ · observability/ · opentofu/
+├─ docs/                          01 → 11 · adr/0001-genius-pay-psp-primaire.md ...
+├─ .github/workflows/             ci · preview · security · smoke-thirdparty
+├─ THIRDPARTY.md                  inventaire des briques OSS (versions par digest)
+└─ turbo.json · pnpm-workspace.yaml · pyproject.toml (uv) · README.md (golden path)</pre>
+    </section>
+
+    <div class="rule" role="presentation"></div>
+
+    <!-- 16 -->
+    <section id="s16">
+      <div class="s-head"><span class="num">16</span><h2>Système de prompts</h2></div>
+      <p>Un prompt qui va vite est un prompt qui n'oblige pas l'IA à deviner : il porte <strong>tout</strong> — contexte, objectif, fichiers exacts, contraintes, livrable, branche, Definition of Done, interdits. Bibliothèque complète par rôle (Souraka / CHITOU / SERGE + transverses) dans <code>docs/11 §8</code>.</p>
+
+      <h3>16.1 — Bloc de contexte (en tête de CHAQUE prompt)</h3>
+      <pre class="ctx">## CONTEXTE AFROSITE — ne jamais omettre
+- Produit : plateforme AI-native création + paiement Mobile Money + exploitation
+  pour TPE/PME au Bénin (UEMOA). Socle commun + 3 blueprints : Commerce, Restaurant,
+  Services. Le socle est le produit, pas le vertical.
+- Stack : Next.js + TS (front) · FastAPI + PostgreSQL + Redis (back) · LangGraph
+  (agents) · Temporal (workflows argent/provisioning) · LiteLLM (routeur IA) ·
+  Playwright (E2E) · Docker Compose + Coolify · GitHub Actions.
+- Monorepo : apps/web · packages/{contracts,design-system,blueprints,llm} ·
+  services/{api,agents,workflows} · infra/ · docs/adr/.
+- Règles non négociables :
+  1. Un prompt n'exécute jamais une action risquée directement (workflow testable,
+     réversible, observé ; l'humain valide les actions importantes).
+  2. 80 % composants éprouvés / 20 % génération contrôlée.
+  3. Afrosite ne détient JAMAIS de fonds. PSP = Genius Pay via la couche
+     PaymentProvider. Ledger interne ≠ flux réels. Jamais de PAN/CVV stockés.
+  4. La redirection navigateur ne prouve pas un paiement : webhook signé + verify()
+     serveur. Idempotency key partout. Montants recalculés serveur.
+  5. Streaming systématique de chaque étape vers l'UI.
+  6. FCFA & français natifs. Jamais d'USD affiché au client final.
+  7. Jamais de push généré sur main : branche + PR + CI + gates.
+  8. Tokens sémantiques du design system, jamais de couleur/police en dur.
+     Vert (#1F7A53) UNIQUEMENT pour le statut « paiement confirmé ».
+  9. Offline-tolerant : file locale + synchro différée pour commande et caisse.
+- Marque : Space Grotesk (titres, montants — chiffres tabulaires, jamais d'italique)
+  + IBM Plex Sans (interface). Terracotta #C1502E · Or #D89B3C · Charbon #211B17 ·
+  Sable #F3E7D8.
+- Docs de référence : docs/01 → docs/11 + deeprecherche_important/.
+  En cas de doute : demander, ne pas inventer.</pre>
+
+      <h3>16.2 — Mode opératoire d'une tâche (de la carte au merge)</h3>
+      <ol class="proc">
+        <li>Cadrer la carte Notion : objectif en une phrase, fichiers cibles exacts, contrat concerné, branche nommée, Gate cible, DoD copiée. Sinon → reste en <em>Backlog</em>.</li>
+        <li>Créer la branche depuis <code>main</code> à jour : <code>git switch -c &lt;type&gt;/&lt;scope&gt;-&lt;slug&gt;</code>.</li>
+        <li>Assembler le prompt : bloc de contexte + squelette + prompt de rôle. Coller le <strong>contenu réel</strong> des contrats et fichiers, pas leurs chemins.</li>
+        <li>Faire réfléchir l'IA avant de coder : « liste tes hypothèses, les fichiers touchés, tes questions ; attends ma validation ». Puis « Vas-y ». Supprime 80 % des allers-retours.</li>
+        <li>Travailler en petits incréments : un diff par sous-problème, revu au fil de l'eau. Refuser un patch géant.</li>
+        <li>Vérifier en local : <code>pnpm turbo lint typecheck test build</code> (ou <code>uv run …</code>). Rien ne part en PR rouge.</li>
+        <li>Ouvrir la PR : titre Conventional Commit, description = lien carte + Gate + DoD cochée + captures si UI. Squash-merge.</li>
+        <li>Revue par une autre personne : CHITOU sur le visuel · SERGE sur argent/secrets/multi-tenant · Souraka sur contrat/archi front.</li>
+        <li>Merger, supprimer la branche, carte en <em>Fait</em>. Coller le prompt final dans la carte ; s'il resservira, l'ajouter à la Bibliothèque.</li>
+      </ol>
+
+      <h3>16.3 — Les 10 réflexes « à la pointe »</h3>
+      <div class="tw"><table>
+        <thead><tr><th>Réflexe</th><th>À la place de</th></tr></thead>
+        <tbody>
+          <tr><td>Contexte complet : coller le schéma / le fichier / l'erreur en entier</td><td>« tu connais le contexte »</td></tr>
+          <tr><td>Une tâche = un objectif ; deux objectifs = deux prompts</td><td>un prompt fourre-tout</td></tr>
+          <tr><td>Demander un plan d'abord, du code ensuite — toujours</td><td>« code-moi ça »</td></tr>
+          <tr><td>Donner des exemples du repo : « suis le style de <code>services/api/orders/</code> »</td><td>« écris du code propre »</td></tr>
+          <tr><td>Section <em>Ne pas faire</em> explicite (toucher à <code>main</code>, ajouter une dep, réinventer une couleur)</td><td>espérer que l'IA devine les limites</td></tr>
+          <tr><td>Cibles chiffrées : « LCP ≤ 2,5 s », « les 4 cas d'échec couverts »</td><td>« performant », « bien testé »</td></tr>
+          <tr><td>Faire écrire les tests par l'IA, mais lire chaque test</td><td>faire confiance aveuglément</td></tr>
+          <tr><td>Cause racine exigée ; interdire « désactive le test » / « augmente le timeout »</td><td>accepter un contournement</td></tr>
+          <tr><td>Boucler avec la sortie réelle : recoller trace, capture, résultat de gate</td><td>corriger sur des suppositions</td></tr>
+          <tr><td>Capitaliser : un bon prompt devient un modèle dans la Bibliothèque</td><td>réécrire deux fois le même</td></tr>
+        </tbody>
+      </table></div>
+
+      <h3>16.4 — Anti-patterns à bannir</h3>
+      <ul>
+        <li>« Fais-moi le module commandes » sans coller le schéma, la liste des fichiers, les rôles RBAC.</li>
+        <li>Prompt sans nom de branche → code posé n'importe où.</li>
+        <li>Prompt sans le bloc de contexte → retour du violet/bleu, de l'USD, du rendu client-side.</li>
+        <li>« Améliore le design » → remplacer par les critères écrits du Vision Critic.</li>
+      </ul>
+    </section>
+
+    <div class="rule" role="presentation"></div>
+
+    <!-- 17 -->
+    <section id="s17">
+      <div class="s-head"><span class="num">17</span><h2>Liste maître des branches</h2></div>
+      <p>Créées dans l'ordre. Une ligne = une carte Notion = une PR. <code>feature/generated-*</code> est créée à la volée par le Code Agent et n'apparaît pas ici. Convention : <code>&lt;type&gt;/&lt;scope&gt;-&lt;slug&gt;</code> — types <code>feat · fix · chore · docs · spike</code> ; scopes <code>web · ds · bp · contracts · api · agents · wf · llm · pay · infra</code>.</p>
+
+      <h3>Bootstrap — jour 1 (Souraka + SERGE)</h3>
+      <ul>
+        <li><code>chore/infra-monorepo-bootstrap</code> · <code>chore/infra-github-actions</code> · <code>chore/infra-thirdparty-inventory</code></li>
+      </ul>
+
+      <h3>Phase 1 — Fondation (J1 → J30)</h3>
+      <div class="tw"><table>
+        <thead><tr><th>Branche</th><th>Qui</th><th>Contenu</th></tr></thead>
+        <tbody>
+          <tr><td class="mono">chore/contracts-blueprint-schema-v0</td><td>S</td><td>Schéma Blueprint JSON (3 verticaux) Zod + codegen Pydantic + validateur</td></tr>
+          <tr><td class="mono">feat/web-skeleton-ssr</td><td>S</td><td>Next.js App Router, SSR, Metadata API, robots.ts</td></tr>
+          <tr><td class="mono">feat/web-tenant-sitemap</td><td>S</td><td>sitemap par tenant + noindex previews</td></tr>
+          <tr><td class="mono">docs/cost-instrumentation-plan</td><td>S</td><td>Métriques, emplacement, dashboard</td></tr>
+          <tr><td class="mono">docs/target-list-cotonou</td><td>S</td><td>Liste des 100 établissements</td></tr>
+          <tr><td class="mono">feat/ds-tokens</td><td>C</td><td>tokens.json + semantic-tokens.json</td></tr>
+          <tr><td class="mono">feat/ds-core-components</td><td>C</td><td>Button, Input, Card, Money, PaymentStatus, OrderStatus</td></tr>
+          <tr><td class="mono">feat/ds-components-data</td><td>C</td><td>DataTable, EmptyState + états chargement/erreur/vide</td></tr>
+          <tr><td class="mono">feat/ds-pattern-poslayout</td><td>C</td><td>Pattern caisse</td></tr>
+          <tr><td class="mono">feat/ds-pattern-qrmenu</td><td>C</td><td>Pattern menu QR</td></tr>
+          <tr><td class="mono">feat/ds-pattern-mobilecheckout</td><td>C</td><td>Parcours paiement</td></tr>
+          <tr><td class="mono">docs/visual-identity-rules</td><td>C</td><td>rules/visual-identity.md — critères de rejet Vision Critic</td></tr>
+          <tr><td class="mono">feat/api-auth-rbac</td><td>SERGE</td><td>Auth + rôles owner/cashier/kitchen/customer</td></tr>
+          <tr><td class="mono">feat/api-core-schema</td><td>SERGE</td><td>Modèle de données socle commun + migrations</td></tr>
+          <tr><td class="mono">feat/api-tenants</td><td>SERGE</td><td>Isolation multi-tenant</td></tr>
+          <tr><td class="mono">feat/api-catalog</td><td>SERGE</td><td>Produits / plats / prestations</td></tr>
+          <tr><td class="mono">feat/api-orders</td><td>SERGE</td><td>Commande / réservation + mode offline (file locale)</td></tr>
+          <tr><td class="mono">feat/api-crm</td><td>SERGE</td><td>Clients par téléphone, historique, fidélité</td></tr>
+          <tr><td class="mono">feat/api-dashboard</td><td>SERGE</td><td>Ventes du jour, panier moyen, tops, retards</td></tr>
+          <tr><td class="mono">feat/api-exports</td><td>SERGE</td><td>Export CSV</td></tr>
+          <tr><td class="mono">feat/pay-paymentprovider-interface</td><td>SERGE</td><td>Interface PaymentProvider</td></tr>
+          <tr><td class="mono">feat/pay-geniuspay-sandbox</td><td>SERGE</td><td>GeniusPayProvider : createTransaction + verify (sandbox)</td></tr>
+          <tr><td class="mono">feat/api-ledger</td><td>SERGE</td><td>Ledger append-only + réconciliation quotidienne</td></tr>
+          <tr><td class="mono">chore/infra-gates-policies</td><td>SERGE</td><td>Règles des 6 gates (OPA) + permissions</td></tr>
+          <tr><td class="mono">feat/bp-core</td><td>partagé</td><td>Assemblage du socle commun des blueprints</td></tr>
+          <tr><td class="mono">feat/bp-commerce · feat/bp-restaurant · feat/bp-services</td><td>partagé</td><td>Modules spécifiques par vertical</td></tr>
+        </tbody>
+      </table></div>
+
+      <h3>Phase 2 — Automatisation IA (J31 → J60)</h3>
+      <div class="tw"><table>
+        <thead><tr><th>Branche</th><th>Qui</th><th>Contenu</th></tr></thead>
+        <tbody>
+          <tr><td class="mono">chore/llm-router-adapter</td><td>SERGE+S</td><td>packages/llm : generate() / stream()</td></tr>
+          <tr><td class="mono">chore/llm-prompt-cache-default</td><td>S</td><td>Cache de prompts par défaut</td></tr>
+          <tr><td class="mono">feat/agents-intent</td><td>S</td><td>Intent Agent</td></tr>
+          <tr><td class="mono">feat/agents-product-architect</td><td>S</td><td>Product Architect → Blueprint JSON</td></tr>
+          <tr><td class="mono">chore/agents-eval-{commerce,restaurant,services}</td><td>S</td><td>Jeux de prompts + scoring + check CI de régression</td></tr>
+          <tr><td class="mono">feat/web-validation-audittrail</td><td>S</td><td>Écran plan/coût/état live + audit trail</td></tr>
+          <tr><td class="mono">feat/agents-code</td><td>SERGE</td><td>Code Agent (OpenHands SDK) en sandbox</td></tr>
+          <tr><td class="mono">feat/agents-security</td><td>SERGE</td><td>Security Agent (SAST, deps, secrets, RBAC)</td></tr>
+          <tr><td class="mono">feat/agents-qa</td><td>SERGE</td><td>QA Agent (unitaires + Playwright)</td></tr>
+          <tr><td class="mono">feat/agents-deployment</td><td>SERGE</td><td>Deployment Agent (preview / release)</td></tr>
+          <tr><td class="mono">feat/agents-payment</td><td>SERGE</td><td>Payment Agent (sandbox, webhooks signés)</td></tr>
+          <tr><td class="mono">feat/agents-observability · feat/agents-cost</td><td>SERGE / S</td><td>Logs+métriques+alertes / budget+quotas</td></tr>
+          <tr><td class="mono">feat/agents-vision-critic</td><td>C</td><td>Vision Critic sur captures Playwright</td></tr>
+          <tr><td class="mono">feat/ds-pattern-kitchenboard</td><td>C</td><td>KDS (reçue / en préparation / prête)</td></tr>
+          <tr><td class="mono">feat/ds-pattern-agenda-rdv</td><td>C</td><td>Agenda de rendez-vous</td></tr>
+          <tr><td class="mono">feat/ds-pattern-delivery</td><td>C</td><td>Suivi de livraison</td></tr>
+          <tr><td class="mono">chore/infra-cwv-gate</td><td>C</td><td>Core Web Vitals bloquant en CI</td></tr>
+          <tr><td class="mono">feat/wf-provision-tenant</td><td>SERGE</td><td>Workflow Temporal de provisioning</td></tr>
+          <tr><td class="mono">feat/wf-confirm-payment</td><td>SERGE</td><td>Webhook → verify() → ledger → WhatsApp</td></tr>
+          <tr><td class="mono">feat/infra-preview-auto</td><td>SERGE</td><td>Preview auto + capture après génération</td></tr>
+        </tbody>
+      </table></div>
+
+      <h3>Phase 3 — Commercialisation (J61 → J90)</h3>
+      <div class="tw"><table>
+        <thead><tr><th>Branche</th><th>Qui</th><th>Contenu</th></tr></thead>
+        <tbody>
+          <tr><td class="mono">feat/web-cost-dashboard</td><td>S</td><td>Coût IA/client, cloud, support, rétention J+30</td></tr>
+          <tr><td class="mono">chore/llm-quotas-tuning</td><td>S</td><td>Ajustement crédits & plafonds sur coûts réels</td></tr>
+          <tr><td class="mono">docs/phase2-vertical-decision</td><td>S</td><td>Quel(s) vertical(aux) approfondir</td></tr>
+          <tr><td class="mono">fix/ds-polish-highusage</td><td>C</td><td>Polish : prise de commande, KDS, réco du soir</td></tr>
+          <tr><td class="mono">feat/ds-whatsapp-daily-summary</td><td>C</td><td>Mise en forme du résumé quotidien</td></tr>
+          <tr><td class="mono">spike/ux-abtest-&lt;sujet&gt;</td><td>C</td><td>1 variante A/B documentée</td></tr>
+          <tr><td class="mono">feat/wf-refund</td><td>SERGE</td><td>Workflow remboursement total/partiel</td></tr>
+          <tr><td class="mono">feat/wf-reconcile-daily</td><td>SERGE</td><td>Job de réconciliation + alerte sur écart</td></tr>
+          <tr><td class="mono">feat/wf-daily-summary-whatsapp</td><td>SERGE</td><td>Envoi du résumé au gérant</td></tr>
+          <tr><td class="mono">feat/api-csv-export</td><td>SERGE</td><td>Export CSV libre-service (finalisation)</td></tr>
+          <tr><td class="mono">chore/infra-alerting</td><td>SERGE</td><td>Alertes paiement / base / déploiement</td></tr>
+          <tr><td class="mono">chore/security-external-audit-fixes</td><td>SERGE</td><td>Correctifs de l'audit externe</td></tr>
+          <tr><td class="mono">feat/pay-geniuspay-production</td><td>SERGE</td><td>Bascule prod — après audit + gate 6</td></tr>
+        </tbody>
+      </table></div>
+    </section>
+
+    <footer>
+      <p>Playbook d'équipe Afrosite · v1.1 · 30 août 2026. Version canonique : <code>docs/11-playbook-equipe.md</code>. Dérivé des docs 01 → 10 et de <code>deeprecherche_important/</code>. Les documents numérotés font foi ; ce playbook les traduit en responsabilités. Mettre à jour à chaque fin de phase 90 jours.</p>
+    </footer>
+  </main>
+</div>
+</body>
+</html>
