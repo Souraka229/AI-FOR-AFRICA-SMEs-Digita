@@ -1,5 +1,7 @@
+import os
 from datetime import datetime
 
+import uvicorn
 from fastapi import FastAPI
 
 app = FastAPI(
@@ -19,6 +21,7 @@ async def health_check() -> dict[str, str]:
 
 
 if __name__ == "__main__":
-    import uvicorn
-
-    uvicorn.run("afrosite_agents.main:app", host="0.0.0.0", port=8001, reload=True)
+    # Local reload only; containers/deploy bind via process manager (HOST/PORT).
+    host = os.getenv("HOST", "127.0.0.1")
+    port = int(os.getenv("PORT", "8001"))
+    uvicorn.run("afrosite_agents.main:app", host=host, port=port, reload=True)

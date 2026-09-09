@@ -19,7 +19,7 @@ jobs:
     name: Validate docker compose config
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4.2.2
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
 
       - name: docker compose config
         run: docker compose config --quiet
@@ -28,7 +28,7 @@ jobs:
     name: Resolve pinned image digests
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4.2.2
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
 
       - name: Pull digest-pinned images from compose
         run: |
