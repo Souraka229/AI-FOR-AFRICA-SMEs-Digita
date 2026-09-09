@@ -17,6 +17,13 @@ class Settings(BaseSettings):
     # Bootstrap owner for local smoke (password never hardcoded in responses)
     bootstrap_owner_email: str = "owner@afrosite.example"
     bootstrap_owner_password: str = "change-me-owner"
+    # Genius Pay sandbox — secrets via env only; paths configurable until vendor docs confirmed
+    geniuspay_base_url: str = ""
+    geniuspay_api_key: str = ""
+    geniuspay_webhook_secret: str = ""
+    geniuspay_create_path: str = "/v1/transactions"
+    geniuspay_verify_path: str = "/v1/transactions/{provider_ref}"
+    geniuspay_timeout_seconds: float = 15.0
 
 
 @lru_cache
