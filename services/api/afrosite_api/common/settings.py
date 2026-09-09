@@ -13,7 +13,9 @@ class Settings(BaseSettings):
     jwt_secret: str = "dev-only-change-me-32chars-min!!"
     jwt_algorithm: str = "HS256"
     jwt_expire_minutes: int = 60
-    database_url: str = "postgresql+asyncpg://afrosite:afrosite_dev_password@localhost:5432/afrosite_db"
+    database_url: str = (
+        "postgresql+asyncpg://afrosite:afrosite_dev_password@localhost:5432/afrosite_db"
+    )
     # Bootstrap owner for local smoke (password never hardcoded in responses)
     bootstrap_owner_email: str = "owner@afrosite.example"
     bootstrap_owner_password: str = "change-me-owner"
