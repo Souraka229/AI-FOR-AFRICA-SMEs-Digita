@@ -8,17 +8,19 @@ from afrosite_api.payments.provider import PaymentProvider
 from afrosite_api.payments.types import (
     CreateTransactionRequest,
     CreateTransactionResult,
+    Currency,
     PaymentStatus,
     VerifyTransactionRequest,
     VerifyTransactionResult,
-    Currency,
 )
 
 
 class _StubProvider:
     name = "stub"
 
-    async def create_transaction(self, request: CreateTransactionRequest) -> CreateTransactionResult:
+    async def create_transaction(
+        self, request: CreateTransactionRequest
+    ) -> CreateTransactionResult:
         return CreateTransactionResult(
             provider_ref=f"stub-{request.idempotency_key}",
             status=PaymentStatus.REQUIRES_ACTION,

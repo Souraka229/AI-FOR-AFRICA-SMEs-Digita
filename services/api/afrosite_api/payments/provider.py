@@ -16,8 +16,13 @@ class PaymentProvider(Protocol):
 
     name: str
 
-    async def create_transaction(self, request: CreateTransactionRequest) -> CreateTransactionResult:
-        """Create a server-side transaction. Caller supplies recalculated amount + idempotency key."""
+    async def create_transaction(
+        self, request: CreateTransactionRequest
+    ) -> CreateTransactionResult:
+        """Create a server-side transaction.
+
+        Caller supplies recalculated amount + idempotency key.
+        """
 
     async def verify(self, request: VerifyTransactionRequest) -> VerifyTransactionResult:
         """Confirm payment status server-side. Browser redirect alone proves nothing."""

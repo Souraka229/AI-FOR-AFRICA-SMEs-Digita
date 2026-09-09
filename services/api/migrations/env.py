@@ -9,8 +9,8 @@ from sqlalchemy.engine import Connection
 from sqlalchemy.ext.asyncio import async_engine_from_config
 
 from afrosite_api.common.settings import get_settings
-from afrosite_api.db.base import Base
 from afrosite_api.db import models as _models  # noqa: F401
+from afrosite_api.db.base import Base
 
 config = context.config
 if config.config_file_name is not None:

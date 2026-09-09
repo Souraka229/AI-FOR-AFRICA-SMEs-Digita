@@ -77,7 +77,9 @@ class GeniusPayProvider:
             await self._client.aclose()
             self._client = None
 
-    async def create_transaction(self, request: CreateTransactionRequest) -> CreateTransactionResult:
+    async def create_transaction(
+        self, request: CreateTransactionRequest
+    ) -> CreateTransactionResult:
         if request.currency != Currency.XOF:
             raise GeniusPayError("Only XOF is supported")
         cached = self._idempotency_cache.get(request.idempotency_key)

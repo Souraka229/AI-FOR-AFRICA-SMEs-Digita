@@ -6,7 +6,7 @@ import httpx
 import pytest
 
 from afrosite_api.common.settings import Settings
-from afrosite_api.payments.providers.geniuspay import GeniusPayProvider
+from afrosite_api.payments.providers.geniuspay import GeniusPayError, GeniusPayProvider
 from afrosite_api.payments.types import (
     CreateTransactionRequest,
     Currency,
@@ -104,7 +104,7 @@ async def test_verify_amount_mismatch_raises() -> None:
         headers={"Authorization": "Bearer test-key"},
     ) as client:
         provider = GeniusPayProvider(_settings(), client=client)
-        with pytest.raises(Exception):
+        with pytest.raises(GeniusPayError):
             await provider.verify(
                 VerifyTransactionRequest(
                     provider_ref="gp_tx_2",
