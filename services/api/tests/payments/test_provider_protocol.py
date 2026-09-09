@@ -12,6 +12,7 @@ from afrosite_api.payments.types import (
     PaymentStatus,
     VerifyTransactionRequest,
     VerifyTransactionResult,
+    WebhookEvent,
 )
 
 
@@ -33,6 +34,13 @@ class _StubProvider:
             status=PaymentStatus.SUCCEEDED,
             amount_xof=request.expected_amount_xof,
             currency=request.expected_currency,
+        )
+
+    async def handle_webhook(self, payload: bytes, signature: str) -> WebhookEvent:
+        return WebhookEvent(
+            event_id="evt-1",
+            provider_ref="stub-ref",
+            status=PaymentStatus.SUCCEEDED,
         )
 
 
