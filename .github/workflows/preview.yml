@@ -1,0 +1,43 @@
+name: Preview
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, closed]
+
+concurrency:
+  group: preview-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  build-preview:
+    name: Build web preview artifact
+    if: github.event.action != 'closed'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4.2.2
+
+      - uses: pnpm/action-setup@v4.0.0
+        with:
+          version: 9.15.4
+
+      - uses: actions/setup-node@v4.4.0
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+
+      - name: Install and build web
+        run: |
+          pnpm install --frozen-lockfile
+          pnpm --filter @afrosite/web build
+
+      - name: Upload web build
+        uses: actions/upload-artifact@v4.6.2
+        with:
+          name: web-preview-${{ github.event.pull_request.number }}
+          path: apps/web/.next
+          retention-days: 7
+
+      - name: Preview placeholder note
+        run: |
+          echo "Preview artifact built for PR #${{ github.event.pull_request.number }}."
+          echo "Coolify auto-preview wiring comes in a later infra task."
