@@ -1,9 +1,5 @@
-<<<<<<< HEAD
 import os
-from datetime import datetime
-=======
 from datetime import UTC, datetime
->>>>>>> 00aa69a (feat(api): add JWT auth and RBAC roles)
 
 import uvicorn
 from fastapi import FastAPI
