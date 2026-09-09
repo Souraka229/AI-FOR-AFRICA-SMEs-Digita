@@ -1,14 +1,21 @@
+<<<<<<< HEAD
 import os
 from datetime import datetime
+=======
+from datetime import UTC, datetime
+>>>>>>> 00aa69a (feat(api): add JWT auth and RBAC roles)
 
 import uvicorn
 from fastapi import FastAPI
+
+from afrosite_api.auth.router import router as auth_router
 
 app = FastAPI(
     title="Afrosite API",
     description="Backend API Service for Afrosite Platform",
     version="0.1.0",
 )
+app.include_router(auth_router)
 
 
 @app.get("/health")
@@ -16,7 +23,7 @@ async def health_check() -> dict[str, str]:
     return {
         "status": "healthy",
         "service": "api",
-        "timestamp": datetime.utcnow().isoformat(),
+        "timestamp": datetime.now(UTC).isoformat(),
     }
 
 
