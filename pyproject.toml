@@ -1,0 +1,89 @@
+[project]
+name = "afrosite-monorepo"
+version = "0.1.0"
+description = "Afrosite AI Company Builder monorepo"
+requires-python = ">=3.12"
+dependencies = []
+
+[tool.uv.workspace]
+members = [
+    "services/*",
+    "packages/llm",
+]
+
+# ---------------------------------------------------------------------------
+# Dev tooling — centralisé en workspace root, installé via `uv sync --group dev`
+# Versions justifiées Python 3.12 :
+#   ruff  >=0.6  : PEP 701 f-string imbriquées, PEP 695 type aliases
+#   mypy  >=1.11 : support 3.12, @override (PEP 698), generic type aliases
+#   pytest>=8.3  : ExceptionGroup (PEP 654), tracebacks améliorés
+# ---------------------------------------------------------------------------
+[dependency-groups]
+dev = [
+    "ruff>=0.6.0",
+    "mypy>=1.11.0",
+    "pytest>=8.3.0",
+]
+
+# ---------------------------------------------------------------------------
+# Ruff — lint + format, cible syntaxe Python 3.12
+# ---------------------------------------------------------------------------
+[tool.ruff]
+target-version = "py312"
+line-length = 100
+src = ["services", "packages"]
+
+[tool.ruff.lint]
+select = [
+    "E",   # pycodestyle errors
+    "W",   # pycodestyle warnings
+    "F",   # pyflakes
+    "I",   # isort
+    "UP",  # pyupgrade (force builtins modernes : dict vs Dict, etc.)
+    "B",   # flake8-bugbear
+    "C4",  # flake8-comprehensions
+    "SIM", # flake8-simplify
+]
+ignore = []
+
+[tool.ruff.lint.isort]
+known-first-party = ["afrosite_api", "afrosite_agents", "afrosite_workflows", "afrosite_llm"]
+
+# ---------------------------------------------------------------------------
+# Mypy — strict, cible Python 3.12 (les erreurs sont rapportées, non corrigées)
+# ---------------------------------------------------------------------------
+[tool.mypy]
+python_version = "3.12"
+strict = true
+warn_return_any = true
+warn_unused_ignores = true
+# Stubs manquants pour FastAPI/LiteLLM/LangGraph : ignore sans silencer mypy
+[[tool.mypy.overrides]]
+module = [
+    "fastapi.*",
+    "uvicorn.*",
+    "langgraph.*",
+    "langchain_core.*",
+    "litellm.*",
+    "temporalio.*",
+    "asyncpg.*",
+    "redis.*",
+    "sqlalchemy.*",
+    "pydantic_settings.*",
+]
+ignore_missing_imports = true
+
+# ---------------------------------------------------------------------------
+# Pytest — les tests_health.py placeholder garantissent exit code 0
+# ---------------------------------------------------------------------------
+[tool.pytest.ini_options]
+testpaths = [
+    "services/api",
+    "services/agents",
+    "services/workflows",
+    "packages/llm",
+]
+python_files = ["test_*.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+addopts = "-v --tb=short --import-mode=importlib"

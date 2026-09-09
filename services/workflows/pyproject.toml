@@ -1,0 +1,13 @@
+[project]
+name = "afrosite-workflows"
+version = "0.1.0"
+description = "Temporal durable workflows service for Afrosite"
+requires-python = ">=3.12"
+dependencies = [
+    "temporalio>=1.5.0",
+    "pydantic>=2.6.0",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
