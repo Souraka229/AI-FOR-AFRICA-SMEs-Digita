@@ -1,0 +1,13 @@
+[project]
+name = "afrosite-llm"
+version = "0.1.0"
+description = "LiteLLM adapter package for Afrosite with prompt cache by default"
+requires-python = ">=3.12"
+dependencies = [
+    "litellm>=1.30.0",
+    "pydantic>=2.6.0",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"

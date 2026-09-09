@@ -1,191 +1,97 @@
-<div align="center">
+# Afrosite — AI Company Builder (Monorepo)
 
-<img src=".github/assets/header.svg" alt="Afrosite — décrivez votre activité, vendez et encaissez en Mobile Money, sans une ligne de code" width="100%">
+> Socle d'infrastructure du monorepo Afrosite (PNPM + Turborepo pour JS/TS, `uv` pour Python).
 
-<br><br>
+## 🚀 Golden Path (Démarrage en < 10 minutes)
 
-<img alt="Statut" src="https://img.shields.io/badge/statut-pr%C3%A9--lancement-C1502E?style=for-the-badge">&nbsp;
-<img alt="Marché" src="https://img.shields.io/badge/march%C3%A9-Cotonou%20%E2%86%92%20UEMOA-A2711F?style=for-the-badge">&nbsp;
-<img alt="Paiement" src="https://img.shields.io/badge/paiement-Mobile%20Money-1F7A53?style=for-the-badge">&nbsp;
-<img alt="Devise" src="https://img.shields.io/badge/devise-FCFA-211B17?style=for-the-badge">&nbsp;
-<img alt="Documentation" src="https://img.shields.io/badge/docs-13%20documents-A2711F?style=for-the-badge">
+### Préréquis
+- **Node.js** : v20.x (voir `.nvmrc`)
+- **pnpm** : v9+ (`npm install -g pnpm`)
+- **Python** : v3.12+ (voir `.python-version`)
+- **uv** : gestionnaire Python rapide (`curl -LsSf https://astral.sh/uv/install.sh | sh`)
+- **Docker & Docker Compose**
 
-<br><br>
+---
 
-### Afrosite ne génère pas un site de plus.
-
-On transforme une activité informelle en **entreprise digitale opérable** :<br>
-créer · encaisser en Mobile Money · piloter — sur un socle unique, décliné en **trois métiers**.<br>
-Français natif. FCFA natif. Sans une ligne de code.
-
-</div>
-
-<img src=".github/assets/divider.svg" alt="" width="100%">
-
-## Le problème → la réponse
-
-Les TPE/PME africaines tournent avec WhatsApp, un cahier et Excel. Les créateurs d'apps par IA du marché ne parlent pas Mobile Money, facturent en dollars, et s'arrêtent au site vitrine.
-
-| Aujourd'hui | Avec Afrosite |
-|---|---|
-| Commandes éparpillées sur WhatsApp | Prise de commande centralisée, en temps réel |
-| Erreurs de caisse, monnaie approximative | Caisse reliée au catalogue, montants recalculés côté serveur |
-| « Merci » comme seule preuve de paiement | Reçu signé, vérifié serveur, **réconcilié automatiquement** |
-| Aucune vision des encaissements | Réconciliation du soir + résumé WhatsApp quotidien |
-| Facturé en USD, interface anglaise | FCFA natif, français natif, pensé pour Android sur réseau lent |
-| Un site vitrine, rien derrière | Catalogue, commandes, caisse, CRM, rapports — un vrai outil |
-
-> **Le principe.** Un prompt ne déclenche jamais une action risquée directement. L'IA propose, des règles contrôlent, les tests vérifient, l'humain valide. Afrosite n'est **jamais** dépositaire des fonds — orchestrateur au-dessus d'un PSP agréé BCEAO.
-
-<br>
-
-<div align="center">
-<img src=".github/assets/flow.svg" alt="Pipeline : prompt en langage naturel vers production, avec six garde-fous automatiques" width="100%">
-</div>
-
-<img src=".github/assets/divider.svg" alt="" width="100%">
-
-## L'équipe
-
-<table>
-  <tr>
-    <td align="center" width="33%">
-      <img src=".github/assets/avatar-souraka.svg" width="168" alt="Souraka HAMIDA"><br>
-      <b>Souraka&nbsp;HAMIDA</b><br>
-      <sub>Product Lead · Front‑end · Data / Recherche</sub>
-    </td>
-    <td align="center" width="33%">
-      <img src=".github/assets/avatar-chitou.svg" width="168" alt="CHITOU"><br>
-      <b>CHITOU</b><br>
-      <sub>Design Lead · Design System · Design Engineering</sub>
-    </td>
-    <td align="center" width="33%">
-      <img src=".github/assets/avatar-serge.svg" width="168" alt="SERGE"><br>
-      <b>SERGE</b><br>
-      <sub>Backend · Infra · Paiement · Agents IA</sub>
-    </td>
-  </tr>
-</table>
-
-<details>
-<summary><b>Qui possède quoi</b></summary>
-
-<br>
-
-**Souraka HAMIDA — Product Lead · Front‑end · Data / Recherche**
-- Vision produit, backlog, priorisation, arbitrages de périmètre
-- Contrat `Blueprint JSON` (`packages/contracts`) — la frontière typée front/back
-- Architecture front‑end : Next.js, SSR, SEO natif par tenant
-- Qualité des prompts & *eval harness* des agents
-- Instrumentation des coûts IA/infra par client, unit economics
-- Veille & recherche (`deeprecherche_important/`), go‑to‑market pilotes
-
-**CHITOU — Design Lead · Design System · Design Engineering**
-- Design system Afrosite : foundations, tokens sémantiques, composants livrés en code
-- Patterns par blueprint : POSLayout, KitchenBoard, QRMenu, MobileCheckout…
-- Direction artistique, rejet du « slop » IA, conformité charte de marque
-- Boucle de critique visuelle : critères écrits, agent UI / Vision Critic
-- Accessibilité & Core Web Vitals sur mobile Android / réseau lent
-
-**SERGE — Backend · Infra · Paiement · Agents IA**
-- API (FastAPI), modèle de données PostgreSQL, migrations, RBAC multi‑tenant
-- Orchestration des agents (LangGraph), workflows durables (Temporal)
-- Intégration Mobile Money derrière une couche `PaymentProvider` abstraite
-- CI/CD (GitHub Actions), déploiement (Docker Compose + Coolify), sauvegardes
-- Sécurité applicative (SAST, scans, 6 gates), ledger immuable, réconciliation
-
-</details>
-
-<img src=".github/assets/divider.svg" alt="" width="100%">
-
-<div align="center">
-<img src=".github/assets/metrics.svg" alt="Repères : moins d'une heure du prompt à la boutique en ligne, 100 % des paiements réconciliés, zéro ligne de code, marge brute cible d'au moins 70 %" width="100%">
-</div>
-
-## Trois métiers, un socle
-
-Le socle commun — catalogue, commande, encaissement, CRM léger, dashboard — est **identique en code** entre les trois blueprints. Seuls les modules spécifiques changent.
-
-| Commerce | Restaurant | Services |
-|---|---|---|
-| Boutique en ligne, commandes WhatsApp centralisées, facturation automatique | Menu QR, caisse, écran cuisine, livraison, fidélité | Rendez‑vous, devis, factures, rappels clients automatiques |
-| `+` stock simple, suivi de livraison | `+` KDS, gestion des tables / à emporter | `+` agenda, relances avant rendez‑vous |
-
-<img src=".github/assets/divider.svg" alt="" width="100%">
-
-## Stack
-
-<p>
-<img alt="Next.js" src="https://img.shields.io/badge/Next.js-000000?style=for-the-badge&logo=nextdotjs&logoColor=white">
-<img alt="TypeScript" src="https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white">
-<img alt="FastAPI" src="https://img.shields.io/badge/FastAPI-009688?style=for-the-badge&logo=fastapi&logoColor=white">
-<img alt="PostgreSQL" src="https://img.shields.io/badge/PostgreSQL-4169E1?style=for-the-badge&logo=postgresql&logoColor=white">
-<img alt="Redis" src="https://img.shields.io/badge/Redis-DC382D?style=for-the-badge&logo=redis&logoColor=white">
-<img alt="Docker" src="https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white">
-<img alt="GitHub Actions" src="https://img.shields.io/badge/GitHub%20Actions-2088FF?style=for-the-badge&logo=githubactions&logoColor=white">
-</p>
-
-`LangGraph` (agents) · `Temporal` (workflows argent / provisioning) · `LiteLLM` (routeur IA) · `Playwright` (E2E) · `Coolify` (déploiement).
-
-Arborescence complète du monorepo : [playbook §6.1](docs/11-playbook-equipe.md#61--structure-des-dossiers-arborescence-complète-du-monorepo).
-
-<img src=".github/assets/divider.svg" alt="" width="100%">
-
-## Documentation
-
-| # | Document | Contenu |
-|---|---|---|
-| 00 | [Sommaire](docs/00-README.md) | Comment lire la documentation, principe directeur |
-| 01 | [Cahier des charges](docs/01-cahier-des-charges.md) | Vision, périmètre, exigences, critères d'acceptation |
-| 02 | [Business model](docs/02-business-model.md) | Canvas, pricing FCFA, unit economics |
-| 03 | [Analyse concurrentielle](docs/03-analyse-concurrentielle.md) | Concurrents, SWOT, PESTEL |
-| 04 | [Différenciation & positionnement](docs/04-differenciation-positionnement.md) | Le moat défendable, le message |
-| 05 | [Roadmap leadership Afrique de l'Ouest](docs/05-roadmap-leadership-afrique.md) | Go‑to‑market, 5 premiers clients, expansion UEMOA |
-| 06 | [Architecture technique](docs/06-architecture-technique.md) | Stack, repos open source, pipeline prompt→production, sécurité |
-| 07 | [Plan d'exécution 90 jours](docs/07-plan-execution-90-jours.md) | Quoi faire, dans quel ordre |
-| 08 | [SEO natif & clonage de sites](docs/08-seo-et-clonage-de-sites.md) | SEO technique, SEO local, garde‑fous légaux |
-| 09 | [Branding, logo & positionnement](docs/09-branding-logo-positionnement.md) | Charte visuelle (version texte) |
-| 10 | [Ressources de A à Z](docs/10-ressources-de-a-a-z.md) | Toutes les ressources externes, dans l'ordre d'usage |
-| 11 | [Playbook d'équipe](docs/11-playbook-equipe.md) | Rôles, RACI, Kanban/Notion, structure des dossiers, branches Git, système de prompts, plan 90 jours |
-| 12 | [Pitch — Hackathon Cursor × Devs Days](docs/12-pitch-hackathon.md) | Accroche, candidature, script vidéo, pitch de finale, Q&A jury, périmètre de build |
-
-<img src=".github/assets/divider.svg" alt="" width="100%">
-
-## Feuille de route — 90 jours
-
-| Phase | Jours | Objectif |
-|---|---|---|
-| **1 — Fondation fiable** | 1 → 30 | Socle commun + 3 blueprints, CI, PostgreSQL + sauvegardes, paiement **sandbox** |
-| **2 — Automatisation IA** | 31 → 60 | Prompt → Blueprint JSON validé → génération contrôlée, 6 gates automatiques, preview auto |
-| **3 — Commercialisation** | 61 → 90 | 5 pilotes à Cotonou en production, paiement réel, résumé WhatsApp, audit sécurité externe |
-
-Décision de fin de phase : les 5 pilotes utilisent‑ils Afrosite **tous les jours** ? Sinon, diagnostiquer avant d'ajouter la moindre fonctionnalité.
-
-<img src=".github/assets/divider.svg" alt="" width="100%">
-
-## Démarrage rapide — la landing
+### 1. Cloner et configurer l'environnement
 
 ```bash
-# depuis la racine du dépôt
-python -m http.server 5173 --directory landing
-# → http://localhost:5173
+# Copier le fichier de variables d'environnement exemple
+cp .env.example .env
 ```
 
-Détails et checklist : [`landing/README.md`](landing/README.md).
+### 2. Installer les dépendances JS/TS (Frontend & Packages)
 
-## Principes non négociables
+```bash
+pnpm install
+```
 
-- **Un prompt n'exécute jamais une action risquée** — workflow testable, réversible, observé.
-- **80 % éprouvé / 20 % généré** — on personnalise des blueprints, on ne régénère pas de zéro.
-- **Afrosite ne détient jamais de fonds** — orchestrateur au‑dessus d'un PSP agréé BCEAO.
-- **La redirection navigateur ne prouve rien** — seul un webhook signé + `verify()` serveur confirme un paiement.
-- **Réversibilité en un clic** — export intégral du code et des données, à tout moment.
-- **3 blueprints maximum au MVP** — tout nouveau vertical se valide d'abord sur le socle.
+### 3. Synchroniser les environnements & dépendances Python (Backend & Services)
 
-<br>
+```bash
+# uv installe les venvs et les dépendances pour tous les services du workspace
+uv sync
+```
 
-<div align="center">
-<img src=".github/assets/divider.svg" alt="" width="100%">
-<br><br>
-<sub><b>Conçu à Cotonou, Bénin</b>&nbsp;&nbsp;·&nbsp;&nbsp;FCFA&nbsp;&nbsp;·&nbsp;&nbsp;Mobile Money&nbsp;&nbsp;·&nbsp;&nbsp;Français&nbsp;&nbsp;·&nbsp;&nbsp;© 2026 Afrosite</sub>
-</div>
+### 4. Démarrer l'infrastructure locale (PostgreSQL, Redis, MinIO)
+
+```bash
+docker compose up -d
+```
+
+### 5. Vérifier que tout fonctionne (< 10 min)
+
+#### A. Statut de l'infrastructure Docker
+```bash
+docker compose ps
+# postgres, redis et minio doivent afficher (healthy)
+```
+
+#### B. Tester le service FastAPI (services/api)
+```bash
+uv run --package afrosite-api uvicorn afrosite_api.main:app --reload --port 8000
+# Sur un autre terminal :
+curl http://localhost:8000/health
+# Résultat attendu : {"status":"healthy","service":"api","timestamp":"..."}
+```
+
+#### C. Console MinIO
+Accéder à [http://localhost:9001](http://localhost:9001) avec :
+- User : `minioadmin`
+- Password : `minioadmin`
+- Le bucket `afrosite-assets` est prêt.
+
+---
+
+## 📁 Structure du Monorepo
+
+```text
+.
+├── apps/
+│   └── web/                # Next.js App Router (Frontend)
+├── packages/
+│   ├── contracts/          # Schémas Zod & DTOs partagés
+│   ├── design-system/      # Foundations & tokens sémantiques Afrosite
+│   └── llm/                # Couche d'adaptation LiteLLM (cache par défaut)
+├── services/
+│   ├── api/                # FastAPI backend (RBAC, tenants, catalog, orders)
+│   ├── agents/             # LangGraph agent orchestration
+│   └── workflows/          # Workflows durables Temporal
+├── infra/                  # Documentation infra & configurations Docker
+├── docker-compose.yml      # Infrastructure locale (Postgres, Redis, MinIO)
+├── pnpm-workspace.yaml     # Configuration workspace PNPM
+├── pyproject.toml          # Configuration workspace uv
+└── turbo.json              # Configuration pipelines Turborepo
+```
+
+---
+
+## 🛠️ Commandes de développement
+
+```bash
+# Lancer les linters & checks JS/TS
+pnpm turbo lint typecheck
+
+# Exécuter les tests Python
+uv run pytest
+```
