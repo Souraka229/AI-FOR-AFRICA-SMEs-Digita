@@ -1,12 +1,14 @@
 """Genius Pay sandbox adapter behind PaymentProvider.
 
-Endpoint paths and JSON field names are driven by environment configuration.
-They must be remapped to the official Genius Pay docs once ADR 0001 / vendor
-docs are confirmed — do not treat the default path strings as vendor gospel.
+Provisional paths/fields per ADR 0001 — override via GENIUSPAY_* env vars until
+official vendor docs are recorded in the ADR.
 """
 
 from __future__ import annotations
 
+import hashlib
+import hmac
+import json
 from decimal import Decimal
 from typing import Any
 
@@ -20,6 +22,7 @@ from afrosite_api.payments.types import (
     PaymentStatus,
     VerifyTransactionRequest,
     VerifyTransactionResult,
+    WebhookEvent,
 )
 
 
@@ -130,5 +133,36 @@ class GeniusPayProvider:
             status=_map_status(str(data["status"])),
             amount_xof=amount,
             currency=currency,
+            raw=dict(data),
+        )
+
+    def _verify_signature(self, payload: bytes, signature: str) -> None:
+        secret = self._settings.geniuspay_webhook_secret
+        if not secret:
+            raise GeniusPayError("GENIUSPAY_WEBHOOK_SECRET is required for webhooks")
+        expected = hmac.new(secret.encode("utf-8"), payload, hashlib.sha256).hexdigest()
+        if not hmac.compare_digest(expected, signature.strip().lower()):
+            raise GeniusPayError("Invalid webhook signature")
+
+    async def handle_webhook(self, payload: bytes, signature: str) -> WebhookEvent:
+        self._verify_signature(payload, signature)
+        try:
+            data = json.loads(payload.decode("utf-8"))
+        except (UnicodeDecodeError, json.JSONDecodeError) as exc:
+            raise GeniusPayError("Invalid webhook JSON") from exc
+        if not isinstance(data, dict):
+            raise GeniusPayError("Webhook payload must be an object")
+        event_id = str(data.get("event_id") or data.get("id") or "")
+        provider_ref = str(data.get("provider_ref") or "")
+        if not event_id or not provider_ref:
+            raise GeniusPayError("Webhook missing event_id or provider_ref")
+        amount = data.get("amount")
+        currency_raw = data.get("currency")
+        return WebhookEvent(
+            event_id=event_id,
+            provider_ref=provider_ref,
+            status=_map_status(str(data.get("status", "pending"))),
+            amount_xof=Decimal(str(amount)) if amount is not None else None,
+            currency=Currency(str(currency_raw)) if currency_raw else None,
             raw=dict(data),
         )

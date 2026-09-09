@@ -1,14 +1,15 @@
-<<<<<<< HEAD
 import os
-from datetime import datetime
-=======
 from datetime import UTC, datetime
->>>>>>> 00aa69a (feat(api): add JWT auth and RBAC roles)
 
 import uvicorn
 from fastapi import FastAPI
 
 from afrosite_api.auth.router import router as auth_router
+from afrosite_api.catalog.router import router as catalog_router
+from afrosite_api.ledger.router import router as ledger_router
+from afrosite_api.orders.router import router as orders_router
+from afrosite_api.payments.router import router as payments_router
+from afrosite_api.tenants.router import router as tenants_router
 
 app = FastAPI(
     title="Afrosite API",
@@ -16,6 +17,11 @@ app = FastAPI(
     version="0.1.0",
 )
 app.include_router(auth_router)
+app.include_router(tenants_router)
+app.include_router(catalog_router)
+app.include_router(orders_router)
+app.include_router(ledger_router)
+app.include_router(payments_router)
 
 
 @app.get("/health")

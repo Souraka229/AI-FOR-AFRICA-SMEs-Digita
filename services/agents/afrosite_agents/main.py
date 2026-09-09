@@ -1,5 +1,5 @@
 import os
-from datetime import datetime
+from datetime import UTC, datetime
 
 import uvicorn
 from fastapi import FastAPI
@@ -16,7 +16,7 @@ async def health_check() -> dict[str, str]:
     return {
         "status": "healthy",
         "service": "agents",
-        "timestamp": datetime.utcnow().isoformat(),
+        "timestamp": datetime.now(UTC).isoformat(),
     }
 
 

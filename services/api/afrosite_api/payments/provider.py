@@ -7,6 +7,7 @@ from afrosite_api.payments.types import (
     CreateTransactionResult,
     VerifyTransactionRequest,
     VerifyTransactionResult,
+    WebhookEvent,
 )
 
 
@@ -26,3 +27,6 @@ class PaymentProvider(Protocol):
 
     async def verify(self, request: VerifyTransactionRequest) -> VerifyTransactionResult:
         """Confirm payment status server-side. Browser redirect alone proves nothing."""
+
+    async def handle_webhook(self, payload: bytes, signature: str) -> WebhookEvent:
+        """Verify signature, normalize event. Reject unsigned or invalid payloads."""

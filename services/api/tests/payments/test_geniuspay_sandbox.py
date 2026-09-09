@@ -19,9 +19,43 @@ def _settings() -> Settings:
     return Settings(
         geniuspay_base_url="https://sandbox.geniuspay.test",
         geniuspay_api_key="test-key",
+        geniuspay_webhook_secret="whsec-test",
         geniuspay_create_path="/v1/transactions",
         geniuspay_verify_path="/v1/transactions/{provider_ref}",
     )
+
+
+@pytest.mark.asyncio
+async def test_webhook_signature_valid() -> None:
+    import hashlib
+    import hmac
+    import json
+
+    body = json.dumps(
+        {
+            "event_id": "evt-1",
+            "provider_ref": "gp_tx_1",
+            "status": "succeeded",
+            "amount": "2500",
+            "currency": "XOF",
+        }
+    ).encode()
+    sig = hmac.new(b"whsec-test", body, hashlib.sha256).hexdigest()
+    provider = GeniusPayProvider(_settings(), client=httpx.AsyncClient())
+    event = await provider.handle_webhook(body, sig)
+    assert event.event_id == "evt-1"
+    assert event.status == PaymentStatus.SUCCEEDED
+    await provider.aclose()
+
+
+@pytest.mark.asyncio
+async def test_webhook_signature_invalid() -> None:
+    provider = GeniusPayProvider(_settings(), client=httpx.AsyncClient())
+    with pytest.raises(GeniusPayError):
+        await provider.handle_webhook(
+            b'{"event_id":"x","provider_ref":"y","status":"succeeded"}', "bad"
+        )
+    await provider.aclose()
 
 
 @pytest.mark.asyncio

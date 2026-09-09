@@ -49,3 +49,14 @@ class VerifyTransactionResult(BaseModel):
     amount_xof: Decimal
     currency: Currency
     raw: dict[str, object] = Field(default_factory=dict)
+
+
+class WebhookEvent(BaseModel):
+    """Normalized PSP webhook after signature verification."""
+
+    event_id: str
+    provider_ref: str
+    status: PaymentStatus
+    amount_xof: Decimal | None = None
+    currency: Currency | None = None
+    raw: dict[str, object] = Field(default_factory=dict)

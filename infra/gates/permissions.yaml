@@ -1,0 +1,24 @@
+# yaml-language-server: $schema=https://www.openpolicyagent.org/schemas/config.json
+# Permission roles mapped to API surfaces (enforced in FastAPI + documented for OPA).
+
+roles:
+  owner:
+    - auth.*
+    - tenants.*
+    - catalog.*
+    - orders.*
+    - ledger.*
+    - payments.webhooks
+  cashier:
+    - auth.me
+    - catalog.read
+    - catalog.write
+    - orders.*
+    - ledger.append
+  kitchen:
+    - auth.me
+    - orders.read
+  customer:
+    - auth.me
+    - catalog.read
+    - orders.create

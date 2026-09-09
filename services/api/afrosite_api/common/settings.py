@@ -16,10 +16,14 @@ class Settings(BaseSettings):
     database_url: str = (
         "postgresql+asyncpg://afrosite:afrosite_dev_password@localhost:5432/afrosite_db"
     )
-    # Bootstrap owner for local smoke (password never hardcoded in responses)
+    # Bootstrap users for local smoke — passwords via env only, never in responses
+    bootstrap_tenant_id: str = "tenant-demo-1"
+    bootstrap_tenant_name: str = "Afrosite Demo"
     bootstrap_owner_email: str = "owner@afrosite.example"
     bootstrap_owner_password: str = "change-me-owner"
-    # Genius Pay sandbox — secrets via env only; paths configurable until vendor docs confirmed
+    bootstrap_cashier_email: str = "cashier@afrosite.example"
+    bootstrap_cashier_password: str = "change-me-cashier"
+    # Genius Pay sandbox — secrets via env only
     geniuspay_base_url: str = ""
     geniuspay_api_key: str = ""
     geniuspay_webhook_secret: str = ""
