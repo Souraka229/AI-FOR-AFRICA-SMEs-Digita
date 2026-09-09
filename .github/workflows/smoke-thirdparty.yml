@@ -1,0 +1,43 @@
+name: Smoke third-party
+
+on:
+  pull_request:
+    paths:
+      - "docker-compose.yml"
+      - "THIRDPARTY.md"
+      - ".github/workflows/smoke-thirdparty.yml"
+  push:
+    branches: [main]
+    paths:
+      - "docker-compose.yml"
+      - "THIRDPARTY.md"
+      - ".github/workflows/smoke-thirdparty.yml"
+  workflow_dispatch:
+
+jobs:
+  compose-config:
+    name: Validate docker compose config
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4.2.2
+
+      - name: docker compose config
+        run: docker compose config --quiet
+
+  image-digests:
+    name: Resolve pinned image digests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4.2.2
+
+      - name: Pull digest-pinned images from compose
+        run: |
+          set -euo pipefail
+          images=$(grep -E '^\s+image:' docker-compose.yml | awk '{print $2}' | sort -u)
+          echo "Images to pull:"
+          printf '%s\n' "$images"
+          for img in $images; do
+            echo "=== docker pull $img ==="
+            docker pull "$img"
+            docker image inspect "$img" --format '{{index .RepoDigests 0}}'
+          done
