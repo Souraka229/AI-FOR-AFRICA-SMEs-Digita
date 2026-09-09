@@ -5,4 +5,4 @@ def test_package_importable() -> None:
     """Le package afrosite_workflows doit s'importer sans lever d'exception."""
     import afrosite_workflows  # noqa: F401
 
-    assert hasattr(afrosite_workflows, "__version__") or True  # module minimal sans version tag
+    assert afrosite_workflows.__version__ == "0.1.0"
