@@ -1,10 +1,17 @@
 import type { Metadata } from "next";
+import dynamic from "next/dynamic";
 import Link from "next/link";
 import { Card, Money, OrderStatus, PaymentStatus } from "@afrosite/design-system";
 import { AppNav } from "@/components/app-nav";
 import { MarketingJsonLd } from "@/components/json-ld";
+import { MeshBackdrop } from "@/components/MeshBackdrop";
 import { PromptLaunch } from "@/components/PromptLaunch";
 import { WordmarkStroke } from "@/components/WordmarkStroke";
+
+const HeroMark3D = dynamic(
+  () => import("@/components/HeroMark3D").then((module) => module.HeroMark3D),
+  { ssr: false },
+);
 
 export const metadata: Metadata = {
   title: "Afrosite — vendez et encaissez, sans une ligne de code",
@@ -16,6 +23,7 @@ export default function Home() {
       <MarketingJsonLd />
       <AppNav />
       <main className="landing">
+        <MeshBackdrop />
         <section className="landing__hero" aria-labelledby="landing-title">
           <p className="landing__eyebrow">Cotonou · FCFA · Mobile Money</p>
           <h1 id="landing-title" className="landing__title">
@@ -35,6 +43,8 @@ export default function Home() {
             </Link>
           </div>
         </section>
+
+        <HeroMark3D />
 
         <section className="landing__kit" aria-label="Parcours produit">
           <Card>
