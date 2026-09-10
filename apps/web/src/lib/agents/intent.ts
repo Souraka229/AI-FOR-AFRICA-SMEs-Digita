@@ -15,8 +15,12 @@ const SERVICES =
   /\b(salon|coiffure|tresse|manucure|rendez-vous|\brdv\b|devis|artisan|plombier|coutur|prestataire|locking|barbier|pressing|m[eé]canique)\b/i;
 const COMMERCE =
   /\b(boutique|tissu|wax|pagne|magasin|vente|stock|[eé]picerie|quincailler|cosm[eé]tique|d[eé]p[oô]t)\b/i;
-const SENSITIVE =
-  /\b(?:4[0-9]{12}(?:[0-9]{3})?|5[1-5][0-9]{14})\b|\bcvv\s*[:=]?\s*\d{3,4}\b|\b(?:sk|pk|whsec)_(?:live|sandbox)_[a-z0-9]+\b/i;
+const SENSITIVE = [
+  /\b4\d{12}(?:\d{3})?\b/,
+  /\b5[1-5]\d{14}\b/,
+  /\bcvv[:\s=]{0,5}\d{3,4}\b/i,
+  /\b(?:sk|pk|whsec)_(?:live|sandbox)_[a-z0-9]+\b/i,
+];
 const PROMPT_INJECTION =
   /\b(?:ignore|oublie|contourne)\b.{0,40}\b(?:instructions?|règles?|syst[eè]me)\b|\b(?:system prompt|developer message|jailbreak)\b/i;
 
@@ -51,7 +55,7 @@ export class PromptInjectionError extends Error {
 }
 
 export function detectSensitivePrompt(prompt: string): boolean {
-  return SENSITIVE.test(prompt);
+  return SENSITIVE.some((pattern) => pattern.test(prompt));
 }
 
 export function detectPromptInjection(prompt: string): boolean {
