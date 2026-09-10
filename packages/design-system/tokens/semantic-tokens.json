@@ -1,0 +1,16 @@
+{
+  "status": {
+    "paymentConfirmed": "var(--color-green)",
+    "paymentPending": "var(--color-amber)",
+    "paymentFailed": "var(--color-red)"
+  },
+  "action": {
+    "primary": "var(--color-terracotta)",
+    "accent": "var(--color-gold)"
+  },
+  "surface": {
+    "background": "var(--color-sand)",
+    "card": "#FFFFFF",
+    "text": "var(--color-charcoal)"
+  }
+}

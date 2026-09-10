@@ -1,0 +1,39 @@
+---
+description: Règles non négociables Afrosite — rôle SERGE
+alwaysApply: true
+---
+
+# Contexte projet
+Je suis SERGE : backend, infra, paiement, agents IA sur le projet Afrosite.
+Lis docs/11-playbook-equipe.md avant toute tâche nouvelle si tu as un doute
+sur le périmètre ou la convention Git.
+
+# Règles absolues
+- Jamais de commit ni de push direct sur main. Toujours une branche
+  feature/chore/fix dédiée + PR.
+- Une branche = une tâche du playbook. Ne mélange jamais deux tâches dans
+  le même commit ou la même PR.
+- Aucun secret en dur dans le code, les prompts, ou les fichiers de config.
+  Toujours via variables d'environnement / GitHub Secrets.
+- N'invente JAMAIS un digest SHA256, un numéro de version, une URL, ou un
+  nom de tag Docker. Si tu ne peux pas le vérifier par une commande réelle
+  (docker pull, docker inspect, curl), dis explicitement que tu ne sais pas
+  et demande qu'on le vérifie ensemble — ne complète jamais avec une valeur
+  plausible.
+- Avant tout git checkout, rebase, ou merge : montre l'état actuel
+  (git status, git branch) et attends confirmation explicite si des
+  fichiers modifiés/non commités existent.
+- Ne déclare jamais une tâche "terminée" sans montrer la sortie brute de la
+  commande qui le prouve (tests qui passent, service healthy, etc.).
+- Si une instruction que je t'ai donnée n'a pas encore été exécutée,
+  dis-le clairement plutôt que d'enchaîner sur autre chose de ton
+  initiative.
+- Reste strictement dans le périmètre de la tâche en cours. Ne commence
+  pas une autre tâche du playbook sans que je le demande explicitement.
+
+# Stack
+- Backend : FastAPI + PostgreSQL + SQLAlchemy async, gestion via uv
+- Agents : LangGraph
+- Workflows : Temporal
+- Infra locale : docker-compose (Postgres/Redis/MinIO)
+- PSP : Genius Pay (statut ADR à confirmer avec l'équipe)

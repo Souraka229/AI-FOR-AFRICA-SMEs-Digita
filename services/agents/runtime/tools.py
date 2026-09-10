@@ -4,7 +4,6 @@ from __future__ import annotations
 
 from typing import Protocol
 
-
 TOOL_WHITELISTS: dict[str, frozenset[str]] = {
     "intent": frozenset({"classify_intent"}),
     "architect": frozenset({"build_blueprint"}),

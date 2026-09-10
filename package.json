@@ -5,6 +5,10 @@
   "scripts": {
     "check": "pnpm --filter @afrosite/contracts check && pnpm --filter @afrosite/llm check && pnpm --filter web lint && pnpm --filter web exec tsc --noEmit",
     "eval:agents": "pnpm --filter web eval:agents",
-    "build:web": "pnpm --filter web build"
+    "build": "pnpm --filter web build",
+    "build:web": "pnpm --filter web build",
+    "lint": "pnpm --filter web lint",
+    "typecheck": "pnpm --filter web exec tsc --noEmit && pnpm --filter @afrosite/llm exec tsc --noEmit",
+    "test": "pnpm --filter web eval:agents && pnpm --filter web eval:llm"
   }
 }

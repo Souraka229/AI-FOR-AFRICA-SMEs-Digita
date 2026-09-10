@@ -8,7 +8,6 @@ import tempfile
 from pathlib import Path
 
 import httpx
-
 from runtime.adapters import StudioClient, StudioError, StudioTools
 
 
@@ -142,9 +141,7 @@ def studio_transport(*, fail: bool = False) -> httpx.MockTransport:
 
 def tools(*, fail: bool = False, qa: tuple[tuple[str, ...], ...] | None = None):
     return StudioTools(
-        client=StudioClient(
-            access_key="cle-de-test", transport=studio_transport(fail=fail)
-        ),
+        client=StudioClient(access_key="cle-de-test", transport=studio_transport(fail=fail)),
         template_root=Path(tempfile.gettempdir()),
         qa_commands=qa if qa is not None else ((sys.executable, "-c", "pass"),),
     )
@@ -160,9 +157,7 @@ def main() -> None:
     assert generated["tenant"]["slug"] == "cadjehoun-wax"
     assert real.validate_blueprint(generated) == {"passed": True, "errors": []}
 
-    production = real.validate_blueprint(
-        blueprint(deployment_target="production")
-    )
+    production = real.validate_blueprint(blueprint(deployment_target="production"))
     assert production["passed"] is False
 
     sensitive = real.validate_blueprint(
@@ -188,9 +183,7 @@ def main() -> None:
     assert blocked["passed"] is False
     assert len(blocked["errors"]) == 2
 
-    clean = real.scan_generated(
-        {"files": ["src/app/page.tsx"], "diff": "+ const title = 'Wax';"}
-    )
+    clean = real.scan_generated({"files": ["src/app/page.tsx"], "diff": "+ const title = 'Wax';"})
     assert clean["passed"] is True
 
     qa_ok = real.run_checks({"branch": "feature/generated-smoke"})
@@ -222,9 +215,7 @@ def main() -> None:
     else:  # pragma: no cover - garde-fou
         raise AssertionError("erreur Studio non propagée")
 
-    print(
-        "check:adapters OK · NDJSON · Gate 1 Pydantic · garde-fous partagés · QA · preview"
-    )
+    print("check:adapters OK · NDJSON · Gate 1 Pydantic · garde-fous partagés · QA · preview")
 
 
 if __name__ == "__main__":

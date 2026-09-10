@@ -6,7 +6,6 @@ import tempfile
 from pathlib import Path
 
 from langgraph.types import Command
-
 from runtime.code_agent import OPENHANDS_IMAGE, _overlay, _snapshot
 from runtime.graph import build_graph
 from runtime.tools import TOOL_WHITELISTS
@@ -25,10 +24,7 @@ class FakeTools:
         }
 
     def validate_blueprint(self, blueprint: dict) -> dict:
-        return {
-            "passed": blueprint["country"] == "BJ"
-            and blueprint["currency"] == "XOF"
-        }
+        return {"passed": blueprint["country"] == "BJ" and blueprint["currency"] == "XOF"}
 
     def generate_overlay(self, blueprint: dict) -> dict:
         return {"branch": "feature/generated-check", "files": ["copy.json"]}
@@ -63,16 +59,10 @@ def main() -> None:
 
     with tempfile.TemporaryDirectory() as directory:
         root = Path(directory)
-        (root / "page.tsx").write_text(
-            "export const title = 'Avant';\n", encoding="utf-8"
-        )
-        (root / "package.json").write_text(
-            '{"scripts":{"bad":"ignored"}}', encoding="utf-8"
-        )
+        (root / "page.tsx").write_text("export const title = 'Avant';\n", encoding="utf-8")
+        (root / "package.json").write_text('{"scripts":{"bad":"ignored"}}', encoding="utf-8")
         before = _snapshot(root)
-        (root / "page.tsx").write_text(
-            "export const title = 'Après';\n", encoding="utf-8"
-        )
+        (root / "page.tsx").write_text("export const title = 'Après';\n", encoding="utf-8")
         overlay = _overlay(before, root, "feature/generated-smoke")
         assert overlay.files == ("page.tsx",)
         assert "Après" in overlay.diff
@@ -80,9 +70,7 @@ def main() -> None:
             "sha256:d98aabf32c29de5d4e78040fe2b80e44dc7513ebd8678a19cc05bc0b79eb7ed6"
         )
 
-    print(
-        "check:agents OK · checkpoint · interrupt · reprise · overlay · preview"
-    )
+    print("check:agents OK · checkpoint · interrupt · reprise · overlay · preview")
 
 
 if __name__ == "__main__":

@@ -1,52 +1,150 @@
-# Inventaire des briques open source — Afrosite
+# Third-Party Inventory — Afrosite
 
-Source : [playbook §6.2](docs/11-playbook-equipe.md#62--les-10-briques-prioritaires-et-leur-isolation) · [doc 06](docs/06-architecture-technique.md).  
-Règle : jamais `latest`. Isolation maison obligatoire. Fork du cœur = ADR + date de dé-fork.
+> Inventaire des 10 briques prioritaires ([playbook §6.2](docs/11-playbook-equipe.md)).
+> Versions et digests ci-dessous ont été **vérifiés** le 2026-09-09 via `uv.lock` / PyPI / npm / `docker pull` + `docker image inspect` / GitHub Releases.
+> Mainteneur interne : **SERGE**. Jamais de tag `latest` en prod.
 
-PSP (hors cette liste de 10) : **Genius Pay** derrière `PaymentProvider` — [ADR 0001](docs/adr/0001-genius-pay-psp-primaire.md). Pas de SDK Genius dans le métier.
+## 1. BerriAI/litellm
 
-| # | Brique | Version épinglée | Pourquoi | Isolation maison | Mainteneur | Upgrade | Plan de sortie |
-|---|---|---|---|---|---|---|---|
-| 1 | LiteLLM | `1.99.0` (adaptateur prêt, proxy optionnel) | Routeur multi-modèles, fallback, coût | `packages/llm` — aucune app n’importe `litellm` | SERGE + Souraka | Mensuelle, PR manuelle | Remplacer le routeur, garder `generate/stream` |
-| 2 | LangGraph | `1.2.11` | Agents stateful, reprise | `services/agents/runtime` | SERGE | Mensuelle, PR manuelle | Graphe maison au-dessus d’un autre runtime |
-| 3 | Temporal | `1.28` server / SDK py `1.9` | Paiement + provisioning uniquement | `services/workflows` — zéro métier dans le SDK | SERGE | Trimestrielle, release stable | Worker simple (autorisé hackathon, [doc 12 §7](docs/12-pitch-hackathon.md#7-périmètre-de-build-pour-la-finale-1-semaine-réaliste)) |
-| 4 | OpenHands software-agent-sdk | `1.44.1` · image `sha256:d98aabf…7ed6` | Code Agent sandbox | Wrappé dans le Code Agent, Docker only, dépôt jamais monté | SERGE | Sur besoin | Agent de code interne |
-| 5 | PostgreSQL | `16.6` | Source de vérité, ledger, audit | Repository pattern (`services/api`) | SERGE | LTS, patchs | Autre Postgres managé, même SQL |
-| 6 | Redis | `7.4` | Cache, files, rate limit, verrous | Client centralisé `services/api/cache` | SERGE | LTS, patchs | File en mémoire (dev) puis autre broker |
-| 7 | MinIO | `RELEASE.2024-11-07T00-52-20Z` | Objets S3 (assets, backups) | Interface `ObjectStore` | SERGE | Trimestrielle | S3 / R2, même interface |
-| 8 | Playwright | `1.55` (quand E2E branché) | E2E + captures Vision Critic | Helpers `e2e/` | Souraka (A) · CHITOU/SERGE | Mensuelle | Autre runner E2E, mêmes parcours |
-| 9 | OpenTelemetry Collector | `0.122` (Phase 2) | Traces / logs / métriques | `packages/telemetry` | Souraka + SERGE | Trimestrielle | Export console au MVP |
-| 10 | Prometheus + Grafana | `2.55` / `11.4` (Phase 2) | Surveillance, alertes | Dashboards dans `infra/observability` | SERGE | Trimestrielle | Alertes GitHub / e-mail d’abord |
+| Champ | Valeur |
+|---|---|
+| Rôle | Routeur multi-modèles, fallback, suivi de coût |
+| Isolation | `packages/llm` — aucune app n'importe `litellm` directement |
+| Pin actuel | `litellm==1.99.0` (dans `uv.lock`) |
+| Preuve | PyPI `litellm/1.99.0` (upload 2026-09-01) ; présent dans `uv.lock` |
+| Cadence upgrade | Mensuelle, PR manuelle |
+| Checklist pré-upgrade | `uv run pytest packages/llm` ; smoke `generate()` + fallback simulé |
+| Plan de sortie | Remplacer l'adaptateur dans `packages/llm` sans toucher les services |
 
-## Déjà dans le repo (runtime hackathon)
+## 2. langchain-ai/langgraph
+
+| Champ | Valeur |
+|---|---|
+| Rôle | Orchestration d'agents stateful |
+| Isolation | `services/agents` — graphes définis en interne |
+| Pin actuel | `langgraph==1.2.11` (dans `uv.lock`) |
+| Preuve | PyPI `langgraph/1.2.11` (upload 2026-08-11) ; présent dans `uv.lock` |
+| Cadence upgrade | Mensuelle, PR manuelle |
+| Checklist pré-upgrade | Import package ; graphe minimal + reprise après échec |
+| Plan de sortie | Réécrire le runtime agents derrière la même façade |
+
+## 3. temporalio/temporal
+
+| Champ | Valeur |
+|---|---|
+| Rôle | Workflows critiques (paiement, provisioning) |
+| Isolation | `services/workflows` — logique métier dans activities maison |
+| Pin serveur | `temporalio/server:1.31.2` @ `sha256:b5ecdb8282bededae2a10c36e8d862e27d0bc2d247fc73c5416025997ab4a1da` |
+| Pin SDK Python | `temporalio==1.32.0` (dans `uv.lock`) |
+| Preuve | `docker pull temporalio/server:1.31.2` + `docker image inspect` ; PyPI `temporalio/1.32.0` ; GitHub release `temporalio/temporal` tag `v1.31.2` |
+| Cadence upgrade | Trimestrielle, release stable |
+| Checklist pré-upgrade | Workflow paiement sandbox bout-en-bout ; retries ; replay |
+| Plan de sortie | Activities stables ; swap runtime Temporal derrière `services/workflows` |
+| Note | `temporalio/auto-setup:1.31.2` **n'existe pas** (manifest unknown) — ne pas l'utiliser |
+
+## 4. OpenHands/software-agent-sdk
+
+| Champ | Valeur |
+|---|---|
+| Rôle | Agent qui manipule le code (Code Agent) |
+| Isolation | Wrappé dans le Code Agent, exécution **sandbox Docker uniquement** |
+| Pin actuel | `openhands-sdk==1.46.0` (PyPI) / GitHub release `v1.46.0` |
+| Preuve | PyPI `openhands-sdk` version `1.46.0` ; GitHub `OpenHands/software-agent-sdk` release `v1.46.0` (assets + `SHA256SUMS`) |
+| Cadence upgrade | Suivi, pas d'upgrade auto |
+| Checklist pré-upgrade | Exécution sandbox ; zéro accès secrets hôte ; tests Code Agent |
+| Plan de sortie | Remplacer le SDK derrière la façade Code Agent |
+| Statut repo | **Pas encore câblé** dans le monorepo — pin documenté pour la prochaine tâche agents |
+
+## 5. postgres/postgres
+
+| Champ | Valeur |
+|---|---|
+| Rôle | Source de vérité, ledger, audit |
+| Isolation | Accès via repository pattern (`services/api`) |
+| Pin actuel | `postgres:16-alpine` @ `sha256:cf78e76683b9ca8c5733cbbdce6c9262b45b6767934dd0a95e671f9a0fc20685` |
+| Preuve | `docker pull` + `docker image inspect` (RepoTags `postgres:16-alpine`) ; pin dans `docker-compose.yml` |
+| Cadence upgrade | LTS, patchs via PR |
+| Checklist pré-upgrade | `docker compose up` healthy ; migrations ; backup/restore test |
+| Plan de sortie | SQL standard + SQLAlchemy ; swap managed Postgres |
+
+## 6. redis/redis
+
+| Champ | Valeur |
+|---|---|
+| Rôle | Cache, files, rate limiting, verrous |
+| Isolation | Client centralisé (à venir `services/api/cache`) |
+| Pin actuel | `redis:7-alpine` @ `sha256:ff02b58f971e7d7d156a1267e283fcbbeee91773b6aa36c49dac28ecfe28eadf` |
+| Preuve | `docker pull` + `docker image inspect` ; pin dans `docker-compose.yml` ; client Python `redis==8.1.0` dans `uv.lock` |
+| Cadence upgrade | LTS, patchs via PR |
+| Checklist pré-upgrade | Healthcheck compose ; SET/GET smoke ; rate-limit unit test |
+| Plan de sortie | Interface cache maison |
+
+## 7. minio/minio
+
+| Champ | Valeur |
+|---|---|
+| Rôle | Objets S3 (assets, backups, exports) |
+| Isolation | Interface `ObjectStore` (à venir) — swappable S3 |
+| Pin serveur | `minio/minio:RELEASE.2025-09-07T16-13-09Z` @ `sha256:14cea493d9a34af32f524e538b8346cf79f3321eff8e708c1e2960462bd8936e` |
+| Pin client mc | `minio/mc:RELEASE.2025-08-13T08-35-41Z` @ `sha256:a7fe349ef4bd8521fb8497f55c6042871b2ae640607cf99d9bede5e9bdf11727` |
+| Preuve | `docker pull` + `docker image inspect` ; pins dans `docker-compose.yml` |
+| Cadence upgrade | Trimestrielle |
+| Checklist pré-upgrade | Bucket init ; put/get objet ; console :9001 |
+| Plan de sortie | Swap vers S3/R2 via `ObjectStore` |
+
+## 8. microsoft/playwright
+
+| Champ | Valeur |
+|---|---|
+| Rôle | Tests E2E + captures Vision Critic |
+| Isolation | Helpers `e2e/` (à venir) |
+| Pin actuel | `@playwright/test@1.63.0` / `playwright@1.63.0` (npm) |
+| Preuve | npm registry `playwright/1.63.0` et `@playwright/test/1.63.0` ; GitHub `microsoft/playwright` release `v1.63.0` |
+| Cadence upgrade | Mensuelle |
+| Checklist pré-upgrade | `pnpm exec playwright install` ; smoke E2E ; captures inchangées |
+| Plan de sortie | Remplacer runner E2E en gardant les helpers de capture |
+| Statut repo | **Pas encore ajouté** au lockfile JS — pin documenté |
+
+## 9. open-telemetry/opentelemetry-collector
+
+| Champ | Valeur |
+|---|---|
+| Rôle | Traces, logs, métriques |
+| Isolation | SDK OTel derrière `packages/telemetry` (à venir) |
+| Pin actuel | `otel/opentelemetry-collector:0.160.0` @ `sha256:e495787f07dbe432ce763ebaf5bc3d113850e9eee2250ade7a3da6a882d0d69a` |
+| Preuve | GitHub `open-telemetry/opentelemetry-collector-releases` latest `v0.160.0` ; `docker pull` + `inspect` |
+| Cadence upgrade | Trimestrielle |
+| Checklist pré-upgrade | Collector démarre ; reçoit une span de smoke |
+| Plan de sortie | Export OTLP standard vers autre backend |
+| Statut repo | **Pas encore dans compose** — pin documenté pour `infra/observability` |
+
+## 10. prometheus + grafana
+
+| Champ | Valeur |
+|---|---|
+| Rôle | Surveillance, alertes |
+| Isolation | Dashboards versionnés dans `infra/observability` (à venir) |
+| Pin Prometheus | `prom/prometheus:v3.14.0` @ `sha256:5ce7540c3c00ef4ab0c9d2c995c6a5b9c421f44b4a115d97a2c7af3b1c21cbb0` |
+| Pin Grafana | `grafana/grafana:13.2.1` @ `sha256:f772d434e8fab0049deb2b1b30abd43342bcfca1537614aa8d36080232cf4283` |
+| Preuve | GitHub releases `prometheus/prometheus` `v3.14.0`, `grafana/grafana` `v13.2.1` ; `docker pull` + `inspect` |
+| Cadence upgrade | Trimestrielle |
+| Checklist pré-upgrade | Targets UP ; dashboard smoke ; alerte test |
+| Plan de sortie | Dashboards as code ; remote_write vers autre stack |
+| Statut repo | **Pas encore dans compose** — pins documentés |
+
+## Hygiène
+
+- Lockfiles commités (`uv.lock`, `pnpm-lock.yaml`).
+- Images runtime locales (Postgres/Redis/MinIO) épinglées par digest dans `docker-compose.yml`.
+- Auto-merge Dependabot/Renovate **interdit** sur litellm, temporal, langgraph, SDK Genius Pay ([§6.3](docs/11-playbook-equipe.md)).
+- Toute brique absente du monorepo est marquée « pas encore câblée » — ne pas inventer un digest non vérifié.
+
+## Câblé dans le Studio (JS) — génération LLM contrôlée
 
 | Brique | Version lock | Où | Note |
 |---|---|---|---|
-| Next.js | `16.3.4` | `apps/web` | Front + Server Actions (le « backend de poche ») |
-| React | `19.2.8` | `apps/web` | |
-| Zod | `3.25.76` | `packages/contracts` (workspace partagé avec `apps/web`) | Contrat Blueprint v0.1.0 + garde-fous de génération v0.1.0 (`generation-guardrails.json`, lu par TS **et** Python) |
-| AI SDK | `6.0.280` | `packages/llm` | Adaptateur initial AI Gateway ; aucun import fournisseur dans les apps |
-| Tailwind CSS | `4` | `apps/web` | Charte : terracotta / or / charbon / sable |
-| FastAPI + Pydantic | `0.116.1` / `2.11.7` | `services/api` + `packages/contracts/python` | API + miroir du Zod |
-| PyJWT | `2.10.1` | `services/api/auth` | JWT HS256 courts ; algorithme, audience et issuer imposés |
-| httpx | `0.28.1` | `services/agents/runtime/adapters.py` | Seul client HTTP du graphe (Studio NDJSON + preview) ; testé via `MockTransport` |
-| SQLAlchemy + Alembic | `2.0.52` / `1.19.1` | `services/api/migrations` | Schéma Postgres réversible ; pas d’ORM dans le métier HTTP |
-
-## Comment on pilote (tokens / MCP — sans changer l’archi)
-
-On n’ajoute **pas** d’outil hors playbook. On pilote ceux déjà décidés, s’il y a un token ou un CLI.
-
-| Outil | Décidé dans | Pilotage aujourd’hui | Interdit |
-|---|---|---|---|
-| GitHub | playbook §5, §14 | `gh` (compte actif `Souraka229`) — CI, PR | Push direct sur `main` |
-| Vercel | commodité preview (pas Coolify) | CLI `vercel` connecté — deploy / logs / env | Remplacer Genius Pay ou le contrat |
-| Genius Pay | ADR 0001 | Variables `GENIUSPAY_*` sandbox (`pk_sandbox_` / `sbx_test_`) · MCP SSE `https://geniuspay.ci/api/mcp` | Clés `*_live_*` avant gate 6 · coller un secret dans `mcp.json` versionné |
-| Docker | playbook §6 | `infra/docker-compose.yml` — Postgres / Redis / MinIO | Kubernetes, Vault, GPU |
-| Coolify | doc 06 | Plus tard, quand on self-host | Pas un prérequis hackathon |
-
-Checklist pré-upgrade (toute brique de la table des 10) :
-
-1. Lire le changelog amont (breaking).
-2. Smoke test maison vert (playbook §6.3 règle 4) — pour le paiement : parcours wax 24 500 FCFA.
-3. `pnpm eval:agents` = 96/96.
-4. PR dédiée, pas de groupement avec litellm / temporal / langgraph / Genius Pay.
+| AI SDK | `6.0.280` | `packages/llm` (TypeScript) | Porte unique `generateStructured` / `streamStructured` ; AI Gateway par défaut, LiteLLM interchangeable |
+| Next.js | `16.3.4` | `apps/web` | Studio, preview tenant, paiement sandbox |
+| Zod | `3.25.76` | `packages/contracts` | Blueprint v0.1.0 + `generation-guardrails.json` (TS et Python) |
+| Playwright | `1.55.0` | `apps/web` | E2E desktop + Pixel 7 ; pin npm distinct du pin documenté §8 en attente d’alignement |
+| OpenHands SDK | `1.44.1` · image `sha256:d98aabf…7ed6` | `services/agents/runtime/code_agent.py` | Docker only, digest épinglé, jamais `latest` |

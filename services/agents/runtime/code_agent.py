@@ -14,7 +14,6 @@ from pathlib import Path
 
 from pydantic import SecretStr
 
-
 OPENHANDS_IMAGE = (
     "ghcr.io/openhands/agent-server"
     "@sha256:d98aabf32c29de5d4e78040fe2b80e44dc7513ebd8678a19cc05bc0b79eb7ed6"
@@ -55,9 +54,7 @@ def _snapshot(root: Path) -> dict[str, str]:
     result: dict[str, str] = {}
     for path in root.rglob("*"):
         if _eligible(path, root):
-            result[path.relative_to(root).as_posix()] = path.read_text(
-                encoding="utf-8"
-            )
+            result[path.relative_to(root).as_posix()] = path.read_text(encoding="utf-8")
     return result
 
 
@@ -98,7 +95,7 @@ def generate_overlay(
             "OPENHANDS_LLM_MODEL sont requis (jeton LiteLLM limité)."
         )
 
-    from openhands.sdk import Agent, Conversation, LLM, Tool
+    from openhands.sdk import LLM, Agent, Conversation, Tool
     from openhands.tools.file_editor import FileEditorTool
     from openhands.tools.task_tracker import TaskTrackerTool
     from openhands.workspace import DockerWorkspace

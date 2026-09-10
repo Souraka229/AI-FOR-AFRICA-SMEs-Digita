@@ -1,0 +1,16 @@
+[project]
+name = "afrosite-agents"
+version = "0.1.0"
+description = "LangGraph Agents orchestration service for Afrosite"
+requires-python = ">=3.12"
+dependencies = [
+    "langgraph>=0.0.30",
+    "langchain-core>=0.1.30",
+    "pydantic>=2.6.0",
+    "fastapi>=0.110.0",
+    "uvicorn[standard]>=0.28.0",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"

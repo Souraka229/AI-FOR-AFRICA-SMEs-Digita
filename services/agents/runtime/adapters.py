@@ -67,37 +67,31 @@ class StudioClient:
 
     def run_pipeline(self, prompt: str) -> dict:
         """Consomme /api/studio/run et renvoie l'événement `result`."""
-        with self._client() as client:
-            with client.stream(
-                "POST", "/api/studio/run", json={"prompt": prompt}
-            ) as response:
-                if response.status_code != 200:
-                    response.read()
-                    raise StudioError(
-                        f"Studio HTTP {response.status_code}: {response.text}"
-                    )
-                result: dict | None = None
-                for line in response.iter_lines():
-                    if not line.strip():
-                        continue
-                    event = json.loads(line)
-                    if event.get("type") == "error":
-                        raise StudioError(event.get("message", "erreur Studio"))
-                    if event.get("type") == "result":
-                        result = event
+        with (
+            self._client() as client,
+            client.stream("POST", "/api/studio/run", json={"prompt": prompt}) as response,
+        ):
+            if response.status_code != 200:
+                response.read()
+                raise StudioError(f"Studio HTTP {response.status_code}: {response.text}")
+            result: dict | None = None
+            for line in response.iter_lines():
+                if not line.strip():
+                    continue
+                event = json.loads(line)
+                if event.get("type") == "error":
+                    raise StudioError(event.get("message", "erreur Studio"))
+                if event.get("type") == "result":
+                    result = event
         if result is None:
             raise StudioError("le Studio n'a produit aucun résultat")
         return result
 
     def create_preview(self, blueprint: dict) -> dict:
         with self._client() as client:
-            response = client.post(
-                "/api/studio/preview", json={"blueprint": blueprint}
-            )
+            response = client.post("/api/studio/preview", json={"blueprint": blueprint})
             if response.status_code != 200:
-                raise StudioError(
-                    f"preview refusée ({response.status_code}): {response.text}"
-                )
+                raise StudioError(f"preview refusée ({response.status_code}): {response.text}")
             return response.json()
 
 
@@ -168,9 +162,7 @@ class StudioTools:
         }
 
     def scan_generated(self, artifact: dict) -> dict:
-        check = scan_generated_artifact(
-            files=artifact["files"], diff=artifact["diff"]
-        )
+        check = scan_generated_artifact(files=artifact["files"], diff=artifact["diff"])
         return {"passed": check.passed, "errors": list(check.errors)}
 
     def run_checks(self, artifact: dict) -> dict:
@@ -178,9 +170,7 @@ class StudioTools:
         for command in self.qa_commands:
             executable = shutil.which(command[0])
             if executable is None:
-                results.append(
-                    {"command": " ".join(command), "exit_code": None, "passed": False}
-                )
+                results.append({"command": " ".join(command), "exit_code": None, "passed": False})
                 continue
             completed = subprocess.run(  # noqa: S603 — commandes fixes, sans shell
                 [executable, *command[1:]],

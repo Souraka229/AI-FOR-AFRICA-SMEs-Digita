@@ -3,9 +3,7 @@
 from importlib.metadata import version
 
 from openhands.workspace import DockerWorkspace
-
 from runtime.code_agent import OPENHANDS_IMAGE
-
 
 for package in (
     "openhands-sdk",
