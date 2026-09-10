@@ -125,7 +125,23 @@ Le socle commun — catalogue, commande, encaissement, CRM léger, dashboard —
 <img alt="GitHub Actions" src="https://img.shields.io/badge/GitHub%20Actions-2088FF?style=for-the-badge&logo=githubactions&logoColor=white">
 </p>
 
-`LangGraph` (agents) · `Temporal` (workflows argent / provisioning) · `LiteLLM` (routeur IA) · `Playwright` (E2E) · `Coolify` (déploiement).
+`LangGraph` (agents) · `Temporal` (workflows argent / provisioning) · `packages/llm` (AI SDK + AI Gateway, LiteLLM interchangeable) · `Playwright` (E2E) · `Coolify` (déploiement).
+
+### Golden path LLM contrôlé
+
+`packages/llm` est l’unique porte vers les modèles : AI SDK + AI Gateway par
+défaut, LiteLLM en backend interchangeable. Intent et Product Architect
+produisent des objets Zod ; Gate 1 peut demander une seule réparation. Le
+runtime LangGraph persiste le run et s’interrompt pour approbation humaine.
+OpenHands ne travaille que dans Docker sur une copie éphémère et renvoie un
+overlay ciblant `feature/generated-*` — jamais un push ni un paiement.
+
+Les règles Security/QA vivent dans un seul fichier,
+[`packages/contracts/generation-guardrails.json`](packages/contracts/generation-guardrails.json),
+lu à la fois par `apps/web` et par `services/agents` : chemins interdits,
+secrets, logique argent, déploiement production.
+
+Décision complète : [ADR 0002](docs/adr/0002-llm-runtime-hybride.md).
 
 Arborescence complète du monorepo : [playbook §6.1](docs/11-playbook-equipe.md#61--structure-des-dossiers-arborescence-complète-du-monorepo).
 
@@ -148,6 +164,7 @@ Arborescence complète du monorepo : [playbook §6.1](docs/11-playbook-equipe.md
 | 10 | [Ressources de A à Z](docs/10-ressources-de-a-a-z.md) | Toutes les ressources externes, dans l'ordre d'usage |
 | 11 | [Playbook d'équipe](docs/11-playbook-equipe.md) | Rôles, RACI, Kanban/Notion, structure des dossiers, branches Git, système de prompts, plan 90 jours |
 | 12 | [Pitch — Hackathon Cursor × Devs Days](docs/12-pitch-hackathon.md) | Accroche, candidature, script vidéo, pitch de finale, Q&A jury, périmètre de build |
+| 13 | [Guide solo Souraka + Serge](docs/13-guide-solo-souraka-serge.md) | Carte du code, état réel, feuille de route si une personne fait les deux |
 
 <img src=".github/assets/divider.svg" alt="" width="100%">
 
@@ -163,15 +180,34 @@ Décision de fin de phase : les 5 pilotes utilisent‑ils Afrosite **tous les jo
 
 <img src=".github/assets/divider.svg" alt="" width="100%">
 
-## Démarrage rapide — la landing
+## Golden path — lancer en local
+
+L’app de démo (studio → boutique wax → caisse) :
 
 ```bash
-# depuis la racine du dépôt
-python -m http.server 5173 --directory landing
-# → http://localhost:5173
+cd apps/web
+pnpm install
+pnpm dev
+# → http://localhost:3000/studio
+# → http://localhost:3000/t/cadjehoun-wax   (24 500 FCFA)
+# → http://localhost:3000/dashboard/cadjehoun-wax
 ```
 
-Détails et checklist : [`landing/README.md`](landing/README.md).
+Contrôles web : `pnpm --filter web eval:agents` · `pnpm --filter web eval:llm` ·
+`pnpm --filter web check:contracts` · `pnpm --filter web check:pay` ·
+`pnpm --filter @afrosite/llm check`.
+Contrôles agents : `python check.py` · `python check_adapters.py` ·
+`python check_openhands.py` dans [`services/agents`](services/agents/README.md).
+
+Socle Docker (Postgres / Redis / MinIO, pas requis pour la démo) : [`infra/README.md`](infra/README.md).
+Inventaire OSS : [`THIRDPARTY.md`](THIRDPARTY.md).
+Si tu portes Souraka **et** Serge : [`docs/13-guide-solo-souraka-serge.md`](docs/13-guide-solo-souraka-serge.md).
+
+Landing statique (optionnel) :
+
+```bash
+python -m http.server 5173 --directory landing
+```
 
 ## Principes non négociables
 

@@ -10,7 +10,7 @@ Afrosite n'affronte pas un concurrent unique, mais un ensemble d'acteurs qui cou
 | AI app builder africain | Gebeya Dala (+ Jitume, Jenga) | Création d'apps par langage naturel en langues africaines, CRM indépendants, marketplaces | Très forte — le concurrent africain le plus direct |
 | No-code / low-code | Bubble, FlutterFlow, Softr, Glide, Adalo | Création visuelle de sites, web apps et apps mobiles | Forte pour entrepreneurs et agences déjà formés |
 | Cloud / backend | AWS, GCP, Azure, Supabase, Firebase, Vercel, Render | Infrastructure, base de données, stockage, déploiement | Forte techniquement, faible pour les non-techniciens |
-| Paiement africain | KKiaPay, FedaPay, CinetPay, Paystack, Flutterwave, DusuPay | Encaissement Mobile Money, cartes, liens de paiement | Forte sur les rails de paiement — à intégrer, pas à concurrencer |
+| Paiement africain | Genius Pay, KKiaPay, FedaPay, CinetPay, Paystack, Flutterwave, DusuPay | Encaissement Mobile Money, cartes, liens de paiement | Forte sur les rails de paiement — à intégrer, pas à concurrencer |
 | Fintechs qui s'élargissent vers l'opérationnel | Moniepoint/Orda (Moniebook), Yoco/Dyner.ai | POS + paiement + comptabilité + IA pour commerces/restaurants | Stratégique — elles veulent devenir le système d'exploitation des PME |
 | SaaS verticaux locaux | POS restaurants, e-commerce, ERP/CRM locaux | Résolution d'un problème métier précis | Forte sur le besoin immédiat |
 | Agences / freelances | Agences web, développeurs locaux | Création sur mesure, accompagnement | Forte en proximité, faible en scalabilité |
@@ -53,13 +53,14 @@ Ces acquisitions ne sont pas encore actives au Bénin/UEMOA francophone — c'es
 
 | Acteur | Couverture utile | Ce qu'il faut faire |
 |---|---|---|
-| **KKiaPay** | Bénin, Côte d'Ivoire, Togo, Sénégal, Niger, Burkina Faso | Intégrer comme rail de paiement, ne pas chercher à remplacer |
-| **FedaPay** | Bénin, Côte d'Ivoire, Togo, Sénégal, Niger | Couche de paiement native dans les apps générées |
-| **CinetPay** | 10+ pays francophones d'Afrique de l'Ouest/centrale | Important pour l'expansion multi-pays |
+| **Genius Pay** *(primaire MVP — [ADR 0001](adr/0001-genius-pay-psp-primaire.md))* | Bénin (`MTN_MOMO_BEN`, `MOOV_BEN` via PawaPay) + plusieurs pays africains ; checkout hébergé ; webhooks HMAC-SHA256 | Intégrer **derrière** `PaymentProvider` en sandbox d'abord. Ne jamais appeler le SDK depuis le métier. |
+| **KKiaPay** | Bénin, Côte d'Ivoire, Togo, Sénégal, Niger, Burkina Faso | Fallback Phase 2 — ne pas chercher à remplacer |
+| **FedaPay** | Bénin, Côte d'Ivoire, Togo, Sénégal, Niger | Fallback Phase 2 — même interface `PaymentProvider` |
+| **CinetPay** | 10+ pays francophones d'Afrique de l'Ouest/centrale | Expansion UEMOA / multi-pays |
 | **Paystack / Flutterwave** | Nigeria + large couverture africaine | Référence produit, partenaire possible cross-border |
 | **DusuPay** | 15+ pays francophones annoncés | À évaluer à l'expansion hors UEMOA |
 
-**Principe** : Afrosite ne devient pas un PSP. Il construit une couche supérieure — routage entre PSP, gestion des webhooks/statuts/échecs, réconciliation quotidienne, facturation, reporting financier — connectée à des PSP déjà agréés BCEAO.
+**Principe** : Afrosite ne devient pas un PSP. Il construit une couche supérieure — routage entre PSP, gestion des webhooks/statuts/échecs, réconciliation quotidienne, facturation, reporting financier — connectée à des PSP déjà agréés BCEAO. Genius Pay est le premier implémenté ; changer de rail = une classe, pas une réécriture métier.
 
 ## 6. Matrice de différenciation
 

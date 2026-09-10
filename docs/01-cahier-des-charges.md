@@ -50,7 +50,7 @@ Contrairement à une approche mono-vertical, le MVP Afrosite sert **les trois pe
 | Onboarding | Création de compte, description de l'activité en langage naturel, génération automatique du catalogue/menu/liste de services |
 | Catalogue / offre | Produits, plats ou prestations avec prix, disponibilité, photos |
 | Prise de commande / réservation | Panier ou créneau, notes spéciales, confirmation client |
-| Paiement | Intégration Mobile Money (MTN MoMo, Moov Money) via un agrégateur (KKiaPay ou FedaPay) |
+| Paiement | Intégration Mobile Money (MTN MoMo, Moov Money) via Genius Pay (primaire, [ADR 0001](adr/0001-genius-pay-psp-primaire.md)) derrière `PaymentProvider` ; FedaPay/KKiaPay en fallback Phase 2 |
 | Réconciliation | Vue quotidienne : encaissé par canal (cash, MoMo, carte), transactions impayées |
 | CRM léger | Clients identifiés par numéro de téléphone, historique, compteur de fidélité |
 | Dashboard | Ventes/activité du jour, panier moyen, top produits/services, éléments en retard |
@@ -136,7 +136,7 @@ Contrairement à une approche mono-vertical, le MVP Afrosite sert **les trois pe
 | Terme | Définition |
 |---|---|
 | **Blueprint** | Modèle d'application pré-conçu, testé et sécurisé, que l'IA personnalise plutôt que de générer de zéro |
-| **PSP** | Prestataire de Services de Paiement (KKiaPay, FedaPay, CinetPay…) |
+| **PSP** | Prestataire de Services de Paiement (Genius Pay au MVP, puis FedaPay, KKiaPay, CinetPay…) |
 | **KDS** | Kitchen Display System — écran cuisine affichant les commandes |
 | **UEMOA** | Union Économique et Monétaire Ouest-Africaine (zone FCFA) |
 | **Tenant** | Une entreprise cliente utilisant la plateforme, avec son propre espace isolé |
