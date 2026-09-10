@@ -8,6 +8,7 @@ from pathlib import Path
 from langgraph.types import Command
 from runtime.code_agent import OPENHANDS_IMAGE, _overlay, _snapshot
 from runtime.graph import build_graph
+from runtime.qa import run_qa_agent
 from runtime.tools import TOOL_WHITELISTS
 
 
@@ -27,13 +28,28 @@ class FakeTools:
         return {"passed": blueprint["country"] == "BJ" and blueprint["currency"] == "XOF"}
 
     def generate_overlay(self, blueprint: dict) -> dict:
-        return {"branch": "feature/generated-check", "files": ["copy.json"]}
+        return {
+            "branch": "feature/generated-check",
+            "files": ["copy.json"],
+            "unit_passed": True,
+            "e2e": {
+                "studio": True,
+                "storefront": True,
+                "desktop": True,
+                "mobile": True,
+            },
+            "gate5": {
+                "migrationOnCopy": True,
+                "backupVerified": True,
+                "rollbackReady": True,
+            },
+        }
 
     def scan_generated(self, artifact: dict) -> dict:
         return {"passed": artifact["files"] == ["copy.json"]}
 
     def run_checks(self, artifact: dict) -> dict:
-        return {"passed": artifact["branch"].startswith("feature/generated-")}
+        return run_qa_agent(artifact)
 
     def create_preview(self, artifact: dict) -> dict:
         return {"url": "https://preview.invalid/check", "production": False}
@@ -57,6 +73,18 @@ def main() -> None:
     assert rejected["stage"] == "rejected"
     assert "artifact" not in rejected
 
+    class IncompleteQa(FakeTools):
+        def run_checks(self, artifact: dict) -> dict:
+            return run_qa_agent({"branch": artifact["branch"]})
+
+    blocked_graph = build_graph(IncompleteQa())
+    blocked_config = {"configurable": {"thread_id": "smoke-qa-block"}}
+    blocked_graph.invoke({"prompt": "Salon à Cadjehoun"}, blocked_config)
+    blocked = blocked_graph.invoke(Command(resume=True), blocked_config)
+    assert blocked["stage"] == "qa"
+    assert blocked["qa"]["passed"] is False
+    assert "preview" not in blocked
+
     with tempfile.TemporaryDirectory() as directory:
         root = Path(directory)
         (root / "page.tsx").write_text("export const title = 'Avant';\n", encoding="utf-8")
@@ -70,7 +98,7 @@ def main() -> None:
             "sha256:d98aabf32c29de5d4e78040fe2b80e44dc7513ebd8678a19cc05bc0b79eb7ed6"
         )
 
-    print("check:agents OK · checkpoint · interrupt · reprise · overlay · preview")
+    print("check:agents OK · checkpoint · interrupt · reprise · overlay · QA gate 5 · preview")
 
 
 if __name__ == "__main__":

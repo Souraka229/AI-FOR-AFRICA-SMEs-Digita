@@ -53,6 +53,7 @@ jobs:
       - run: pnpm --filter @afrosite/llm check
       - run: pnpm eval:agents
       - run: pnpm eval:llm
+      - run: pnpm eval:qa
       - run: pnpm check:contracts
       - run: pnpm check:pay
 

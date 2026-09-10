@@ -9,6 +9,7 @@
     "lint": "eslint",
     "eval:agents": "tsx src/lib/agents/eval/check.ts",
     "eval:llm": "tsx src/lib/agents/eval/llm-check.ts",
+    "eval:qa": "tsx src/lib/agents/qa-check.ts",
     "check:contracts": "pnpm --filter @afrosite/contracts check",
     "check:pay": "tsx src/lib/pay/check.ts",
     "test:e2e": "playwright test",

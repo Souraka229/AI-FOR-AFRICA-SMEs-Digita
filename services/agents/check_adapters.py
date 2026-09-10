@@ -147,6 +147,22 @@ def tools(*, fail: bool = False, qa: tuple[tuple[str, ...], ...] | None = None):
     )
 
 
+QA_OK = {
+    "branch": "feature/generated-smoke",
+    "e2e": {
+        "studio": True,
+        "storefront": True,
+        "desktop": True,
+        "mobile": True,
+    },
+    "gate5": {
+        "migrationOnCopy": True,
+        "backupVerified": True,
+        "rollbackReady": True,
+    },
+}
+
+
 def main() -> None:
     real = tools()
     intent = real.classify_intent(PROMPT)
@@ -186,12 +202,13 @@ def main() -> None:
     clean = real.scan_generated({"files": ["src/app/page.tsx"], "diff": "+ const title = 'Wax';"})
     assert clean["passed"] is True
 
-    qa_ok = real.run_checks({"branch": "feature/generated-smoke"})
+    qa_ok = real.run_checks(QA_OK)
     assert qa_ok["passed"] is True
-    qa_ko = tools(qa=((sys.executable, "-c", "raise SystemExit(1)"),)).run_checks(
-        {"branch": "feature/generated-smoke"}
-    )
+    assert qa_ok["gate"] == "g5"
+    qa_ko = tools(qa=((sys.executable, "-c", "raise SystemExit(1)"),)).run_checks(QA_OK)
     assert qa_ko["passed"] is False
+    qa_prod = real.run_checks({**QA_OK, "production": True})
+    assert qa_prod["passed"] is False
 
     preview = real.create_preview({"blueprint": generated})
     assert preview == {
