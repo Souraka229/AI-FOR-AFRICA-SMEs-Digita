@@ -23,7 +23,7 @@ export async function createSandboxPayment(input: {
     return { ok: false as const, error: "Panier vide — montant recalculé serveur." };
   }
 
-  const idemKey = `${input.tenantSlug}:${[...input.itemSkus].sort().join("+")}:${input.channel}`;
+  const idemKey = `${input.tenantSlug}:${[...input.itemSkus].sort((a, b) => a.localeCompare(b)).join("+")}:${input.channel}`;
   try {
     const entry = await getPaymentProvider().createTransaction({
       tenantSlug: input.tenantSlug,

@@ -40,7 +40,7 @@ async function main() {
   if (!verifyGeniusPaySignature('{"reference":"x"}', "100", valid, SECRET)) {
     fail("HMAC : signature valide rejetée.");
   }
-  const forged = createHmac("sha256", "whsec_sandbox_other")
+  const forged = createHmac("sha256", "x")
     .update('100.{"reference":"x"}')
     .digest("hex");
   if (verifyGeniusPaySignature('{"reference":"x"}', "100", forged, SECRET)) {

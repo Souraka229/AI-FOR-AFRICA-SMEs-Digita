@@ -2,7 +2,7 @@
 
 Usage (base jetable, jamais la base démo) :
 
-  set DATABASE_URL=postgresql://afrosite:afrosite_dev@127.0.0.1:5432/afrosite_migration_test
+  set DATABASE_URL=postgresql://afrosite:<password>@127.0.0.1:5432/afrosite_migration_test
   python check_migrations.py
 """
 
