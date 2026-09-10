@@ -1,0 +1,110 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 440" role="img" aria-label="Afrosite — décrivez votre activité, vendez et encaissez en Mobile Money, sans une ligne de code">
+  <defs>
+    <pattern id="lat" width="26" height="26" patternUnits="userSpaceOnUse">
+      <path d="M13 0 L26 13 L13 26 L0 13 Z" fill="none" stroke="#C1502E" stroke-width="1"/>
+    </pattern>
+    <radialGradient id="glow" cx="80%" cy="14%" r="72%">
+      <stop offset="0" stop-color="#D89B3C" stop-opacity="0.32"/>
+      <stop offset="52%" stop-color="#C1502E" stop-opacity="0.10"/>
+      <stop offset="100%" stop-color="#C1502E" stop-opacity="0"/>
+    </radialGradient>
+    <clipPath id="fr"><rect width="1280" height="440"/></clipPath>
+    <style>
+      .bg{fill:#FBF4EC}
+      .ink{fill:#211B17}.soft{fill:#5C4F45}.faint{fill:#8B7A68}
+      .brand{fill:#C1502E}.gold{fill:#D89B3C}
+      .ghost{fill:#C1502E;opacity:.11}
+      .card{fill:#FEFBF6;stroke:#E6D1B6}
+      .hair{stroke:#E6D1B6}
+      .lat path{stroke:#C1502E}
+      .latg{opacity:.15;animation:drift 20s linear infinite}
+      .dot{animation:pulse 2.2s ease-in-out infinite}
+      .scan{fill:#C1502E;animation:scan 5s ease-in-out infinite}
+      .rise{opacity:0;transform:translateY(16px);animation:rise .75s cubic-bezier(.2,.7,.2,1) forwards}
+      .r1{animation-delay:.04s}.r2{animation-delay:.13s}.r3{animation-delay:.22s}.r4{animation-delay:.31s}.r5{animation-delay:.4s}
+      .gn{animation:s1 6s ease-in-out infinite}
+      .gp{animation:s2 6s ease-in-out infinite}
+      .gd{animation:s3 6s ease-in-out infinite}
+      @keyframes pulse{0%,100%{opacity:1}50%{opacity:.28}}
+      @keyframes drift{to{transform:translate(26px,26px)}}
+      @keyframes scan{0%{transform:translateX(-160px)}50%{transform:translateX(1200px)}100%{transform:translateX(-160px)}}
+      @keyframes rise{to{opacity:1;transform:translateY(0)}}
+      @keyframes s1{0%,26%{opacity:1}30%,96%{opacity:0}100%{opacity:1}}
+      @keyframes s2{0%,26%{opacity:0}30%,54%{opacity:1}58%,100%{opacity:0}}
+      @keyframes s3{0%,56%{opacity:0}60%,95%{opacity:1}100%{opacity:0}}
+      @media (prefers-color-scheme:dark){
+        .bg{fill:#16110E}
+        .ink{fill:#F3E8D8}.soft{fill:#C7B7A3}.faint{fill:#94816D}
+        .brand{fill:#E27E55}.gold{fill:#E1AD58}
+        .ghost{fill:#E27E55;opacity:.13}
+        .card{fill:#241C15;stroke:#3B2F24}
+        .hair{stroke:#3B2F24}
+        .lat path{stroke:#E27E55}
+        .scan{fill:#E27E55}
+      }
+      @media (prefers-reduced-motion:reduce){
+        .latg,.dot,.scan,.rise,.gn,.gp,.gd{animation:none}
+        .rise{opacity:1;transform:none}
+        .gn,.gp{opacity:0}.gd{opacity:1}
+      }
+    </style>
+  </defs>
+
+  <g clip-path="url(#fr)">
+    <rect class="bg" width="1280" height="440"/>
+    <rect width="1280" height="440" fill="url(#glow)"/>
+    <g class="lat latg"><rect x="-26" y="-26" width="1332" height="492" fill="url(#lat)"/></g>
+
+    <!-- LEFT -->
+    <g transform="translate(92,84)" font-family="'Segoe UI',system-ui,-apple-system,Roboto,Helvetica,Arial,sans-serif">
+      <text class="faint r1 rise" x="4" y="0" style="font-weight:600;font-size:14px;letter-spacing:4px">BÉNIN · UEMOA · MOBILE MONEY</text>
+
+      <g transform="translate(0,30)">
+        <path class="brand" d="M48 6 L92 100 H71 L48 50 L25 100 H4 Z"/>
+        <circle class="gold dot" cx="48" cy="-4" r="8"/>
+      </g>
+
+      <text class="ghost" x="122" y="120" style="font-weight:700;font-size:100px;letter-spacing:-5px">afrosite</text>
+      <text class="ink r2 rise" x="116" y="114" style="font-weight:700;font-size:100px;letter-spacing:-5px">afrosite</text>
+
+      <text class="soft r3 rise" x="118" y="166" style="font-weight:400;font-size:24px">Décrivez votre activité. Vendez et encaissez en Mobile Money.</text>
+      <text class="ink r4 rise" x="118" y="202" style="font-weight:600;font-size:24px">Sans une ligne de code.</text>
+
+      <g class="r5 rise" transform="translate(118,232)" style="font-weight:600;font-size:13px">
+        <g><rect class="hair" width="60" height="30" rx="15" fill="none"/><text class="soft" x="30" y="20" text-anchor="middle">FCFA</text></g>
+        <g transform="translate(72,0)"><rect class="hair" width="86" height="30" rx="15" fill="none"/><text class="soft" x="43" y="20" text-anchor="middle">Français</text></g>
+        <g transform="translate(170,0)"><rect class="hair" width="84" height="30" rx="15" fill="none"/><text class="soft" x="42" y="20" text-anchor="middle">Android</text></g>
+        <g transform="translate(266,0)"><rect class="hair" width="118" height="30" rx="15" fill="none"/><text class="soft" x="59" y="20" text-anchor="middle">Réseau lent</text></g>
+      </g>
+    </g>
+
+    <!-- RIGHT: live sale -->
+    <g transform="translate(824,92)" font-family="'Segoe UI',system-ui,-apple-system,Roboto,Helvetica,Arial,sans-serif">
+      <rect class="card" width="364" height="262" rx="24" stroke-width="1.5"/>
+      <g transform="translate(28,32)">
+        <circle class="brand" cx="6" cy="-4" r="5"/>
+        <text class="soft" x="20" y="0" style="font-size:14px">Boutique Awa — Caisse</text>
+        <text class="faint" x="308" y="0" text-anchor="end" style="font-weight:500;font-size:12px;font-family:ui-monospace,Menlo,Consolas,monospace">#A-2048</text>
+        <line class="hair" x1="0" y1="16" x2="308" y2="16" stroke-dasharray="3 4"/>
+
+        <text class="faint" x="0" y="50" style="font-size:13px">Tissu wax × 3</text>
+        <text class="ink" x="308" y="50" text-anchor="end" style="font-weight:600;font-size:15px">15 000</text>
+        <text class="faint" x="0" y="76" style="font-size:13px">Foulard brodé × 1</text>
+        <text class="ink" x="308" y="76" text-anchor="end" style="font-weight:600;font-size:15px">9 500</text>
+        <line class="hair" x1="0" y1="96" x2="308" y2="96" stroke-dasharray="3 4"/>
+
+        <text class="soft" x="0" y="128" style="font-weight:400;font-size:11px;letter-spacing:2px">TOTAL</text>
+        <text class="ink" x="308" y="134" text-anchor="end" style="font-weight:700;font-size:29px">24 500<tspan class="faint" style="font-weight:400;font-size:12px"> FCFA</tspan></text>
+
+        <g transform="translate(0,154)">
+          <g class="gn"><rect width="308" height="42" rx="12" fill="none" stroke="#C9B693"/><circle cx="22" cy="21" r="5" fill="#8B7A68"/><text x="40" y="26" class="soft" style="font-weight:600;font-size:14px">Nouvelle commande</text></g>
+          <g class="gp"><rect width="308" height="42" rx="12" fill="#B8791C22" stroke="#B8791C"/><circle cx="22" cy="21" r="5" fill="#B8791C"/><text x="40" y="26" style="font-weight:600;font-size:14px;fill:#B8791C">Paiement Mobile Money…</text></g>
+          <g class="gd"><rect width="308" height="42" rx="12" fill="#1F7A5322" stroke="#1F7A53"/><path d="M16 21 l5 5 l10 -12" fill="none" stroke="#1F7A53" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><text x="40" y="26" style="font-weight:600;font-size:14px;fill:#1F7A53">Paiement confirmé</text></g>
+        </g>
+      </g>
+    </g>
+
+    <rect class="hair" x="0" y="437" width="1280" height="1"/>
+    <rect class="scan" x="0" y="436" width="150" height="3"/>
+  </g>
+</svg>
