@@ -203,3 +203,27 @@ class StudioTools:
             "version": created.get("version"),
             "production": False,
         }
+
+    def prepare_release(self, payload: dict) -> dict:
+        """Prépare une release preview. Jamais de déploiement production (Gate 6)."""
+        artifact = payload.get("artifact") or {}
+        blueprint = payload.get("blueprint") or artifact.get("blueprint") or {}
+        preview = payload.get("preview") or {}
+        if blueprint.get("deployment_target") and blueprint["deployment_target"] != "preview":
+            raise StudioError("Gate 6 : déploiement production refusé sans confirmation admin")
+        if preview.get("production") is True:
+            raise StudioError("une preview marquée production est refusée")
+        return {
+            "kind": "preview",
+            "production": False,
+            "preview_url": preview.get("url") or preview.get("href"),
+            "branch": artifact.get("branch"),
+            "coolify": False,
+            "gate6": {
+                "admin_confirmed": False,
+                "progressive_deploy": False,
+                "monitoring_active": False,
+                "rollback_ready": True,
+                "passed": False,
+            },
+        }

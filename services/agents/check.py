@@ -36,11 +36,22 @@ class FakeTools:
         return {"passed": artifact["branch"].startswith("feature/generated-")}
 
     def create_preview(self, artifact: dict) -> dict:
-        return {"url": "https://preview.invalid/check", "production": False}
+        return {"url": "/t/check", "production": False}
+
+    def prepare_release(self, payload: dict) -> dict:
+        preview = payload["preview"]
+        return {
+            "kind": "preview",
+            "production": False,
+            "preview_url": preview["url"],
+            "coolify": False,
+            "gate6": {"passed": False, "admin_confirmed": False},
+        }
 
 
 def main() -> None:
     assert TOOL_WHITELISTS["code"] == frozenset({"generate_overlay"})
+    assert TOOL_WHITELISTS["deployment"] == frozenset({"prepare_release"})
     graph = build_graph(FakeTools())
     config = {"configurable": {"thread_id": "smoke-approved"}}
     paused = graph.invoke({"prompt": "Boutique wax à Cadjehoun"}, config)
@@ -48,8 +59,10 @@ def main() -> None:
     assert paused["__interrupt__"][0].value["type"] == "blueprint_approval"
 
     finished = graph.invoke(Command(resume=True), config)
-    assert finished["stage"] == "preview"
+    assert finished["stage"] == "deployment"
     assert finished["preview"]["production"] is False
+    assert finished["release"]["production"] is False
+    assert finished["release"]["gate6"]["passed"] is False
 
     rejected_config = {"configurable": {"thread_id": "smoke-rejected"}}
     graph.invoke({"prompt": "Maquis à Fidjrossè"}, rejected_config)
@@ -70,7 +83,7 @@ def main() -> None:
             "sha256:d98aabf32c29de5d4e78040fe2b80e44dc7513ebd8678a19cc05bc0b79eb7ed6"
         )
 
-    print("check:agents OK · checkpoint · interrupt · reprise · overlay · preview")
+    print("check:agents OK · checkpoint · interrupt · reprise · overlay · preview · release")
 
 
 if __name__ == "__main__":

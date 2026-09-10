@@ -12,6 +12,7 @@ TOOL_WHITELISTS: dict[str, frozenset[str]] = {
     "security": frozenset({"scan_generated"}),
     "qa": frozenset({"run_checks"}),
     "preview": frozenset({"create_preview"}),
+    "deployment": frozenset({"prepare_release"}),
 }
 
 
@@ -29,3 +30,5 @@ class AgentTools(Protocol):
     def run_checks(self, artifact: dict) -> dict: ...
 
     def create_preview(self, artifact: dict) -> dict: ...
+
+    def prepare_release(self, payload: dict) -> dict: ...

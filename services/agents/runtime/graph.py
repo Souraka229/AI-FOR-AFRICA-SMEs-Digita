@@ -21,6 +21,7 @@ class RunState(TypedDict, total=False):
     security: dict
     qa: dict
     preview: dict
+    release: dict
     stage: str
 
 
@@ -86,6 +87,18 @@ def build_graph(tools: AgentTools, checkpointer=None):
             "stage": "preview",
         }
 
+    def deployment_node(state: RunState) -> RunState:
+        return {
+            "release": tools.prepare_release(
+                {
+                    "artifact": state["artifact"],
+                    "preview": state["preview"],
+                    "blueprint": state["blueprint"],
+                }
+            ),
+            "stage": "deployment",
+        }
+
     def after_gate(state: RunState) -> Literal["approval", "__end__"]:
         return "approval" if state["gate1"].get("passed") else END
 
@@ -106,6 +119,7 @@ def build_graph(tools: AgentTools, checkpointer=None):
     builder.add_node("security", security_node)
     builder.add_node("qa", qa_node)
     builder.add_node("preview", preview_node)
+    builder.add_node("deployment", deployment_node)
 
     builder.add_edge(START, "intent")
     builder.add_edge("intent", "architect")
@@ -115,5 +129,6 @@ def build_graph(tools: AgentTools, checkpointer=None):
     builder.add_edge("code", "security")
     builder.add_conditional_edges("security", after_security)
     builder.add_conditional_edges("qa", after_qa)
-    builder.add_edge("preview", END)
+    builder.add_edge("preview", "deployment")
+    builder.add_edge("deployment", END)
     return builder.compile(checkpointer=checkpointer or MemorySaver())

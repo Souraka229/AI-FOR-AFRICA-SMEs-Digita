@@ -208,6 +208,44 @@ def main() -> None:
     else:  # pragma: no cover - garde-fou
         raise AssertionError("production non bloquée")
 
+    release = real.prepare_release(
+        {
+            "artifact": {"branch": "feature/generated-smoke", "blueprint": generated},
+            "preview": preview,
+            "blueprint": generated,
+        }
+    )
+    assert release["production"] is False
+    assert release["coolify"] is False
+    assert release["gate6"]["passed"] is False
+    assert release["preview_url"] == "/t/cadjehoun-wax"
+
+    try:
+        real.prepare_release(
+            {
+                "artifact": {"branch": "feature/generated-smoke"},
+                "preview": preview,
+                "blueprint": blueprint(deployment_target="production"),
+            }
+        )
+    except StudioError:
+        pass
+    else:  # pragma: no cover - garde-fou
+        raise AssertionError("prepare_release production non bloquée")
+
+    try:
+        real.prepare_release(
+            {
+                "artifact": {"branch": "feature/generated-smoke"},
+                "preview": {"url": "/t/cadjehoun-wax", "production": True},
+                "blueprint": generated,
+            }
+        )
+    except StudioError:
+        pass
+    else:  # pragma: no cover - garde-fou
+        raise AssertionError("preview production non bloquée")
+
     try:
         tools(fail=True).classify_intent(PROMPT)
     except StudioError as error:
@@ -215,7 +253,9 @@ def main() -> None:
     else:  # pragma: no cover - garde-fou
         raise AssertionError("erreur Studio non propagée")
 
-    print("check:adapters OK · NDJSON · Gate 1 Pydantic · garde-fous partagés · QA · preview")
+    print(
+        "check:adapters OK · NDJSON · Gate 1 Pydantic · garde-fous partagés · QA · preview · release"
+    )
 
 
 if __name__ == "__main__":

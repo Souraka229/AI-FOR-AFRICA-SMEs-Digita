@@ -34,6 +34,7 @@ graphe.
 | Security | `scan_generated_artifact`, mêmes règles que le TypeScript (`generation-guardrails.json`) |
 | QA | commandes fixes (`check`, `eval:agents`, `eval:llm`, `lint`), jamais de shell |
 | Preview | `POST /api/studio/preview`, refusé si la cible n’est pas `preview` |
+| Deployment | `prepare_release` : dossier Gate 6, jamais de Coolify ni de production |
 
 ```powershell
 $env:STUDIO_BASE_URL='http://127.0.0.1:3000'
