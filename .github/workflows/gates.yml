@@ -1,0 +1,39 @@
+name: OPA gate policies
+
+on:
+  pull_request:
+    paths:
+      - "infra/gates/**"
+      - ".github/workflows/gates.yml"
+  push:
+    branches: [main]
+    paths:
+      - "infra/gates/**"
+      - ".github/workflows/gates.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  opa:
+    name: Validate and test six gates
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+
+      - name: OPA strict check
+        run: |
+          docker run --rm \
+            -v "$GITHUB_WORKSPACE:/workspace" \
+            -w /workspace \
+            openpolicyagent/opa:1.20.2-static@sha256:bb245e9e36be0d0ed486c240b606c56be7aba96014a4a87895fed4ba7a6dfa8d \
+            check --strict infra/gates
+
+      - name: OPA policy tests
+        run: |
+          docker run --rm \
+            -v "$GITHUB_WORKSPACE:/workspace" \
+            -w /workspace \
+            openpolicyagent/opa:1.20.2-static@sha256:bb245e9e36be0d0ed486c240b606c56be7aba96014a4a87895fed4ba7a6dfa8d \
+            test infra/gates -v

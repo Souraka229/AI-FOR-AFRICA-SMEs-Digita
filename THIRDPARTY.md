@@ -132,6 +132,19 @@
 | Plan de sortie | Dashboards as code ; remote_write vers autre stack |
 | Statut repo | **Pas encore dans compose** — pins documentés |
 
+## 11. open-policy-agent/opa
+
+| Champ | Valeur |
+|---|---|
+| Rôle | Règles exécutables des gates G1 à G6 |
+| Isolation | Politiques Rego dans `infra/gates`, exécution conteneurisée en CI |
+| Pin actuel | `openpolicyagent/opa:1.20.2-static` @ `sha256:bb245e9e36be0d0ed486c240b606c56be7aba96014a4a87895fed4ba7a6dfa8d` |
+| Preuve | GitHub release officielle `v1.20.2` (2026-09-03), `docker pull`, `docker image inspect`, `opa version` le 2026-09-10 |
+| Cadence upgrade | Trimestrielle, PR manuelle |
+| Checklist pré-upgrade | `opa check --strict infra/gates` puis `opa test infra/gates -v` |
+| Plan de sortie | Rego reste versionné ; autre moteur possible derrière le même contrat `allow` / `deny` |
+| Statut repo | **Câblé en CI** dans `.github/workflows/gates.yml` |
+
 ## Hygiène
 
 - Lockfiles commités (`uv.lock`, `pnpm-lock.yaml`).
