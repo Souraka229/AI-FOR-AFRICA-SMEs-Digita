@@ -132,6 +132,20 @@
 | Plan de sortie | Dashboards as code ; remote_write vers autre stack |
 | Statut repo | **Pas encore dans compose** — pins documentés |
 
+## 11. coollabsio/coolify
+
+| Champ | Valeur |
+|---|---|
+| Rôle | Déploiement des previews (PaaS self-hosted) |
+| Isolation | `infra/coolify/deploy_preview.py` — API v1 seule, stdlib, zéro dépendance |
+| Version vérifiée | `v4.3.18` (publiée 2026-09-08) |
+| Preuve | `gh api repos/coollabsio/coolify/releases/latest` le 2026-09-10 ; `openapi.json` au tag `v4.3.18` (`operationId: deploy-by-tag-or-uuid`) |
+| Digest image | **Non épinglé** — instance auto-hébergée hors dépôt, aucun digest vérifié |
+| Cadence upgrade | Suivi des releases, PR manuelle |
+| Checklist pré-upgrade | `python infra/coolify/check_deploy_preview.py` ; vérifier que `POST /api/v1/deploy` et `GET /api/v1/deployments/{uuid}` n'ont pas changé dans `openapi.json` |
+| Plan de sortie | Le script parle l'API v1 derrière une seule fonction : swap vers CapRover / Dokku sans toucher la CI |
+| Statut repo | **Câblé en CI, non prouvé en réel** — aucune instance Coolify ni secret disponible à ce jour |
+
 ## Hygiène
 
 - Lockfiles commités (`uv.lock`, `pnpm-lock.yaml`).

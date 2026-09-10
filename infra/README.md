@@ -70,6 +70,13 @@ set DATABASE_URL=postgresql://afrosite:afrosite_dev@127.0.0.1:5432/afrosite
 python -m alembic upgrade head
 ```
 
+## Previews Coolify
+
+Le déploiement des previews est déclenché en CI par
+[`infra/coolify/deploy_preview.py`](coolify/deploy_preview.py). Voir
+[`infra/coolify/README.md`](coolify/README.md) pour les secrets à créer et les
+garde-fous. Sans secrets, la CI n’échoue pas : le job est simplement ignoré.
+
 ## Variables paiement (sandbox uniquement)
 
 Copier `apps/web/.env.example` vers `apps/web/.env.local`.  
