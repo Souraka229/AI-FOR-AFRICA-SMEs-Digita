@@ -6,8 +6,9 @@ Rien n est invente. Captures live + images officielles + docs produit.
 ## Volume
 
 - Vague 1: 30 produits (10 sept, matin)
-- Vague 2: +20 produits (10 sept, midi) KKiaPay, LigdiCash, PayDunya, Woodin, Glovo, Durable, Webflow, Squarespace, 21st, Claude public, Fresha, Salla, Superhuman, Mercury, MTN MoMo, Glovo CI
-- Bloques: Jumia.ci, TheFork.fr (challenge), Claude.ai app (login). Page Anthropic Claude OK.
+- Vague 2: +20 produits (midi) KKiaPay, LigdiCash, PayDunya, Woodin, Glovo, Durable, Claude public, Fresha, Salla, MTN MoMo
+- Vague 3: WhatsApp Business, Orange Money CI, Yas/Mixx Senegal
+- Bloques: Jumia.ci, TheFork.fr, Shopify /whatsapp 404, WhatsApp payments 404
 - Docs: Instant, Relume, Prompt Area, Wave, FedaPay, KKiaPay
 
 Dossier: `references/captures/{composers,landings,commerce,paiements}`
