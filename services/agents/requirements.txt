@@ -1,0 +1,10 @@
+langgraph==1.2.11
+langgraph-checkpoint-postgres==3.1.2
+psycopg[binary,pool]==3.2.9
+pydantic==2.12.5
+httpx==0.28.1
+litellm==1.99.0
+openhands-sdk==1.44.1
+openhands-tools==1.44.1
+openhands-workspace==1.44.1
+openhands-agent-server==1.44.1
