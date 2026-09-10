@@ -43,6 +43,23 @@ POST /tenants                            # amorçage local, jamais en production
 `AFROSITE_AUTH_SECRET` reste serveur uniquement. Aucun jeton ni secret dans les
 logs, le navigateur ou le dépôt.
 
+## Traces OpenTelemetry
+
+L’API canonique `afrosite_api.main:app` s’instrumente automatiquement quand
+`OTEL_EXPORTER_OTLP_ENDPOINT` est défini. Sans cette variable, aucun exporteur
+ni trafic réseau n’est créé.
+
+```bash
+set OTEL_EXPORTER_OTLP_ENDPOINT=http://127.0.0.1:4318
+set OTEL_SERVICE_NAME=afrosite-api
+uv run uvicorn afrosite_api.main:app --reload --port 8000
+```
+
+L’instrumentation utilise le SDK OpenTelemetry officiel et l’exporteur
+OTLP/HTTP standard. `/health` est exclu des traces. Le test
+`tests/test_observability.py` couvre le mode désactivé, les spans FastAPI, le
+filtrage health et un vrai POST protobuf vers un serveur OTLP local factice.
+
 ## Schéma (Alembic)
 
 Source de vérité : `migrations/versions/`. Plus d’init Docker SQL.

@@ -148,3 +148,14 @@
 | Zod | `3.25.76` | `packages/contracts` | Blueprint v0.1.0 + `generation-guardrails.json` (TS et Python) |
 | Playwright | `1.55.0` | `apps/web` | E2E desktop + Pixel 7 ; pin npm distinct du pin documenté §8 en attente d’alignement |
 | OpenHands SDK | `1.44.1` · image `sha256:d98aabf…7ed6` | `services/agents/runtime/code_agent.py` | Docker only, digest épinglé, jamais `latest` |
+
+## Câblé dans l’API (Python) — télémétrie standard
+
+| Brique | Version lock | Où | Note |
+|---|---|---|---|
+| OpenTelemetry SDK | `1.44.0` | `services/api/afrosite_api/observability.py` | Provider de traces opt-in, ressource `afrosite-api` |
+| Exporteur OTLP HTTP | `1.44.0` | idem | `OTEL_EXPORTER_OTLP_ENDPOINT`, chemin standard `/v1/traces` |
+| Instrumentation FastAPI | `0.65b0` | idem | Spans HTTP automatiques ; `/health` exclu |
+
+Versions vérifiées le 2026-09-10 avec `pip index versions` (`--pre` pour
+l’instrumentation FastAPI), puis résolues dans `uv.lock`.

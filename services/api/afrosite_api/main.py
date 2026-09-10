@@ -7,6 +7,7 @@ from fastapi import FastAPI
 from afrosite_api.auth.router import router as auth_router
 from afrosite_api.catalog.router import router as catalog_router
 from afrosite_api.ledger.router import router as ledger_router
+from afrosite_api.observability import configure_telemetry
 from afrosite_api.orders.router import router as orders_router
 from afrosite_api.payments.router import router as payments_router
 from afrosite_api.tenants.router import router as tenants_router
@@ -22,6 +23,7 @@ app.include_router(catalog_router)
 app.include_router(orders_router)
 app.include_router(ledger_router)
 app.include_router(payments_router)
+telemetry = configure_telemetry(app)
 
 
 @app.get("/health")
