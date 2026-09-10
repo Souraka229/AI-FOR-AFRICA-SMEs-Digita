@@ -46,10 +46,14 @@ const blueprintOutput = {
 const screenshot = "data:image/png;base64,iVBORw0KGgo=";
 
 async function main() {
+  const streamedAudit: string[] = [];
   const result = await runPipeline(
     "atelier de créations artisanales à Zogbo avec livraison et Mobile Money",
     {
       persistCost: false,
+      onAudit: (event) => {
+        streamedAudit.push(`${event.agent}:${event.action}`);
+      },
       models: {
         intent: mockStructuredModel(intentOutput, { cacheRead: 3 }),
         architect: mockStructuredModel(blueprintOutput, { cacheRead: 4 }),
@@ -64,6 +68,12 @@ async function main() {
   }
   if (!result.gate1.passed || result.usage.cacheReadTokens !== 7) {
     throw new Error("Gate 1 ou métriques cache invalides.");
+  }
+  if (result.audit.length !== 5 || streamedAudit.length !== 5) {
+    throw new Error("Audit trail incomplet (attendu : 5 événements live).");
+  }
+  if (!result.audit.every((event) => event.at && event.agent && event.action && event.result)) {
+    throw new Error("Audit trail illisible : horodatage, agent, action ou résultat manquant.");
   }
 
   const repaired = await buildBlueprint(

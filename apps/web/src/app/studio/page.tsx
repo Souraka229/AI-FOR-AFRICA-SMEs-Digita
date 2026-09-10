@@ -5,7 +5,7 @@ import { StudioClient } from "./studio-client";
 export const metadata: Metadata = {
   title: "Studio — Afrosite",
   description:
-    "Prompt en français vers un Blueprint JSON validé. Intent Agent, Product Architect, Gate 1.",
+    "Plan, coût estimé et audit trail en direct. Accord explicite avant preview.",
   robots: { index: false, follow: false },
 };
 
