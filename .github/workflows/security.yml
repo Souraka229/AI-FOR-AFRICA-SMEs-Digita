@@ -51,3 +51,21 @@ jobs:
         uses: github/codeql-action/analyze@faaca9a8f6edddba5725ffe5adefdab6669a2eca # v3.38.0
         with:
           category: "/language:${{ matrix.language }}"
+
+  semgrep:
+    name: Semgrep SAST (OSS)
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+
+      - name: Semgrep OSS p/ci
+        run: |
+          docker run --rm \
+            -e SEMGREP_SEND_METRICS=off \
+            -v "$GITHUB_WORKSPACE:/src" \
+            -w /src \
+            semgrep/semgrep:1.176.0@sha256:12672acdb0949e19f9f6a4c2b288edd0b404f268f0ca7738a2c06f372f50362e \
+            semgrep scan --config p/ci --severity ERROR --metrics off --error
+

@@ -1,0 +1,11 @@
+# Cibles hors scan SAST (Semgrep OSS p/ci).
+.git/
+.venv/
+node_modules/
+**/node_modules/
+**/.next/
+**/dist/
+**/coverage/
+pnpm-lock.yaml
+uv.lock
+apps/web/.demo/

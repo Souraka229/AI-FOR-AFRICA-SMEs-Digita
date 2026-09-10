@@ -132,6 +132,19 @@
 | Plan de sortie | Dashboards as code ; remote_write vers autre stack |
 | Statut repo | **Pas encore dans compose** — pins documentés |
 
+## 11. semgrep/semgrep
+
+| Champ | Valeur |
+|---|---|
+| Rôle | SAST OSS (playbook §14 : Semgrep + CodeQL + TruffleHog) |
+| Isolation | Job CI `.github/workflows/security.yml` — image officielle, pack `p/ci` |
+| Pin actuel | `semgrep/semgrep:1.176.0` @ `sha256:12672acdb0949e19f9f6a4c2b288edd0b404f268f0ca7738a2c06f372f50362e` |
+| Preuve | GitHub release `v1.176.0` (2026-09-01) ; `docker pull` + `inspect` + `semgrep --version` le 2026-09-10 |
+| Cadence upgrade | Mensuelle, PR manuelle |
+| Checklist pré-upgrade | `semgrep scan --config p/ci --severity ERROR --metrics off --error` |
+| Plan de sortie | Swap d'image ; les règles restent celles du registre OSS `p/ci` |
+| Statut repo | **Câblé en CI** — 0 finding ERROR sur `origin/main` (2026-09-10). Pas de `SEMGREP_APP_TOKEN` (SaaS hors périmètre). |
+
 ## Hygiène
 
 - Lockfiles commités (`uv.lock`, `pnpm-lock.yaml`).
