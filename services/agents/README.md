@@ -33,7 +33,7 @@ graphe.
 | Code | `runtime/code_agent.py` dans un conteneur épinglé par digest, renvoie un diff |
 | Security | `scan_generated_artifact`, mêmes règles que le TypeScript (`generation-guardrails.json`) |
 | QA | commandes fixes (`check`, `eval:agents`, `eval:llm`, `lint`), jamais de shell |
-| Preview | `POST /api/studio/preview`, refusé si la cible n’est pas `preview` |
+| Preview | `POST /api/studio/preview` + capture desktop/mobile sandbox `/t/{slug}` uniquement |
 
 ```powershell
 $env:STUDIO_BASE_URL='http://127.0.0.1:3000'

@@ -126,14 +126,18 @@ def studio_transport(*, fail: bool = False) -> httpx.MockTransport:
                 ),
             )
         if request.url.path == "/api/studio/preview":
-            return httpx.Response(
-                200,
-                json={
-                    "href": "/t/cadjehoun-wax",
-                    "slug": "cadjehoun-wax",
-                    "version": "v1",
-                },
-            )
+            payload = json.loads(request.content.decode("utf-8")) if request.content else {}
+            body = {
+                "href": "/t/cadjehoun-wax",
+                "slug": "cadjehoun-wax",
+                "version": "v1",
+            }
+            if payload.get("capture"):
+                body["captures"] = {
+                    "desktop": "data:image/png;base64,iVBORw0KGgo=",
+                    "mobile": "data:image/png;base64,iVBORw0KGgo=",
+                }
+            return httpx.Response(200, json=body)
         return httpx.Response(404, json={"error": "route inconnue"})
 
     return httpx.MockTransport(handler)
@@ -199,6 +203,10 @@ def main() -> None:
         "slug": "cadjehoun-wax",
         "version": "v1",
         "production": False,
+        "captures": {
+            "desktop": "data:image/png;base64,iVBORw0KGgo=",
+            "mobile": "data:image/png;base64,iVBORw0KGgo=",
+        },
     }
 
     try:
@@ -215,7 +223,9 @@ def main() -> None:
     else:  # pragma: no cover - garde-fou
         raise AssertionError("erreur Studio non propagée")
 
-    print("check:adapters OK · NDJSON · Gate 1 Pydantic · garde-fous partagés · QA · preview")
+    print(
+        "check:adapters OK · NDJSON · Gate 1 Pydantic · garde-fous partagés · QA · preview sandbox + captures"
+    )
 
 
 if __name__ == "__main__":

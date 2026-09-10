@@ -89,7 +89,10 @@ class StudioClient:
 
     def create_preview(self, blueprint: dict) -> dict:
         with self._client() as client:
-            response = client.post("/api/studio/preview", json={"blueprint": blueprint})
+            response = client.post(
+                "/api/studio/preview",
+                json={"blueprint": blueprint, "capture": True},
+            )
             if response.status_code != 200:
                 raise StudioError(f"preview refusée ({response.status_code}): {response.text}")
             return response.json()
@@ -197,9 +200,14 @@ class StudioTools:
         if blueprint["deployment_target"] != "preview":
             raise StudioError("le graphe ne déploie jamais en production")
         created = self.client.create_preview(blueprint)
-        return {
+        preview = {
             "url": created["href"],
             "slug": created.get("slug"),
             "version": created.get("version"),
             "production": False,
         }
+        if created.get("captures"):
+            preview["captures"] = created["captures"]
+        if created.get("captureError"):
+            preview["captureError"] = created["captureError"]
+        return preview

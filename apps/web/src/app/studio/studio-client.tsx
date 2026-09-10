@@ -138,7 +138,7 @@ export function StudioClient() {
       const response = await fetch("/api/studio/preview", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ blueprint }),
+        body: JSON.stringify({ blueprint, capture: true }),
       });
       const data = (await response.json()) as { href?: string; error?: string };
       if (!response.ok || !data.href) {
