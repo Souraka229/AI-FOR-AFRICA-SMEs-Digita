@@ -22,6 +22,7 @@ from afrosite_contracts import (  # noqa: E402
 )
 
 from runtime.code_agent import generate_overlay  # noqa: E402
+from runtime.qa import run_qa_agent  # noqa: E402
 
 DEFAULT_QA_COMMANDS: tuple[tuple[str, ...], ...] = (
     ("pnpm", "--filter", "@afrosite/contracts", "check"),
@@ -186,11 +187,18 @@ class StudioTools:
                     "passed": completed.returncode == 0,
                 }
             )
-        return {
+        command_report = {
             "passed": bool(results) and all(row["passed"] for row in results),
             "results": results,
-            "branch": artifact["branch"],
+            "branch": artifact.get("branch"),
         }
+        qa = run_qa_agent(
+            {
+                **artifact,
+                "unit_passed": command_report["passed"],
+            }
+        )
+        return {**qa, "results": results, "branch": artifact.get("branch")}
 
     def create_preview(self, artifact: dict) -> dict:
         blueprint = artifact["blueprint"]
