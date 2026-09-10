@@ -1,0 +1,143 @@
+name: CI
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+
+jobs:
+  web:
+    name: Gate 2 — web (lint, types, eval, pay)
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: apps/web
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+          cache-dependency-path: pnpm-lock.yaml
+      - run: pnpm install --frozen-lockfile
+        working-directory: .
+      - run: pnpm --filter @afrosite/llm check
+      - run: pnpm exec tsc --noEmit
+      - run: pnpm eval:agents
+      - run: pnpm eval:llm
+      - run: pnpm check:contracts
+      - run: pnpm check:pay
+      - run: pnpm lint
+
+  e2e:
+    name: Gate 2 — Playwright desktop/mobile
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    defaults:
+      run:
+        working-directory: apps/web
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+          cache-dependency-path: pnpm-lock.yaml
+      - run: pnpm install --frozen-lockfile
+        working-directory: .
+      - run: pnpm exec playwright install --with-deps chromium
+      - run: pnpm test:e2e
+
+  agents:
+    name: Gate 2 — LangGraph / OpenHands sandbox
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    defaults:
+      run:
+        working-directory: services/agents
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: services/agents/requirements.txt
+      - run: python -m pip install -r requirements.txt
+      - run: python check.py
+      - run: python check_adapters.py
+      - run: python check_openhands.py
+
+  api:
+    name: Gate 1 — FastAPI /health + Blueprint
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: services/api
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install -r requirements.txt
+      - run: python check.py
+
+  migrations:
+    name: Gate 1 — Alembic réversible
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: services/api
+    services:
+      postgres:
+        image: postgres:16.6
+        env:
+          POSTGRES_USER: afrosite
+          POSTGRES_PASSWORD: afrosite_dev
+          POSTGRES_DB: afrosite_migration_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U afrosite -d afrosite_migration_test"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install -r requirements.txt
+      - run: python check_migrations.py
+        env:
+          DATABASE_URL: postgresql://afrosite:afrosite_dev@127.0.0.1:5432/afrosite_migration_test
+
+  codeql:
+    name: Gate 3 — CodeQL
+    runs-on: ubuntu-latest
+    permissions:
+      actions: read
+      contents: read
+      security-events: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: github/codeql-action/init@v3
+        with:
+          languages: javascript-typescript
+      - uses: github/codeql-action/analyze@v3
+
+  security:
+    name: Gate 3 — secrets
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: trufflesecurity/trufflehog@v3.88.33
+        with:
+          extra_args: --only-verified
