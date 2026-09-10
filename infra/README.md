@@ -23,6 +23,15 @@ docker compose -f infra/docker-compose.yml up -d
 Arrêt : `docker compose -f infra/docker-compose.yml down`  
 Reset volumes : `docker compose -f infra/docker-compose.yml down -v`
 
+## Sauvegarde / restauration (DoD go-live)
+
+```bash
+docker compose -f infra/docker-compose.yml up -d postgres
+python infra/backup/check_restore.py
+```
+
+Détail et **liste de ce qui manque pour la prod** : [`infra/backup/README.md`](backup/README.md).
+
 ## Lancer l’app (démo pitch)
 
 Le paiement simulé **n’a pas besoin** de Docker. Depuis `apps/web` :
