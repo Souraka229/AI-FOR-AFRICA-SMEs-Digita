@@ -34,4 +34,5 @@ avant le premier appel LLM retarderait inutilement la preuve produit.
 - Aucun import direct d’un SDK fournisseur hors `packages/llm`.
 - Aucun fallback silencieux vers le pipeline regex en production.
 - Les appels live sont facultatifs en CI ; les faux providers sont injectés.
+- Le cache de prompts est activé par défaut. `AFROSITE_LLM_PROMPT_CACHE=0` le coupe.
 - Temporal reste réservé à l’argent et au provisioning, jamais au raisonnement.

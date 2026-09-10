@@ -62,6 +62,13 @@ const PRICE_USD_PER_MILLION: Record<string, { input: number; output: number }> =
   "openai/gpt-6-astra": { input: 10, output: 50 },
 };
 const USD_TO_XOF_ESTIMATE = 600;
+/** Lecture cache fournisseur ≈ 10 % du tarif input (Anthropic / Gateway). */
+const CACHE_READ_PRICE_RATIO = 0.1;
+
+export function isPromptCacheEnabled(): boolean {
+  const raw = process.env.AFROSITE_LLM_PROMPT_CACHE?.trim().toLowerCase();
+  return raw !== "0" && raw !== "false" && raw !== "off" && raw !== "no";
+}
 
 export class LlmConfigurationError extends Error {
   constructor(message: string) {
@@ -80,7 +87,7 @@ function resolveModel(options: LlmCallOptions): {
   model: LanguageModel;
 } {
   const id = modelId(options.capability);
-  if (options.model) return { id: `injected:${options.capability}`, model: options.model };
+  if (options.model) return { id: modelId(options.capability), model: options.model };
 
   if (process.env.AFROSITE_LLM_BACKEND === "litellm") {
     const baseURL = process.env.LITELLM_PROXY_API_BASE;
@@ -113,36 +120,74 @@ function metadata(
 ): LlmMetadata {
   const inputTokens = usage.inputTokens ?? 0;
   const outputTokens = usage.outputTokens ?? 0;
+  const cacheReadTokens = usage.inputTokenDetails.cacheReadTokens ?? 0;
+  const billedInput = Math.max(0, inputTokens - cacheReadTokens);
   const price = PRICE_USD_PER_MILLION[id];
   const estimatedCostUsd = price
-    ? (inputTokens * price.input + outputTokens * price.output) / 1_000_000
+    ? (billedInput * price.input +
+        cacheReadTokens * price.input * CACHE_READ_PRICE_RATIO +
+        outputTokens * price.output) /
+      1_000_000
     : 0;
   return {
     model: id,
     inputTokens,
     outputTokens,
     totalTokens: usage.totalTokens ?? inputTokens + outputTokens,
-    cacheReadTokens: usage.inputTokenDetails.cacheReadTokens ?? 0,
+    cacheReadTokens,
     durationMs: Date.now() - startedAt,
     estimatedCostUsd,
     estimatedCostXof: Math.ceil(estimatedCostUsd * USD_TO_XOF_ESTIMATE),
   };
 }
 
-function promptInput(options: { prompt: string; images?: string[] }):
-  | { prompt: string }
-  | { messages: ModelMessage[] } {
-  if (!options.images?.length) return { prompt: options.prompt };
+function promptCacheProviderOptions(cacheKey: string) {
+  if (!isPromptCacheEnabled()) return undefined;
   return {
+    anthropic: { cacheControl: { type: "ephemeral" as const } },
+    openai: { promptCacheKey: `afrosite:${cacheKey}` },
+  };
+}
+
+function promptInput(options: {
+  system: string;
+  prompt: string;
+  images?: string[];
+  cacheKey: string;
+}):
+  | { system: string; prompt: string }
+  | { messages: ModelMessage[]; allowSystemInMessages: true } {
+  const cacheOptions = promptCacheProviderOptions(options.cacheKey);
+  if (!cacheOptions && !options.images?.length) {
+    return { system: options.system, prompt: options.prompt };
+  }
+  const userContent = options.images?.length
+    ? [
+        { type: "text" as const, text: options.prompt },
+        ...options.images.map((image) => ({ type: "image" as const, image })),
+      ]
+    : options.prompt;
+  return {
+    allowSystemInMessages: true,
     messages: [
       {
-        role: "user",
-        content: [
-          { type: "text", text: options.prompt },
-          ...options.images.map((image) => ({ type: "image" as const, image })),
-        ],
+        role: "system",
+        content: options.system,
+        ...(cacheOptions ? { providerOptions: cacheOptions } : {}),
       },
+      { role: "user", content: userContent },
     ],
+  };
+}
+
+function telemetry(functionId: string, tags?: Record<string, string>) {
+  return {
+    isEnabled: true,
+    functionId,
+    metadata: {
+      ...tags,
+      promptCache: isPromptCacheEnabled() ? "on" : "off",
+    },
   };
 }
 
@@ -151,10 +196,15 @@ export async function generateStructured<T>(
 ): Promise<StructuredResult<T>> {
   const startedAt = Date.now();
   const resolved = resolveModel(options);
+  const functionId = `afrosite.${options.schemaName}`;
   const result = await aiGenerateText({
     model: resolved.model,
-    system: options.system,
-    ...promptInput(options),
+    ...promptInput({
+      system: options.system,
+      prompt: options.prompt,
+      images: options.images,
+      cacheKey: options.schemaName,
+    }),
     output: Output.object({
       schema: options.schema,
       name: options.schemaName,
@@ -162,11 +212,8 @@ export async function generateStructured<T>(
     }),
     abortSignal: options.abortSignal,
     maxRetries: options.maxRetries ?? 1,
-    experimental_telemetry: {
-      isEnabled: true,
-      functionId: `afrosite.${options.schemaName}`,
-      metadata: options.tags,
-    },
+    providerOptions: promptCacheProviderOptions(options.schemaName),
+    experimental_telemetry: telemetry(functionId, options.tags),
   });
   return {
     output: result.output,
@@ -177,10 +224,15 @@ export async function generateStructured<T>(
 export function streamStructured<T>(options: StructuredCallOptions<T>) {
   const startedAt = Date.now();
   const resolved = resolveModel(options);
+  const functionId = `afrosite.${options.schemaName}`;
   const result = aiStreamText({
     model: resolved.model,
-    system: options.system,
-    ...promptInput(options),
+    ...promptInput({
+      system: options.system,
+      prompt: options.prompt,
+      images: options.images,
+      cacheKey: options.schemaName,
+    }),
     output: Output.object({
       schema: options.schema,
       name: options.schemaName,
@@ -188,11 +240,8 @@ export function streamStructured<T>(options: StructuredCallOptions<T>) {
     }),
     abortSignal: options.abortSignal,
     maxRetries: options.maxRetries ?? 1,
-    experimental_telemetry: {
-      isEnabled: true,
-      functionId: `afrosite.${options.schemaName}`,
-      metadata: options.tags,
-    },
+    providerOptions: promptCacheProviderOptions(options.schemaName),
+    experimental_telemetry: telemetry(functionId, options.tags),
   });
   return {
     partialOutputStream: result.partialOutputStream,
@@ -208,15 +257,15 @@ export async function generateText(options: LlmCallOptions): Promise<TextResult>
   const resolved = resolveModel(options);
   const result = await aiGenerateText({
     model: resolved.model,
-    system: options.system,
-    prompt: options.prompt,
+    ...promptInput({
+      system: options.system,
+      prompt: options.prompt,
+      cacheKey: "text",
+    }),
     abortSignal: options.abortSignal,
     maxRetries: options.maxRetries ?? 1,
-    experimental_telemetry: {
-      isEnabled: true,
-      functionId: "afrosite.text",
-      metadata: options.tags,
-    },
+    providerOptions: promptCacheProviderOptions("text"),
+    experimental_telemetry: telemetry("afrosite.text", options.tags),
   });
   return {
     text: result.text,

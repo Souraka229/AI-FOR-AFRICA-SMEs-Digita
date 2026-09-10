@@ -4,6 +4,7 @@ import { z } from "zod";
 import {
   LlmConfigurationError,
   generateStructured,
+  isPromptCacheEnabled,
   modelId,
   streamStructured,
 } from "./index";
@@ -41,6 +42,15 @@ const result = await generateStructured({
 if (result.output.vertical !== "commerce") throw new Error("Sortie structurée invalide.");
 if (result.metadata.totalTokens !== 14) throw new Error("Comptage tokens invalide.");
 if (result.metadata.cacheReadTokens !== 2) throw new Error("Cache non mesuré.");
+if (result.metadata.estimatedCostUsd <= 0) {
+  throw new Error("Coût cache non estimé.");
+}
+if (!isPromptCacheEnabled()) throw new Error("Cache de prompts désactivé par défaut.");
+const previousCache = process.env.AFROSITE_LLM_PROMPT_CACHE;
+process.env.AFROSITE_LLM_PROMPT_CACHE = "0";
+if (isPromptCacheEnabled()) throw new Error("AFROSITE_LLM_PROMPT_CACHE=0 ignoré.");
+if (previousCache === undefined) delete process.env.AFROSITE_LLM_PROMPT_CACHE;
+else process.env.AFROSITE_LLM_PROMPT_CACHE = previousCache;
 if (!modelId("reasoning").includes("/")) throw new Error("Alias modèle invalide.");
 
 const streamingModel = new MockLanguageModelV3({
