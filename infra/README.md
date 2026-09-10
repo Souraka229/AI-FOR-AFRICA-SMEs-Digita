@@ -1,6 +1,7 @@
 # Infra locale — golden path
 
-Une commande pour le socle (Postgres, Redis, MinIO). L’app hackathon se lance à part.
+Une commande pour le socle (Postgres, Redis, MinIO, OpenTelemetry,
+Prometheus, Grafana). L’app hackathon se lance à part.
 
 ## Prérequis
 
@@ -19,6 +20,9 @@ docker compose -f infra/docker-compose.yml up -d
 | Redis | `localhost:6379` | — |
 | MinIO API | `http://localhost:9000` | `afrosite` / `afrosite_dev_minio` |
 | MinIO console | `http://localhost:9001` | idem |
+| OTLP HTTP / gRPC | `localhost:4318` / `localhost:4317` | — |
+| Prometheus | `http://localhost:9090` | — |
+| Grafana | `http://localhost:3001` | lecture anonyme locale, aucun compte admin |
 
 Arrêt : `docker compose -f infra/docker-compose.yml down`  
 Reset volumes : `docker compose -f infra/docker-compose.yml down -v`
@@ -41,6 +45,7 @@ pnpm eval:agents
 pnpm check:contracts
 pnpm check:pay
 npx tsc --noEmit
+python infra/observability/check_observability.py
 ```
 
 ## API + Next ensemble

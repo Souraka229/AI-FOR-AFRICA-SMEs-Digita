@@ -4,12 +4,16 @@ on:
   pull_request:
     paths:
       - "docker-compose.yml"
+      - "infra/docker-compose.yml"
+      - "infra/observability/**"
       - "THIRDPARTY.md"
       - ".github/workflows/smoke-thirdparty.yml"
   push:
     branches: [main]
     paths:
       - "docker-compose.yml"
+      - "infra/docker-compose.yml"
+      - "infra/observability/**"
       - "THIRDPARTY.md"
       - ".github/workflows/smoke-thirdparty.yml"
   workflow_dispatch:
@@ -22,7 +26,9 @@ jobs:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
 
       - name: docker compose config
-        run: docker compose config --quiet
+        run: |
+          docker compose config --quiet
+          docker compose -f infra/docker-compose.yml config --quiet
 
   image-digests:
     name: Resolve pinned image digests

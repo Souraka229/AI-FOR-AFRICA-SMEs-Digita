@@ -110,27 +110,27 @@
 | Champ | Valeur |
 |---|---|
 | Rôle | Traces, logs, métriques |
-| Isolation | SDK OTel derrière `packages/telemetry` (à venir) |
+| Isolation | Backend OTLP dans `infra/observability` ; SDK applicatif derrière `packages/telemetry` (à venir) |
 | Pin actuel | `otel/opentelemetry-collector:0.160.0` @ `sha256:e495787f07dbe432ce763ebaf5bc3d113850e9eee2250ade7a3da6a882d0d69a` |
 | Preuve | GitHub `open-telemetry/opentelemetry-collector-releases` latest `v0.160.0` ; `docker pull` + `inspect` |
 | Cadence upgrade | Trimestrielle |
 | Checklist pré-upgrade | Collector démarre ; reçoit une span de smoke |
 | Plan de sortie | Export OTLP standard vers autre backend |
-| Statut repo | **Pas encore dans compose** — pin documenté pour `infra/observability` |
+| Statut repo | **Câblé dans Compose** — receiver OTLP, métriques Prometheus, healthcheck ; SDK applicatif à venir |
 
 ## 10. prometheus + grafana
 
 | Champ | Valeur |
 |---|---|
 | Rôle | Surveillance, alertes |
-| Isolation | Dashboards versionnés dans `infra/observability` (à venir) |
+| Isolation | Configs et provisioning Grafana versionnés dans `infra/observability` |
 | Pin Prometheus | `prom/prometheus:v3.14.0` @ `sha256:5ce7540c3c00ef4ab0c9d2c995c6a5b9c421f44b4a115d97a2c7af3b1c21cbb0` |
 | Pin Grafana | `grafana/grafana:13.2.1` @ `sha256:f772d434e8fab0049deb2b1b30abd43342bcfca1537614aa8d36080232cf4283` |
 | Preuve | GitHub releases `prometheus/prometheus` `v3.14.0`, `grafana/grafana` `v13.2.1` ; `docker pull` + `inspect` |
 | Cadence upgrade | Trimestrielle |
 | Checklist pré-upgrade | Targets UP ; dashboard smoke ; alerte test |
 | Plan de sortie | Dashboards as code ; remote_write vers autre stack |
-| Statut repo | **Pas encore dans compose** — pins documentés |
+| Statut repo | **Câblé dans Compose** — deux cibles Prometheus et datasource Grafana provisionnée |
 
 ## Hygiène
 
