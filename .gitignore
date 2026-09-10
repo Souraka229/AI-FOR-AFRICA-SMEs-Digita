@@ -1,0 +1,14 @@
+.env
+.env.local
+.env.*.local
+*.pem
+.DS_Store
+infra/.env
+node_modules/
+.next/
+apps/web/.demo/
+test-results/
+playwright-report/
+*.pyc
+__pycache__/
+.venv/

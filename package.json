@@ -1,0 +1,10 @@
+{
+  "name": "afrosite",
+  "private": true,
+  "packageManager": "pnpm@10.33.0",
+  "scripts": {
+    "check": "pnpm --filter @afrosite/contracts check && pnpm --filter @afrosite/llm check && pnpm --filter web lint && pnpm --filter web exec tsc --noEmit",
+    "eval:agents": "pnpm --filter web eval:agents",
+    "build:web": "pnpm --filter web build"
+  }
+}
