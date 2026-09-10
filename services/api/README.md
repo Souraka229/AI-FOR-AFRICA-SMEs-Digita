@@ -24,6 +24,8 @@ uvicorn main:app --reload --port 8000
   (caisse : `crm:write` ; client : 403 ; montant visite pris sur la commande, jamais le corps)
 - Dashboard : `GET /tenants/{slug}/dashboard` — jour Africa/Porto-Novo ; activité ≠ encaissé
   (`collected_xof` seulement après `verify()` ; jamais le mot « payé »)
+- Exports CSV (owner) : `GET /exports/ventes.csv` · `GET /exports/transactions.csv` ·
+  `GET /exports/clients.csv` — isolation tenant, jamais de mot de passe
 
 ## Auth locale
 

@@ -6,6 +6,7 @@ from fastapi import FastAPI
 
 from afrosite_api.auth.router import router as auth_router
 from afrosite_api.catalog.router import router as catalog_router
+from afrosite_api.exports.router import router as exports_router
 from afrosite_api.ledger.router import router as ledger_router
 from afrosite_api.orders.router import router as orders_router
 from afrosite_api.payments.router import router as payments_router
@@ -21,6 +22,7 @@ app.include_router(tenants_router)
 app.include_router(catalog_router)
 app.include_router(orders_router)
 app.include_router(ledger_router)
+app.include_router(exports_router)
 app.include_router(payments_router)
 
 
