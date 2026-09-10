@@ -1,6 +1,8 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
+@import "@afrosite/design-system/css/variables.css";
+@import "@afrosite/design-system/css/components.css";
 
 @custom-variant dark (&:is(.dark *));
 
@@ -264,4 +266,175 @@
   background-image:
     repeating-linear-gradient(45deg, var(--lattice) 0 1px, transparent 1px 10px),
     repeating-linear-gradient(-45deg, var(--lattice) 0 1px, transparent 1px 10px);
+}
+
+
+/* Landing collaborateur : direction visuelle Afro-site, greffée sur la charte SaaS. */
+.landing {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background:
+    radial-gradient(circle at 20% 0%, rgba(193, 80, 46, 0.13), transparent 30rem),
+    var(--background);
+  color: var(--foreground);
+}
+
+.landing__hero {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  max-width: 920px;
+  padding: var(--space-7, 48px) var(--space-6, 32px) var(--space-6, 32px);
+}
+
+.landing__eyebrow,
+.landing__kit-label {
+  margin: 0 0 var(--space-3, 12px);
+  color: var(--muted-foreground);
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.landing__title {
+  margin: 0;
+  max-width: 14ch;
+  font-family: var(--font-sans);
+  font-size: clamp(2.75rem, 7vw, 5.25rem);
+  font-weight: 600;
+  line-height: 0.96;
+  letter-spacing: -0.05em;
+}
+
+.landing__accent {
+  font-family: var(--font-newsreader), Georgia, serif;
+  font-style: italic;
+  font-weight: 400;
+  color: var(--brand);
+  letter-spacing: -0.03em;
+}
+
+.landing__lede {
+  margin: var(--space-5, 24px) 0 0;
+  max-width: 34rem;
+  color: var(--muted-foreground);
+  font-size: 1.05rem;
+  line-height: 1.55;
+}
+
+.landing__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3, 12px);
+  margin-top: var(--space-5, 24px);
+}
+
+.landing__action,
+.landing__kit-link {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.75rem;
+  border-radius: 0.7rem;
+  padding: 0.65rem 1rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: transform 160ms ease, opacity 160ms ease;
+}
+
+.landing__action:hover,
+.landing__kit-link:hover {
+  transform: translateY(-1px);
+  opacity: 0.88;
+}
+
+.landing__action--primary {
+  background: var(--primary);
+  color: var(--primary-foreground);
+}
+
+.landing__action--secondary {
+  border: 1px solid var(--border);
+  color: var(--foreground);
+}
+
+.landing__kit {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: var(--space-4, 16px);
+  margin: var(--space-7, 48px) var(--space-6, 32px) 0;
+}
+
+.landing__kit-copy {
+  min-height: 3rem;
+  color: var(--muted-foreground);
+  line-height: 1.45;
+}
+
+.landing__kit-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2, 8px);
+  align-items: center;
+  min-height: 2rem;
+}
+
+.landing__kit-link {
+  margin-top: var(--space-4, 16px);
+  padding: 0;
+  min-height: 2rem;
+  color: var(--primary);
+}
+
+.landing__prompt {
+  display: grid;
+  gap: var(--space-3, 12px);
+  margin-top: var(--space-6, 32px);
+  max-width: 36rem;
+}
+
+.wordmark {
+  position: relative;
+  overflow: hidden;
+  margin-top: auto;
+  padding: 0 var(--space-4, 16px) var(--space-3, 12px);
+  user-select: none;
+}
+
+.wordmark__layer {
+  display: block;
+  width: 100%;
+  margin: 0;
+  font-family: var(--font-sans);
+  font-size: clamp(4.5rem, 22vw, 16rem);
+  font-weight: 600;
+  line-height: 0.78;
+  letter-spacing: -0.06em;
+  text-align: center;
+}
+
+.wordmark__stroke {
+  color: transparent;
+  -webkit-text-stroke: 1.5px var(--stroke-wordmark, rgba(193, 80, 46, 0.35));
+  text-stroke: 1.5px var(--stroke-wordmark, rgba(193, 80, 46, 0.35));
+}
+
+.wordmark__fill {
+  position: absolute;
+  inset: 0;
+  padding: 0 var(--space-4, 16px) var(--space-3, 12px);
+  color: transparent;
+  background-repeat: no-repeat;
+  -webkit-background-clip: text;
+  background-clip: text;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 200ms ease;
+}
+
+.wordmark:hover .wordmark__fill,
+.wordmark:focus-within .wordmark__fill {
+  opacity: 1;
 }

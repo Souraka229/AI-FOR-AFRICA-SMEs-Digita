@@ -1,0 +1,116 @@
+.as-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  min-height: 48px;
+  padding: 0 var(--space-5);
+  border: 0;
+  border-radius: var(--radius-md);
+  font-family: var(--font-sans);
+  font-size: 16px;
+  font-weight: 500;
+  letter-spacing: var(--tracking-tight);
+  cursor: pointer;
+  transition: background-color 160ms ease, color 160ms ease, opacity 160ms ease;
+}
+
+.as-btn:focus-visible {
+  outline: 2px solid var(--action-primary);
+  outline-offset: 3px;
+}
+
+.as-btn[disabled] {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.as-btn--primary {
+  background: var(--action-primary);
+  color: var(--color-white);
+}
+
+.as-btn--primary:hover:not([disabled]) {
+  background: var(--action-primary-hover);
+}
+
+.as-btn--ghost {
+  background: transparent;
+  color: var(--text-on-dark);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.18);
+}
+
+.as-btn--ghost:hover:not([disabled]) {
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.as-input {
+  width: 100%;
+  min-height: 48px;
+  padding: 0 var(--space-4);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: var(--radius-md);
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--text-on-dark);
+  font-family: var(--font-sans);
+  font-size: 16px;
+}
+
+.as-input::placeholder {
+  color: var(--text-accent-italic);
+}
+
+.as-input:focus {
+  outline: 2px solid var(--action-primary);
+  outline-offset: 0;
+  border-color: transparent;
+}
+
+.as-card {
+  background: var(--surface-card);
+  color: var(--text-primary);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+  padding: var(--space-5);
+}
+
+.as-money {
+  font-family: var(--font-sans);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  font-style: normal;
+  letter-spacing: var(--tracking-tight);
+  color: inherit;
+}
+
+.as-status {
+  display: inline-flex;
+  align-items: center;
+  min-height: 28px;
+  padding: 0 var(--space-3);
+  border-radius: var(--radius-pill);
+  font-family: var(--font-sans);
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: var(--tracking-tight);
+}
+
+.as-status--confirmed {
+  background: color-mix(in srgb, var(--status-payment-confirmed) 14%, transparent);
+  color: var(--status-payment-confirmed);
+}
+
+.as-status--pending {
+  background: color-mix(in srgb, var(--status-payment-pending) 16%, transparent);
+  color: var(--status-payment-pending);
+}
+
+.as-status--failed {
+  background: color-mix(in srgb, var(--status-payment-failed) 14%, transparent);
+  color: var(--status-payment-failed);
+}
+
+.as-status--urgent {
+  background: color-mix(in srgb, var(--status-order-urgent) 14%, transparent);
+  color: var(--status-order-urgent);
+}

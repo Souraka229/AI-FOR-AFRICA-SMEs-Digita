@@ -1,8 +1,17 @@
 import type { Metadata, Viewport } from "next";
+import { Newsreader } from "next/font/google";
 import type { ReactNode } from "react";
 import { Space_Grotesk, IBM_Plex_Sans, IBM_Plex_Mono } from "next/font/google";
 import { Providers } from "@/components/providers";
 import "./globals.css";
+
+const newsreader = Newsreader({
+  subsets: ["latin"],
+  style: ["italic"],
+  weight: ["400", "500"],
+  variable: "--font-newsreader",
+  display: "swap",
+});
 
 const spaceGrotesk = Space_Grotesk({
   subsets: ["latin"],
@@ -33,8 +42,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     title: "Afrosite — vendez et encaissez, sans une ligne de code",
-    description:
-      "Catalogue, commandes, caisse et paiement Mobile Money. En français, en FCFA.",
+    description: "Catalogue, commandes, caisse et paiement Mobile Money. En français, en FCFA.",
     locale: "fr_FR",
   },
   alternates: { canonical: "/" },
@@ -47,14 +55,12 @@ export const viewport: Viewport = {
   ],
 };
 
-export default function RootLayout({
-  children,
-}: Readonly<{ children: ReactNode }>) {
+export default function RootLayout({ children }: Readonly<{ children: ReactNode }>) {
   return (
     <html
       lang="fr"
       suppressHydrationWarning
-      className={`${spaceGrotesk.variable} ${ibmPlexSans.variable} ${ibmPlexMono.variable} h-full antialiased`}
+      className={`${newsreader.variable} ${spaceGrotesk.variable} ${ibmPlexSans.variable} ${ibmPlexMono.variable} h-full antialiased`}
     >
       <body className="flex min-h-full flex-col overflow-x-hidden">
         <Providers>{children}</Providers>
