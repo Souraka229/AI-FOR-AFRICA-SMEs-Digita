@@ -1,6 +1,7 @@
 import { createOpenAICompatible } from "@ai-sdk/openai-compatible";
 import {
   Output,
+  gateway,
   generateText as aiGenerateText,
   streamText as aiStreamText,
   type LanguageModel,
@@ -8,9 +9,16 @@ import {
   type ModelMessage,
 } from "ai";
 import type { ZodType } from "zod";
+import {
+  fallbackModelIds,
+  llmBackend,
+  modelId,
+  type ModelCapability,
+} from "./catalog";
 
 export type LlmModel = LanguageModel;
-export type ModelCapability = "light" | "reasoning" | "code";
+export type { ModelCapability };
+export { fallbackModelIds, llmBackend, modelId, starterCatalog } from "./catalog";
 
 export type LlmMetadata = {
   model: string;
@@ -50,17 +58,6 @@ export type StructuredCallOptions<T> = LlmCallOptions & {
   images?: string[];
 };
 
-const DEFAULT_MODELS: Record<ModelCapability, string> = {
-  light: "openai/gpt-5.6-luna",
-  reasoning: "anthropic/claude-sonnet-5",
-  code: "openai/gpt-6-astra",
-};
-
-const PRICE_USD_PER_MILLION: Record<string, { input: number; output: number }> = {
-  "openai/gpt-5.6-luna": { input: 0.2, output: 1.2 },
-  "anthropic/claude-sonnet-5": { input: 2, output: 10 },
-  "openai/gpt-6-astra": { input: 10, output: 50 },
-};
 const USD_TO_XOF_ESTIMATE = 600;
 
 export class LlmConfigurationError extends Error {
@@ -70,9 +67,8 @@ export class LlmConfigurationError extends Error {
   }
 }
 
-export function modelId(capability: ModelCapability): string {
-  const key = `AFROSITE_LLM_MODEL_${capability.toUpperCase()}`;
-  return process.env[key] || DEFAULT_MODELS[capability];
+function compatibleChat(name: string, baseURL: string, apiKey: string, id: string): LanguageModel {
+  return createOpenAICompatible({ name, baseURL, apiKey }).chatModel(id);
 }
 
 function resolveModel(options: LlmCallOptions): {
@@ -82,7 +78,8 @@ function resolveModel(options: LlmCallOptions): {
   const id = modelId(options.capability);
   if (options.model) return { id: `injected:${options.capability}`, model: options.model };
 
-  if (process.env.AFROSITE_LLM_BACKEND === "litellm") {
+  const backend = llmBackend();
+  if (backend === "litellm") {
     const baseURL = process.env.LITELLM_PROXY_API_BASE;
     const apiKey = process.env.LITELLM_PROXY_API_KEY;
     if (!baseURL || !apiKey) {
@@ -90,12 +87,19 @@ function resolveModel(options: LlmCallOptions): {
         "LiteLLM nécessite LITELLM_PROXY_API_BASE et LITELLM_PROXY_API_KEY.",
       );
     }
-    const provider = createOpenAICompatible({
-      name: "afrosite-litellm",
-      baseURL,
-      apiKey,
-    });
-    return { id, model: provider.chatModel(id) };
+    return { id, model: compatibleChat("afrosite-litellm", baseURL, apiKey, id) };
+  }
+
+  if (backend === "openrouter") {
+    const apiKey = process.env.OPENROUTER_API_KEY;
+    if (!apiKey) {
+      throw new LlmConfigurationError("OpenRouter nécessite OPENROUTER_API_KEY.");
+    }
+    const baseURL = process.env.OPENROUTER_BASE_URL || "https://openrouter.ai/api/v1";
+    return {
+      id,
+      model: compatibleChat("afrosite-openrouter", baseURL, apiKey, id),
+    };
   }
 
   if (!process.env.AI_GATEWAY_API_KEY && !process.env.VERCEL_OIDC_TOKEN) {
@@ -103,7 +107,23 @@ function resolveModel(options: LlmCallOptions): {
       "Configurez AI_GATEWAY_API_KEY (local) ou VERCEL_OIDC_TOKEN (Vercel).",
     );
   }
-  return { id, model: id };
+  return { id, model: gateway(id) };
+}
+
+function gatewayOptions(options: LlmCallOptions) {
+  if (options.model || llmBackend() !== "gateway") return {};
+  const fallbacks = fallbackModelIds(options.capability);
+  return {
+    providerOptions: {
+      gateway: {
+        models: fallbacks,
+        tags: [
+          `capability:${options.capability}`,
+          ...Object.entries(options.tags ?? {}).map(([key, value]) => `${key}:${value}`),
+        ],
+      },
+    },
+  };
 }
 
 function metadata(
@@ -113,10 +133,7 @@ function metadata(
 ): LlmMetadata {
   const inputTokens = usage.inputTokens ?? 0;
   const outputTokens = usage.outputTokens ?? 0;
-  const price = PRICE_USD_PER_MILLION[id];
-  const estimatedCostUsd = price
-    ? (inputTokens * price.input + outputTokens * price.output) / 1_000_000
-    : 0;
+  const estimatedCostUsd = 0;
   return {
     model: id,
     inputTokens,
@@ -155,6 +172,7 @@ export async function generateStructured<T>(
     model: resolved.model,
     system: options.system,
     ...promptInput(options),
+    ...gatewayOptions(options),
     output: Output.object({
       schema: options.schema,
       name: options.schemaName,
@@ -181,6 +199,7 @@ export function streamStructured<T>(options: StructuredCallOptions<T>) {
     model: resolved.model,
     system: options.system,
     ...promptInput(options),
+    ...gatewayOptions(options),
     output: Output.object({
       schema: options.schema,
       name: options.schemaName,
@@ -210,6 +229,7 @@ export async function generateText(options: LlmCallOptions): Promise<TextResult>
     model: resolved.model,
     system: options.system,
     prompt: options.prompt,
+    ...gatewayOptions(options),
     abortSignal: options.abortSignal,
     maxRetries: options.maxRetries ?? 1,
     experimental_telemetry: {

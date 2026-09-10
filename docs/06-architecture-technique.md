@@ -266,7 +266,7 @@ Modèle léger / peu coûteux
 - **Modèle puissant** : architecture produit, plan complexe, débogage difficile, revue de code.
 - **Modèle spécialisé code** : composants, migrations, tests, APIs, corrections.
 - **Modèle local/open source** : tâches répétitives et données sensibles, quand le volume le justifie.
-- **Fallback** : l'AI Gateway route vers un second fournisseur ; `AFROSITE_LLM_BACKEND=litellm` bascule tout `packages/llm` vers le proxy LiteLLM. Sans configuration LLM, l'appel échoue explicitement — aucun repli regex silencieux.
+- **Fallback** : l'AI Gateway enchaîne des modèles de secours ; `AFROSITE_LLM_BACKEND=litellm` ou `openrouter` bascule tout `packages/llm` vers un proxy OpenAI-compatible. Sans configuration LLM, l'appel échoue explicitement — aucun repli regex silencieux.
 
 ## 10. Système de confiance — ce que l'utilisateur doit toujours voir
 
