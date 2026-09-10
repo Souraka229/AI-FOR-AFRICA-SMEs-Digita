@@ -26,12 +26,17 @@ Les documents sont numérotés dans l'ordre où ils doivent être lus/validés �
 | 10 | [Ressources de A à Z](10-ressources-de-a-a-z.md) | Toutes les ressources externes nécessaires — légal, paiement, stack technique, SEO, design, marketing, financement — dans l'ordre où elles deviennent utiles | Toi, développeurs, toute nouvelle recrue |
 | 11 | [Playbook d'équipe](11-playbook-equipe.md) | Rôles (Souraka / CHITOU / SERGE), RACI, méthode Kanban + Notion, structure des dossiers, liste maître des branches Git, système de prompts réutilisables, plan 90 jours par personne, intégration Genius Pay | Toute l'équipe, au quotidien |
 | 12 | [Pitch — Hackathon Cursor × Devs Days](12-pitch-hackathon.md) | Accroche, fiche de candidature, script vidéo, pitch de finale slide par slide, déroulé de démo, Q&A jury, périmètre de build, répartition équipe | Toute l'équipe, pour l'événement du 9–10 sept. 2026 |
+| 13 | [Guide solo Souraka + Serge](13-guide-solo-souraka-serge.md) | Point d'entrée si une personne porte les deux rôles : état réel du repo, ordre de lecture, carte du code, ressources « quand / comment », feuille de route | Souraka (quand SERGE n'est pas là) |
+| ADR | [0001 — Genius Pay PSP primaire](adr/0001-genius-pay-psp-primaire.md) | Décision : Genius Pay derrière `PaymentProvider` ; fallback FedaPay/KKiaPay | Produit, paiement |
+| — | [Plan d'instrumentation des coûts](cost-instrumentation-plan.md) | Métriques IA/infra/support dès J1, plafonds, dashboard | Souraka |
+| — | [Liste cibles Cotonou](target-list-cotonou.md) | 100 établissements Cadjehoun / Fidjrossè (commerce, resto, services) | Souraka, terrain |
+| — | [Runbook paiement bloqué](runbook-paiement-bloque.md) | Diagnostic, webhook, remboursement manuel | SERGE |
 
 ## Statut du projet
 
 - **Phase actuelle** : Pré-lancement — validation multi-vertical (commerce, restauration, services), Bénin
 - **Marché de départ** : Cotonou, zone dense (Cadjehoun / Fidjrossè), TPE/PME 20–100 transactions/jour
-- **Devise et paiement** : FCFA, Mobile Money (MTN MoMo, Moov Money) via agrégateurs (KKiaPay, FedaPay, CinetPay)
+- **Devise et paiement** : FCFA, Mobile Money (MTN MoMo, Moov Money) via **Genius Pay** (primaire, [ADR 0001](adr/0001-genius-pay-psp-primaire.md)) ; KKiaPay / FedaPay / CinetPay en fallback Phase 2
 - **Prochaine étape critique** : recruter les 5 premiers clients pilotes, un par profil prioritaire (voir [doc 05](05-roadmap-leadership-afrique.md#les-cinq-premiers-clients))
 
 ## Principe directeur (à ne jamais perdre de vue)

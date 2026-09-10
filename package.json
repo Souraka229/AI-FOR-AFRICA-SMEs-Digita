@@ -1,20 +1,14 @@
 {
-  "name": "afrosite-monorepo",
-  "version": "0.1.0",
+  "name": "afrosite",
   "private": true,
-  "packageManager": "pnpm@9.15.4",
+  "packageManager": "pnpm@10.33.0",
   "scripts": {
-    "build": "turbo run build",
-    "lint": "turbo run lint",
-    "typecheck": "turbo run typecheck",
-    "test": "turbo run test"
-  },
-  "devDependencies": {
-    "@typescript-eslint/eslint-plugin": "^7.18.0",
-    "@typescript-eslint/parser": "^7.18.0",
-    "eslint": "^8.57.1",
-    "eslint-config-next": "^14.2.35",
-    "turbo": "^2.0.0",
-    "typescript": "~5.4.5"
+    "check": "pnpm --filter @afrosite/contracts check && pnpm --filter @afrosite/llm check && pnpm --filter web lint && pnpm --filter web exec tsc --noEmit",
+    "eval:agents": "pnpm --filter web eval:agents",
+    "build": "pnpm --filter web build",
+    "build:web": "pnpm --filter web build",
+    "lint": "pnpm --filter web lint",
+    "typecheck": "pnpm --filter web exec tsc --noEmit && pnpm --filter @afrosite/llm exec tsc --noEmit",
+    "test": "pnpm --filter web eval:agents && pnpm --filter web eval:llm"
   }
 }

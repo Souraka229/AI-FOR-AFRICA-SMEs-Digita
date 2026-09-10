@@ -79,7 +79,7 @@ Backend        : FastAPI ou NestJS
 Base           : PostgreSQL
 Cache/queue    : Redis
 Fichiers       : MinIO / fournisseur S3
-IA             : LiteLLM + modèles externes + modèles open source plus tard
+IA             : packages/llm (AI SDK + Vercel AI Gateway par défaut, LiteLLM interchangeable) — voir docs/adr/0002
 Agents         : LangGraph
 Tâches durables: Temporal
 Code agent     : OpenHands SDK, sous sandbox
@@ -88,7 +88,7 @@ CI/CD          : GitHub Actions
 Tests          : Playwright + pytest / Vitest
 Observabilité  : OpenTelemetry + Grafana + Prometheus
 Erreurs        : Sentry
-Paiements      : KKiaPay / FedaPay / CinetPay selon pays
+Paiements      : Genius Pay (primaire, sandbox) derrière PaymentProvider ; FedaPay / KKiaPay / CinetPay en fallback Phase 2
 Auth           : Clerk au MVP, puis Keycloak si auto-hébergement souhaité
 ```
 
@@ -133,7 +133,7 @@ Prompt
   "roles": ["owner", "cashier", "kitchen", "customer"],
   "modules": ["qr_menu", "cart", "orders", "kitchen_display", "payments", "daily_reporting"],
   "integrations": [
-    { "category": "payment", "mode": "sandbox", "provider_candidates": ["kkiapay", "fedapay"] }
+    { "category": "payment", "mode": "sandbox", "provider_candidates": ["geniuspay", "fedapay", "kkiapay"] }
   ],
   "security_level": "standard",
   "deployment_target": "preview",
@@ -183,7 +183,7 @@ Checkout Afrosite
    ↓
 API Afrosite crée une transaction serveur
    ↓
-PSP : KKiaPay / FedaPay / CinetPay
+PSP : Genius Pay (primaire) / FedaPay / KKiaPay / CinetPay
    ↓
 Page / SDK sécurisé du PSP
    ↓
@@ -266,7 +266,7 @@ Modèle léger / peu coûteux
 - **Modèle puissant** : architecture produit, plan complexe, débogage difficile, revue de code.
 - **Modèle spécialisé code** : composants, migrations, tests, APIs, corrections.
 - **Modèle local/open source** : tâches répétitives et données sensibles, quand le volume le justifie.
-- **Fallback** : LiteLLM route vers un second fournisseur ou un modèle local en cas d'échec.
+- **Fallback** : l'AI Gateway route vers un second fournisseur ; `AFROSITE_LLM_BACKEND=litellm` bascule tout `packages/llm` vers le proxy LiteLLM. Sans configuration LLM, l'appel échoue explicitement — aucun repli regex silencieux.
 
 ## 10. Système de confiance — ce que l'utilisateur doit toujours voir
 

@@ -138,3 +138,13 @@
 - Images runtime locales (Postgres/Redis/MinIO) épinglées par digest dans `docker-compose.yml`.
 - Auto-merge Dependabot/Renovate **interdit** sur litellm, temporal, langgraph, SDK Genius Pay ([§6.3](docs/11-playbook-equipe.md)).
 - Toute brique absente du monorepo est marquée « pas encore câblée » — ne pas inventer un digest non vérifié.
+
+## Câblé dans le Studio (JS) — génération LLM contrôlée
+
+| Brique | Version lock | Où | Note |
+|---|---|---|---|
+| AI SDK | `6.0.280` | `packages/llm` (TypeScript) | Porte unique `generateStructured` / `streamStructured` ; AI Gateway par défaut, LiteLLM interchangeable |
+| Next.js | `16.3.4` | `apps/web` | Studio, preview tenant, paiement sandbox |
+| Zod | `3.25.76` | `packages/contracts` | Blueprint v0.1.0 + `generation-guardrails.json` (TS et Python) |
+| Playwright | `1.55.0` | `apps/web` | E2E desktop + Pixel 7 ; pin npm distinct du pin documenté §8 en attente d’alignement |
+| OpenHands SDK | `1.44.1` · image `sha256:d98aabf…7ed6` | `services/agents/runtime/code_agent.py` | Docker only, digest épinglé, jamais `latest` |

@@ -10,7 +10,7 @@
 | **Relation client** | Support humain WhatsApp, onboarding assisté, communauté de restaurateurs/commerçants, comptes gérés pour les clients Enterprise |
 | **Ressources clés** | Blueprints métier versionnés, couche de paiement unifiée, données d'usage, réseau de distribution, équipe support |
 | **Activités clés** | Maintenance des blueprints, orchestration IA, support client, réconciliation financière, sécurité/conformité |
-| **Partenaires clés** | KKiaPay, FedaPay, CinetPay (paiement) ; agences locales ; incubateurs ; opérateurs télécoms ; associations de commerçants |
+| **Partenaires clés** | Genius Pay (PSP primaire, [ADR 0001](adr/0001-genius-pay-psp-primaire.md)), FedaPay / KKiaPay / CinetPay (fallback) ; agences locales ; incubateurs ; opérateurs télécoms ; associations de commerçants |
 | **Structure de coûts** | Coûts IA (tokens/génération), infrastructure cloud, support client, acquisition terrain, salaires équipe |
 | **Sources de revenus** | Abonnement logiciel + usage IA/infra + commission paiement/services (détail ci-dessous) |
 

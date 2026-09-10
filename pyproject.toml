@@ -32,6 +32,20 @@ dev = [
 target-version = "py312"
 line-length = 100
 src = ["services", "packages"]
+# Arborescence démo parallèle (stores fichier) — l'API canonique est afrosite_api.
+extend-exclude = [
+    "services/api/auth",
+    "services/api/catalog",
+    "services/api/check.py",
+    "services/api/check_migrations.py",
+    "services/api/crm",
+    "services/api/dashboard",
+    "services/api/db",
+    "services/api/main.py",
+    "services/api/orders",
+    "services/api/payments",
+    "services/api/tenants",
+]
 
 [tool.ruff.lint]
 select = [

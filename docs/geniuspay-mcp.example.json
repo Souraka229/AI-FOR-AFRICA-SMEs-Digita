@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "geniuspay": {
+      "url": "https://geniuspay.ci/api/mcp",
+      "headers": {
+        "Authorization": "Bearer pk_sandbox_REMPLACER"
+      }
+    }
+  }
+}

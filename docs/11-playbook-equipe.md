@@ -222,8 +222,10 @@ Exemples : `feat/api-orders-endpoint`, `feat/ds-money-component`, `chore/infra-g
 
 - [ ] `chore/infra-monorepo-bootstrap` — monorepo + `docker-compose` (Postgres, Redis, MinIO) + golden-path README
 - [ ] `chore/infra-github-actions` — lint, typecheck, tests, CodeQL, TruffleHog, preview par PR
-- [ ] `feat/api-auth-rbac` — auth + RBAC
-- [ ] `feat/api-core-schema` — modèle de données du socle commun
+- [x] `feat/api-auth-rbac` — JWT courts + RBAC owner/cashier/kitchen/customer + isolation tenant
+- [x] `feat/api-core-schema` — modèle de données du socle commun
+- [x] `feat/api-crm` — clients par téléphone, historique, fidélité
+- [x] `feat/api-dashboard` — ventes du jour, panier moyen, tops, retards
 - [ ] `feat/pay-paymentprovider-interface` — l'interface `PaymentProvider`
 - [ ] `feat/pay-geniuspay-sandbox` — `GeniusPayProvider` : `createTransaction` + `verify` en **sandbox**
 - [ ] `chore/infra-thirdparty-inventory` — `THIRDPARTY.md` avec les 10 briques épinglées
@@ -260,11 +262,11 @@ Cocher au fur et à mesure. Chaque ligne = une carte Notion = une PR. `feature/g
 | `docs/visual-identity-rules` | CHITOU | `rules/visual-identity.md` — critères de rejet Vision Critic |
 | `feat/api-auth-rbac` | SERGE | Auth + rôles owner/cashier/kitchen/customer |
 | `feat/api-core-schema` | SERGE | Modèle de données socle commun + migrations |
-| `feat/api-tenants` | SERGE | Isolation multi-tenant |
-| `feat/api-catalog` | SERGE | Produits / plats / prestations |
-| `feat/api-orders` | SERGE | Commande / réservation + mode offline (file locale) |
-| `feat/api-crm` | SERGE | Clients par téléphone, historique, fidélité |
-| `feat/api-dashboard` | SERGE | Ventes du jour, panier moyen, tops, retards |
+| `feat/api-tenants` | SERGE | Isolation multi-tenant — **livré** (GET/PATCH/POST `/tenants`, un jeton = un slug) |
+| `feat/api-catalog` | SERGE | Produits / plats / prestations — **livré** |
+| `feat/api-orders` | SERGE | Commande SKU+qty, montant serveur, isolation client — **livré** (offline file : ensuite) |
+| `feat/api-crm` | SERGE | Clients par téléphone, historique, fidélité — **livré** |
+| `feat/api-dashboard` | SERGE | Ventes du jour, panier moyen, tops, retards — **livré** |
 | `feat/api-exports` | SERGE | Export CSV |
 | `feat/pay-paymentprovider-interface` | SERGE | Interface `PaymentProvider` |
 | `feat/pay-geniuspay-sandbox` | SERGE | `GeniusPayProvider` : `createTransaction` + `verify` (sandbox) |
@@ -423,7 +425,7 @@ afrosite/
 | `packages/design-system` | CHITOU | Aucune couleur/police en dur ailleurs dans le repo. |
 | `packages/blueprints/_core` | partagé | Toute modif du socle se répercute **identiquement** sur les 3 verticaux (DoD §13.2). |
 | `packages/blueprints/{commerce,restaurant,services}` | partagé | Seuls les modules spécifiques diffèrent. |
-| `packages/llm` | SERGE + Souraka | Aucune app n'importe `litellm` directement. |
+| `packages/llm` | SERGE + Souraka | Seule porte LLM : aucune app n'importe `ai`, `litellm` ni un SDK fournisseur directement. |
 | `services/api` | SERGE | Repository pattern, multi-tenant strict, montants recalculés serveur. |
 | `services/agents` | SERGE (impl.) · Souraka (prompts/eval) | Jeton + liste blanche d'outils par agent. |
 | `services/workflows` | SERGE | Argent & provisioning **uniquement**. Logique dans des activities idempotentes. |
@@ -434,7 +436,8 @@ afrosite/
 
 | Brique | Rôle | Couche d'isolation maison | Cadence upgrade |
 |---|---|---|---|
-| `BerriAI/litellm` | Routeur multi-modèles, fallback, coût | `packages/llm` — aucune app n'importe litellm directement | Mensuelle, PR manuelle |
+| `vercel/ai` + AI Gateway | Génération structurée, streaming, usage/coûts | `packages/llm` — `generateStructured` / `streamStructured` uniquement | Mensuelle, PR manuelle |
+| `BerriAI/litellm` | Routeur multi-modèles interchangeable, fallback, coût | `packages/llm` via `AFROSITE_LLM_BACKEND=litellm` — aucune app n'importe litellm directement | Mensuelle, PR manuelle |
 | `langchain-ai/langgraph` | Orchestration d'agents | `services/agents/runtime` — graphes définis en interne | Mensuelle, PR manuelle |
 | `temporalio/temporal` | Workflows critiques (argent, provisioning) | `services/workflows` — activities maison, zéro logique métier dans le SDK | Trimestrielle, release stable |
 | `OpenHands/software-agent-sdk` | Agent qui manipule le code | Wrappé dans le `Code Agent`, exécuté **uniquement** en sandbox Docker | Suivi, pas d'upgrade auto |
@@ -450,7 +453,7 @@ afrosite/
 1. **Jamais `latest`.** Lockfiles committés ; images Docker par *digest* `sha256:`.
 2. **Un fichier `THIRDPARTY.md`.** Par brique : version, pourquoi, mainteneur interne nommé, cadence d'upgrade, checklist de test pré-upgrade, plan de sortie.
 3. **Zéro fork du cœur.** Besoin non couvert → contribution amont ou ajout dans *notre* couche d'adaptation. Fork local = ADR + date de dé-fork obligatoires.
-4. **Un smoke test maison par brique critique**, bloquant en CI : Temporal → un workflow paiement de bout en bout ; LiteLLM → un appel + un fallback simulé ; LangGraph → un graphe minimal avec reprise après échec.
+4. **Un smoke test maison par brique critique**, bloquant en CI : Temporal → un workflow paiement de bout en bout ; `packages/llm` → `check:llm` (appel structuré mocké + mesure du cache) ; LangGraph → `services/agents/check.py` (graphe interrompu puis repris) ; outils réels → `check_adapters.py` ; OpenHands → `check_openhands.py` (versions alignées, image épinglée par digest).
 5. **Renovate/Dependabot en PR groupées hebdo.** Auto-merge autorisé *seulement* pour les patchs non critiques qui passent toute la CI. Jamais sur litellm, temporal, langgraph, SDK Genius Pay.
 6. **Vendoring seulement pour un patch porté en amont** (`vendor/` + lien vers la PR upstream).
 7. **Un `README` « golden path » par service** : une commande pour lancer en local, une pour les tests, une pour les migrations. Un nouveau contributeur démarre en < 15 min ou c'est un bug.
@@ -1116,10 +1119,10 @@ Toute la logique métier parle à cette interface, jamais au SDK Genius Pay dire
 - [ ] Signature du webhook vérifiée avec le secret Genius Pay ; payload non signé rejeté et loggé.
 - [ ] Webhook idempotent : recevoir deux fois le même événement ne double pas l'écriture ledger.
 - [ ] Statut confirmé uniquement après `verify()` serveur — jamais sur le seul retour de redirection.
-- [ ] Cas testés en sandbox : succès, échec, expiration, double webhook, webhook en retard, remboursement total, remboursement partiel.
-- [ ] Réconciliation quotidienne implémentée ; écart PSP/ledger → alerte.
+- [x] Cas testés en sandbox : succès, échec, expiration, double webhook, webhook en retard, remboursement total, remboursement partiel. → `pnpm check:pay`
+- [x] Réconciliation quotidienne implémentée ; écart PSP/ledger → alerte. → `reconcile()` + écarts `pending`
 - [ ] Aucune donnée PAN/CVV dans les logs, la base, les traces ou Sentry (scrubbing vérifié).
-- [ ] Runbook « paiement bloqué » écrit : diagnostic, contact Genius Pay, remboursement manuel.
+- [x] Runbook « paiement bloqué » écrit : diagnostic, contact Genius Pay, remboursement manuel. → `docs/runbook-paiement-bloque.md`
 - [ ] Passage prod = approbation explicite ([doc 06](06-architecture-technique.md#gates-à-bloquer-automatiquement) gate 6) + audit externe passé (§14).
 
 ---
@@ -1287,12 +1290,13 @@ Sept jours. À la fin : le dépôt existe, la CI tourne, le contrat de blueprint
 
 ### Souraka — cadre & frontière
 
-- [ ] Ouvrir l'**ADR 0001** « Genius Pay = PSP primaire » + planifier la MAJ docs 03/06/10.
-- [ ] Créer l'espace **Notion** (4 bases : Board, ADR, Risques, Bibliothèque de prompts) et importer §3, §8, §15.
-- [ ] Rédiger `packages/contracts` : schéma `Blueprint JSON` v0 (3 verticaux, exemple [doc 06 §5](06-architecture-technique.md#contrat-structuré-exemple)) + validateur Zod/Pydantic. → `chore/contracts-blueprint-schema-v0`
-- [ ] Poser le squelette `apps/web` (Next.js, SSR, Metadata API, route sitemap par tenant). → `feat/web-skeleton-ssr`
-- [ ] Écrire le plan d'instrumentation des coûts. → `docs/cost-instrumentation-plan`
-- [ ] Commencer la liste des 100 établissements cibles. → `docs/target-list-cotonou`
+- [x] Ouvrir l'**ADR 0001** « Genius Pay = PSP primaire » + MAJ docs 03/06/10 (et 00/01/02).
+- [ ] Créer l'espace **Notion** (4 bases : Board, ADR, Risques, Bibliothèque de prompts) et importer §3, §8, §15. *(hors dépôt — à faire dans Notion)*
+- [x] Rédiger `packages/contracts` : schéma `Blueprint JSON` v0 (3 verticaux) + validateur Zod/Pydantic. → `chore/contracts-blueprint-schema-v0`
+- [x] Poser le squelette `apps/web` (Next.js, SSR, Metadata API, `sitemap.ts` par tenant) + studio hackathon. → `feat/web-skeleton-ssr`
+- [x] Eval harness agents (30+ prompts × 3 verticaux) : `pnpm eval:agents` dans `apps/web`.
+- [x] Écrire le plan d'instrumentation des coûts. → `docs/cost-instrumentation-plan`
+- [x] Commencer la liste des 100 établissements cibles. → `docs/target-list-cotonou`
 
 ### CHITOU — design system
 
@@ -1303,11 +1307,11 @@ Sept jours. À la fin : le dépôt existe, la CI tourne, le contrat de blueprint
 
 ### SERGE — dépôt, CI, PSP sandbox
 
-- [ ] Initialiser le monorepo + `docker-compose` (Postgres, Redis, MinIO) + golden-path README. → `chore/infra-monorepo-bootstrap`
-- [ ] CI GitHub Actions : lint, typecheck, tests, CodeQL, TruffleHog, preview par PR. → `chore/infra-github-actions`
-- [ ] Squelette `services/api` : auth + RBAC + modèle de données du socle commun. → `feat/api-auth-rbac`, `feat/api-core-schema`
-- [ ] Écrire l'interface `PaymentProvider` + `GeniusPayProvider` (`createTransaction` + `verify` en **sandbox**). → `feat/pay-paymentprovider-interface`, `feat/pay-geniuspay-sandbox`
-- [ ] Créer `THIRDPARTY.md` avec les 10 briques prioritaires, versions épinglées. → `chore/infra-thirdparty-inventory`
+- [x] Initialiser le monorepo + `docker-compose` (Postgres, Redis, MinIO) + golden-path README. → `chore/infra-monorepo-bootstrap`
+- [x] CI GitHub Actions : lint, typecheck, eval, `check:pay`, TruffleHog. (CodeQL + preview PR : ensuite.) → `chore/infra-github-actions`
+- [x] Squelette `services/api` : `/health` + `POST /blueprints/validate` (Gate 1 Pydantic). Auth/RBAC + Postgres : ensuite. → `feat/api-core-schema`
+- [x] Écrire l'interface `PaymentProvider` + `GeniusPayProvider` (`createTransaction` + `verify` en **sandbox**, fallback démo sans clés). → `feat/pay-paymentprovider-interface`, `feat/pay-geniuspay-sandbox`
+- [x] Créer `THIRDPARTY.md` avec les 10 briques prioritaires, versions épinglées. → `chore/infra-thirdparty-inventory`
 
 ### Revue vendredi
 

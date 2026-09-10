@@ -1,0 +1,22 @@
+{
+  "schema_version": "0.1.0",
+  "denied_path_pattern": "(^|/)(\\.env|\\.github|migrations?|pnpm-lock\\.yaml|package\\.json)($|/)",
+  "denied_path_message": "chemin interdit",
+  "denied_diff_patterns": [
+    {
+      "id": "secret",
+      "pattern": "\\b(sk|pk|whsec)_(live|sandbox)_[a-z0-9]+\\b|BEGIN (RSA |EC )?PRIVATE KEY",
+      "message": "secret détecté dans le diff"
+    },
+    {
+      "id": "money",
+      "pattern": "\\b(confirmPayment|markAsPaid|paymentStatus\\s*=\\s*[\"']confirmed|verify\\(\\)\\s*=>\\s*true)\\b",
+      "message": "logique argent générée interdite"
+    },
+    {
+      "id": "production",
+      "pattern": "\\b(vercel\\s+--prod|deployment_target[\"']?\\s*:\\s*[\"']production)\\b",
+      "message": "déploiement production interdit"
+    }
+  ]
+}

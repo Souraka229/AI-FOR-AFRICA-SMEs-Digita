@@ -57,8 +57,12 @@ Ordre de priorité d'intégration détaillé dans [doc 03 §5](03-analyse-concur
 
 | Ressource | Lien | Pourquoi |
 |---|---|---|
-| **KKiaPay — Documentation** | [docs.kkiapay.me](https://docs.kkiapay.me/) | Agrégateur béninois, couverture Bénin/Côte d'Ivoire/Togo/Sénégal/Niger/Burkina Faso — premier PSP à intégrer |
-| **FedaPay — Documentation API** | [docs.fedapay.com/api-reference/introduction-en](https://docs.fedapay.com/api-reference/introduction-en) | API REST, sandbox + production, MTN MoMo/Moov Money/Celtiis Cash listés côté Bénin |
+| **Genius Pay — API marchand** | [geniuspay.ci/docs/api](https://geniuspay.ci/docs/api) | **PSP primaire du MVP** ([ADR 0001](adr/0001-genius-pay-psp-primaire.md)). Checkout hébergé, `X-API-Key` / `X-API-Secret`, Bénin `MTN_MOMO_BEN` / `MOOV_BEN`, webhooks HMAC-SHA256 (`X-Webhook-Signature` + `X-Webhook-Environment`). Sandbox : `pk_sandbox_` / `sk_sandbox_` / `whsec_sandbox_`. Payé = `data.status` `completed`. |
+| **Genius Pay — Sandbox virtuel** | [geniuspay.ci/docs/sandbox](https://geniuspay.ci/docs/sandbox) | Scénarios `success` / `failure` / `timeout` / `pending` sans téléphone. Base `https://pay.genius.ci/sandbox/`, clé `sbx_test_…`, `POST /payments/initiate`. |
+| **Genius Pay — MCP (IA)** | SSE `https://geniuspay.ci/api/mcp` | Lire `geniuspay://docs/api` et `inspect_recent_errors`. Auth `Authorization: Bearer pk_sandbox_…`. Modèle : [geniuspay-mcp.example.json](geniuspay-mcp.example.json). Jamais de clé live dans l’IDE. |
+| **Genius Pay — SDKs** | [geniuspay.ci/docs/sdk](https://geniuspay.ci/docs/sdk) | Référence d'intégration. Le métier Afrosite n'importe **jamais** le SDK directement — seulement `GeniusPayProvider`. |
+| **KKiaPay — Documentation** | [docs.kkiapay.me](https://docs.kkiapay.me/) | Fallback Phase 2 — agrégateur béninois, couverture Bénin/Côte d'Ivoire/Togo/Sénégal/Niger/Burkina Faso |
+| **FedaPay — Documentation API** | [docs.fedapay.com/api-reference/introduction-en](https://docs.fedapay.com/api-reference/introduction-en) | Fallback Phase 2 — API REST, sandbox + production, MTN MoMo/Moov Money/Celtiis Cash côté Bénin |
 | **CinetPay — Documentation** | [docs.cinetpay.com](https://docs.cinetpay.com/) | Couverture 10+ pays francophones — pertinent dès la Phase 2/expansion UEMOA |
 
 ## G — Déploiement & infrastructure

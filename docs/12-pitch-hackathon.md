@@ -107,7 +107,7 @@ Les fintechs qui deviennent le « système d'exploitation des PME » (Moniepoint
 
 ## 5. Déroulé de la démo en direct (2 min) — **obligatoire, à répéter 5 fois**
 
-1. **(20 s)** Dans Afrosite, on tape : *« boutique de tissus wax à Cadjehoun, livraison quartier, paiement Mobile Money »*. On lance.
+1. **(20 s)** Dans `/studio`, on tape : *« boutique de tissus wax à Cadjehoun, livraison quartier, paiement Mobile Money »*. On lance.
 2. **(25 s)** L'agent produit le **blueprint Commerce** : catalogue (3 produits avec prix), mini-site, prise de commande. On ouvre la preview.
 3. **(25 s)** Depuis le mini-site, un client ajoute au panier → **24 500 FCFA** → paiement **MTN MoMo (sandbox)**.
 4. **(20 s)** Webhook signé → **vérification serveur** → statut **« paiement confirmé »** → **reçu WhatsApp** au client + notif à la commerçante.
