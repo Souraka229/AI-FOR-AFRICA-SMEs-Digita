@@ -15,19 +15,12 @@ import {
   runGate1,
 } from "@/lib/agents/architect";
 import { recordCost } from "@/lib/demo/store";
+import type { AuditEvent } from "@/lib/agents/audit";
+
+export type { AuditEvent } from "@/lib/agents/audit";
 
 export type PipelineStepId = "intent" | "architect" | "gate1" | "preview";
 export type PipelineStepStatus = "running" | "done" | "blocked";
-
-export type AuditEvent = {
-  at: string;
-  agent: string;
-  action: string;
-  result: string;
-  model?: string;
-  tokens?: number;
-  durationMs?: number;
-};
 
 export type PipelineResult = {
   runId: string;
@@ -56,6 +49,7 @@ export type StepEvent = {
 type RunOptions = {
   persistCost?: boolean;
   onStep?: (event: StepEvent) => void | Promise<void>;
+  onAudit?: (event: AuditEvent) => void | Promise<void>;
   abortSignal?: AbortSignal;
   models?: {
     intent?: LlmModel;
@@ -92,15 +86,19 @@ export async function runPipeline(
     result: string,
     metadata?: LlmMetadata,
   ) => {
-    audit.push({
+    const event: AuditEvent = {
       at: new Date().toISOString(),
       agent,
       action,
       result,
       model: metadata?.model,
       tokens: metadata?.totalTokens,
+      cacheReadTokens: metadata?.cacheReadTokens,
       durationMs: metadata?.durationMs,
-    });
+      estimatedCostXof: metadata?.estimatedCostXof,
+    };
+    audit.push(event);
+    void options.onAudit?.(event);
   };
   const step = async (event: StepEvent) => options.onStep?.(event);
 
@@ -137,7 +135,11 @@ export async function runPipeline(
   await step({
     id: "architect",
     status: "done",
-    data: { slug: blueprint.tenant.slug, attempts: built.attempts },
+    data: {
+      slug: blueprint.tenant.slug,
+      attempts: built.attempts,
+      blueprint,
+    },
   });
 
   await step({ id: "gate1", status: "running" });

@@ -26,6 +26,7 @@ export async function POST(request: Request) {
       try {
         const result = await runPipeline(prompt, {
           onStep: (event) => send({ type: "step", ...event }),
+          onAudit: (event) => send({ type: "audit", event }),
           abortSignal: abortController.signal,
         });
         if (result.gate1.passed) {
