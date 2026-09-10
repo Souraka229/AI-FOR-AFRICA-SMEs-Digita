@@ -3,8 +3,11 @@ import { MockLanguageModelV3 } from "ai/test";
 import { z } from "zod";
 import {
   LlmConfigurationError,
+  fallbackModelIds,
   generateStructured,
+  llmBackend,
   modelId,
+  starterCatalog,
   streamStructured,
 } from "./index";
 
@@ -42,6 +45,35 @@ if (result.output.vertical !== "commerce") throw new Error("Sortie structurée i
 if (result.metadata.totalTokens !== 14) throw new Error("Comptage tokens invalide.");
 if (result.metadata.cacheReadTokens !== 2) throw new Error("Cache non mesuré.");
 if (!modelId("reasoning").includes("/")) throw new Error("Alias modèle invalide.");
+if (modelId("light") !== "anthropic/claude-haiku-4.5") {
+  throw new Error("Le modèle light de démarrage a changé sans mise à jour du check.");
+}
+if (fallbackModelIds("light").length === 0) {
+  throw new Error("Aucun fallback light configuré.");
+}
+if (llmBackend() !== "gateway") throw new Error("Backend par défaut attendu : gateway.");
+if (!starterCatalog().code.primary.includes("/")) {
+  throw new Error("Catalogue code invalide.");
+}
+
+const previousBackend = process.env.AFROSITE_LLM_BACKEND;
+process.env.AFROSITE_LLM_BACKEND = "openrouter";
+delete process.env.OPENROUTER_API_KEY;
+try {
+  await generateStructured({
+    capability: "light",
+    schemaName: "intent-openrouter",
+    schema: z.object({ vertical: z.literal("commerce") }),
+    system: "Test.",
+    prompt: "Boutique.",
+  });
+  throw new Error("OpenRouter sans clé doit échouer.");
+} catch (error) {
+  if (!(error instanceof LlmConfigurationError)) throw error;
+} finally {
+  if (previousBackend) process.env.AFROSITE_LLM_BACKEND = previousBackend;
+  else delete process.env.AFROSITE_LLM_BACKEND;
+}
 
 const streamingModel = new MockLanguageModelV3({
   doStream: async () => ({

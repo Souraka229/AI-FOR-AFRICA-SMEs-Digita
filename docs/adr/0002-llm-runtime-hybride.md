@@ -27,6 +27,10 @@ avant le premier appel LLM retarderait inutilement la preuve produit.
 5. OpenHands exécute le Code Agent uniquement dans une sandbox Docker.
 6. Les règles sensibles restent déterministes : secrets, BJ, XOF, budget,
    preview, RBAC et paiement confirmé uniquement après `verify()` serveur.
+7. Démarrage : un routeur, trois capacités, fallback Gateway. Pas d’intégration
+   directe des « 10 API gratuites » (OpenRouter optionnel via env). Les alias
+   se confirment par `pnpm --filter @afrosite/llm discover` dès qu’une clé
+   Gateway ou un jeton OIDC est disponible.
 
 ## Conséquences
 
