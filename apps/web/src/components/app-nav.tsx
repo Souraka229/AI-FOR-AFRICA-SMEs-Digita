@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { BrandMark } from "@/components/brand-mark";
 import { ThemeToggle } from "@/components/theme-toggle";
+import { AuthButton } from "@/components/auth-button";
 
 export function AppNav({
   current,
@@ -37,8 +38,9 @@ export function AppNav({
             </Link>
           ))}
         </nav>
-        <div className="ml-auto">
+        <div className="ml-auto flex items-center gap-2">
           <ThemeToggle />
+          <AuthButton />
         </div>
       </div>
     </header>

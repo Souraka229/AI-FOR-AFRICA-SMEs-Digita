@@ -5,7 +5,7 @@ export const runtime = "nodejs";
 export const maxDuration = 60;
 
 export async function POST(request: Request) {
-  const denied = guardStudio(request);
+  const denied = await guardStudio(request);
   if (denied) return denied;
   const body = (await request.json()) as { prompt?: string };
   const prompt = body.prompt?.trim() ?? "";

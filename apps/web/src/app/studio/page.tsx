@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { AppNav } from "@/components/app-nav";
+import { RequireAuth } from "@/components/require-auth";
 import { StudioClient } from "./studio-client";
 
 export const metadata: Metadata = {
@@ -13,7 +14,7 @@ export default function StudioPage() {
   return (
     <>
       <AppNav current="studio" />
-      <StudioClient />
+      <RequireAuth><StudioClient /></RequireAuth>
     </>
   );
 }

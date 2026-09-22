@@ -162,9 +162,9 @@ async function main() {
   resetStudioGuardForTests();
   const request = new Request("http://localhost/api/studio/run");
   for (let index = 0; index < 5; index += 1) {
-    if (guardStudio(request)) throw new Error("Quota trop strict.");
+    if (await guardStudio(request)) throw new Error("Quota trop strict.");
   }
-  if (guardStudio(request)?.status !== 429) throw new Error("Rate limit absent.");
+  if ((await guardStudio(request))?.status !== 429) throw new Error("Rate limit absent.");
 
   console.log(
     "Eval LLM : génération mockée · réparation · injection · secrets · cache · quota · security · vision OK",

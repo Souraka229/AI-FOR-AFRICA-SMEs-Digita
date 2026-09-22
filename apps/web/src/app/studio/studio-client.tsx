@@ -7,6 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import type { Blueprint, Gate1Result, Intent } from "@afrosite/contracts";
 import type { AuditEvent, PipelineResult } from "@/lib/agents/pipeline";
 import { Money } from "@/components/money";
+import { supabaseBrowser } from "@/lib/supabase/client";
 
 const EXAMPLES = [
   {
@@ -32,6 +33,17 @@ const STEPS = [
 ] as const;
 
 type StepState = "idle" | "running" | "done" | "blocked";
+
+async function authHeaders(): Promise<Record<string, string>> {
+  try {
+    const { data } = await supabaseBrowser().auth.getSession();
+    return data.session?.access_token
+      ? { Authorization: `Bearer ${data.session.access_token}` }
+      : {};
+  } catch {
+    return {};
+  }
+}
 
 export function StudioClient() {
   const [prompt, setPrompt] = useState(EXAMPLES[0].prompt);
@@ -69,7 +81,7 @@ export function StudioClient() {
     try {
       const response = await fetch("/api/studio/run", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "application/json", ...(await authHeaders()) },
         body: JSON.stringify({ prompt }),
       });
       if (!response.ok) {
@@ -137,7 +149,7 @@ export function StudioClient() {
     try {
       const response = await fetch("/api/studio/preview", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "application/json", ...(await authHeaders()) },
         body: JSON.stringify({ blueprint }),
       });
       const data = (await response.json()) as { href?: string; error?: string };

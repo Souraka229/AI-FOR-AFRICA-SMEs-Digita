@@ -9,7 +9,7 @@ import {
 export const runtime = "nodejs";
 
 export async function POST(request: Request) {
-  const denied = guardStudio(request);
+  const denied = await guardStudio(request);
   if (denied) return denied;
   const body = (await request.json()) as { blueprint?: unknown };
   const parsed = BlueprintSchema.safeParse(body.blueprint);
@@ -28,7 +28,7 @@ export async function POST(request: Request) {
 }
 
 export async function GET(request: Request) {
-  const denied = guardStudio(request);
+  const denied = await guardStudio(request);
   if (denied) return denied;
   const slug = new URL(request.url).searchParams.get("slug") ?? "";
   return Response.json({
@@ -41,7 +41,7 @@ export async function GET(request: Request) {
 }
 
 export async function DELETE(request: Request) {
-  const denied = guardStudio(request);
+  const denied = await guardStudio(request);
   if (denied) return denied;
   const body = (await request.json()) as { slug?: string; versionId?: string };
   if (!body.slug || !body.versionId) {
