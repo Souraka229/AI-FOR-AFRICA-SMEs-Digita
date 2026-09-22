@@ -1,17 +1,23 @@
-'use client';
+"use client";
 
-import { Suspense, useRef } from 'react';
-import { Canvas, useFrame } from '@react-three/fiber';
-import { Center, Float, Text3D } from '@react-three/drei';
-import type { Group } from 'three';
+import { Center, Float, Text3D } from "@react-three/drei";
+import { Canvas, useFrame, type ThreeElements } from "@react-three/fiber";
+import { Suspense, useRef } from "react";
+import type { Group } from "three";
+
+/* eslint-disable @typescript-eslint/no-namespace, @typescript-eslint/no-empty-object-type */
+declare module "react" {
+  namespace JSX {
+    interface IntrinsicElements extends ThreeElements {}
+  }
+}
+/* eslint-enable @typescript-eslint/no-namespace, @typescript-eslint/no-empty-object-type */
 
 function Mark() {
   const group = useRef<Group>(null);
 
   useFrame((state) => {
-    if (!group.current) {
-      return;
-    }
+    if (!group.current) return;
     const x = state.pointer.x * 0.35;
     const y = state.pointer.y * 0.2;
     group.current.rotation.y += (x - group.current.rotation.y) * 0.06;
@@ -43,8 +49,12 @@ function Mark() {
 
 export function HeroMark3D() {
   return (
-    <div className="hero3d">
-      <Canvas camera={{ position: [0, 0, 4.2], fov: 38 }} dpr={[1, 1.75]} gl={{ alpha: true, antialias: true }}>
+    <div className="hero3d" aria-label="Afrosite 3D">
+      <Canvas
+        camera={{ position: [0, 0, 4.2], fov: 38 }}
+        dpr={[1, 1.75]}
+        gl={{ alpha: true, antialias: true }}
+      >
         <ambientLight intensity={0.85} />
         <directionalLight position={[3, 4, 6]} intensity={1.35} color="#FBF4EC" />
         <directionalLight position={[-4, -1, 2]} intensity={0.55} color="#C1502E" />
