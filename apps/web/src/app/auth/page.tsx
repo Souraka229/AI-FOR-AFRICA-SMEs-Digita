@@ -12,6 +12,7 @@ export default function AuthPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [busy, setBusy] = useState(false);
+  const [recoveryBusy, setRecoveryBusy] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
 
@@ -38,6 +39,48 @@ export default function AuthPage() {
     }
   }
 
+  async function resendConfirmation() {
+    if (!email) {
+      setError("Saisissez votre adresse email pour recevoir un nouveau lien.");
+      return;
+    }
+    setRecoveryBusy(true);
+    setError(null);
+    try {
+      const result = await supabaseBrowser().auth.resend({
+        type: "signup",
+        email,
+        options: { emailRedirectTo: `${window.location.origin}/auth` },
+      });
+      if (result.error) throw result.error;
+      setMessage("Un nouveau lien de confirmation vient d’être envoyé. Vérifiez aussi vos spams.");
+    } catch (reason) {
+      setError(reason instanceof Error ? reason.message : "Impossible de renvoyer l’email.");
+    } finally {
+      setRecoveryBusy(false);
+    }
+  }
+
+  async function resetPassword() {
+    if (!email) {
+      setError("Saisissez votre adresse email pour réinitialiser votre mot de passe.");
+      return;
+    }
+    setRecoveryBusy(true);
+    setError(null);
+    try {
+      const result = await supabaseBrowser().auth.resetPasswordForEmail(email, {
+        redirectTo: `${window.location.origin}/auth`,
+      });
+      if (result.error) throw result.error;
+      setMessage("Le lien de réinitialisation a été envoyé. Vérifiez votre boîte mail et vos spams.");
+    } catch (reason) {
+      setError(reason instanceof Error ? reason.message : "Impossible d’envoyer le lien de récupération.");
+    } finally {
+      setRecoveryBusy(false);
+    }
+  }
+
   return (
     <main className="mx-auto flex min-h-screen max-w-xl items-center px-4 py-16">
       <section className="w-full rounded-2xl border border-border bg-card p-6 text-card-foreground shadow-sm sm:p-8">
@@ -52,6 +95,16 @@ export default function AuthPage() {
         </form>
         {message ? <p className="mt-4 text-sm text-emerald-600">{message}</p> : null}
         {error ? <p className="mt-4 text-sm text-destructive">{error}</p> : null}
+        {mode === "signup" && message ? (
+          <button type="button" disabled={recoveryBusy} className="mt-3 block text-sm text-muted-foreground underline underline-offset-4 disabled:opacity-50" onClick={resendConfirmation}>
+            {recoveryBusy ? "Envoi…" : "Renvoyer le lien de confirmation"}
+          </button>
+        ) : null}
+        {mode === "login" ? (
+          <button type="button" disabled={recoveryBusy} className="mt-3 block text-sm text-muted-foreground underline underline-offset-4 disabled:opacity-50" onClick={resetPassword}>
+            {recoveryBusy ? "Envoi…" : "Mot de passe oublié ?"}
+          </button>
+        ) : null}
         <button type="button" className="mt-6 text-sm text-muted-foreground underline underline-offset-4" onClick={() => setMode(mode === "login" ? "signup" : "login")}>
           {mode === "login" ? "Créer un nouveau compte" : "J’ai déjà un compte"}
         </button>
