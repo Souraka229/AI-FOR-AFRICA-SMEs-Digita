@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Image from 'next/image';
 
 const ITEMS = [
   { src: '/refs/instant.webp', name: 'Instant.so', use: 'Carte composer, chips de pages, Generate' },
@@ -37,7 +38,7 @@ export default function RefsPage() {
         {ITEMS.map((item) => (
           <li key={item.src}>
             <figure>
-              <img src={item.src} alt={item.name} />
+              <Image src={item.src} alt={item.name} width={640} height={360} />
               <figcaption>
                 <strong>{item.name}</strong>
                 <span>{item.use}</span>
