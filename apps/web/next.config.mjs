@@ -1,6 +1,5 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  output: "standalone",
   poweredByHeader: false,
   reactStrictMode: true,
   transpilePackages: ["@afrosite/design-system", "three", "@react-three/fiber", "@react-three/drei"],
