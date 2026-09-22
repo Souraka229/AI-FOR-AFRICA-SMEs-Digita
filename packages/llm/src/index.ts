@@ -82,6 +82,25 @@ function resolveModel(options: LlmCallOptions): {
   const id = modelId(options.capability);
   if (options.model) return { id: `injected:${options.capability}`, model: options.model };
 
+  if (process.env.AFROSITE_LLM_BACKEND === "openai-compatible") {
+    const baseURL = process.env.OPENAI_API_BASE;
+    const apiKey = process.env.OPENAI_API_KEY;
+    if (!baseURL || !apiKey) {
+      throw new LlmConfigurationError(
+        "Le backend direct nécessite OPENAI_API_BASE et OPENAI_API_KEY.",
+      );
+    }
+    const provider = createOpenAICompatible({
+      name: "afrosite-direct-ai",
+      baseURL,
+      apiKey,
+    });
+    const directModel =
+      process.env.OPENAI_MODEL ??
+      (options.capability === "reasoning" ? "gpt-5" : "gpt-5-mini");
+    return { id: directModel, model: provider.chatModel(directModel) };
+  }
+
   if (process.env.AFROSITE_LLM_BACKEND === "litellm") {
     const baseURL = process.env.LITELLM_PROXY_API_BASE;
     const apiKey = process.env.LITELLM_PROXY_API_KEY;
