@@ -1,17 +1,30 @@
 "use client";
 
-import type { ReactNode } from "react";
 import { ThemeProvider } from "next-themes";
+import type { ComponentType, ReactNode } from "react";
+
+type ThemeProviderWithChildrenProps = {
+  attribute?: "class";
+  defaultTheme?: string;
+  enableSystem?: boolean;
+  disableTransitionOnChange?: boolean;
+  children?: ReactNode;
+};
+
+// next-themes 0.4.6 omits children from its emitted type under React 19.
+const ThemeProviderWithChildren = ThemeProvider as unknown as ComponentType<
+  ThemeProviderWithChildrenProps
+>;
 
 export function Providers({ children }: { children: ReactNode }) {
   return (
-    <ThemeProvider
+    <ThemeProviderWithChildren
       attribute="class"
       defaultTheme="system"
       enableSystem
       disableTransitionOnChange
     >
       {children}
-    </ThemeProvider>
+    </ThemeProviderWithChildren>
   );
 }
