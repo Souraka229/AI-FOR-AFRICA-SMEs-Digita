@@ -149,6 +149,9 @@ Arborescence complète du monorepo : [playbook §6.1](docs/11-playbook-equipe.md
 
 ## Documentation
 
+Déploiement national : [`deploy/README.md`](deploy/README.md) — prérequis, secrets,
+smoke tests, sauvegardes, rollback et limites de go-live.
+
 | # | Document | Contenu |
 |---|---|---|
 | 00 | [Sommaire](docs/00-README.md) | Comment lire la documentation, principe directeur |

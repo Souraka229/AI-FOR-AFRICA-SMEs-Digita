@@ -1,0 +1,52 @@
+services:
+  postgres:
+    image: postgres:16.6
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:?set POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?set POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB:-afrosite}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 5s
+      retries: 12
+
+  api:
+    build:
+      context: ..
+      dockerfile: deploy/Dockerfile.api
+    restart: unless-stopped
+    environment:
+      AFROSITE_ENV: production
+      DATABASE_URL: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB:-afrosite}
+      AFROSITE_AUTH_SECRET: ${AFROSITE_AUTH_SECRET:?set AFROSITE_AUTH_SECRET}
+      AFROSITE_AUTH_BOOTSTRAP_KEY: ${AFROSITE_AUTH_BOOTSTRAP_KEY:?set AFROSITE_AUTH_BOOTSTRAP_KEY}
+    depends_on:
+      postgres:
+        condition: service_healthy
+    expose:
+      - "8000"
+
+  web:
+    build:
+      context: ..
+      dockerfile: deploy/Dockerfile.web
+    restart: unless-stopped
+    environment:
+      NODE_ENV: production
+      AFROSITE_ENV: production
+      AFROSITE_API_URL: ${AFROSITE_API_URL:?set AFROSITE_API_URL}
+      NEXT_PUBLIC_SITE_URL: ${NEXT_PUBLIC_SITE_URL:?set NEXT_PUBLIC_SITE_URL}
+      AFROSITE_STUDIO_ACCESS_KEY: ${AFROSITE_STUDIO_ACCESS_KEY:?set AFROSITE_STUDIO_ACCESS_KEY}
+      AI_GATEWAY_API_KEY: ${AI_GATEWAY_API_KEY:?set AI_GATEWAY_API_KEY}
+    depends_on:
+      api:
+        condition: service_started
+    ports:
+      - "3000:3000"
+
+volumes:
+  postgres_data:
