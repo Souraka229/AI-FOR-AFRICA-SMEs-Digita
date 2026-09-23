@@ -1,16 +1,25 @@
 {
-  "status": {
-    "paymentConfirmed": "var(--color-green)",
-    "paymentPending": "var(--color-amber)",
-    "paymentFailed": "var(--color-red)"
-  },
   "action": {
-    "primary": "var(--color-terracotta)",
-    "accent": "var(--color-gold)"
+    "primary": "var(--color-terracotta-600)",
+    "primaryHover": "var(--color-terracotta-700)"
+  },
+  "status": {
+    "paymentConfirmed": "var(--color-green-600)",
+    "paymentPending": "var(--color-amber-600)",
+    "paymentFailed": "var(--color-red-600)",
+    "orderUrgent": "var(--color-orange-600)"
   },
   "surface": {
-    "background": "var(--color-sand)",
-    "card": "#FFFFFF",
-    "text": "var(--color-charcoal)"
+    "canvasDark": "var(--color-ink-950)",
+    "canvasLight": "var(--color-sand-50)",
+    "card": "var(--color-white)",
+    "text": "var(--color-charcoal-900)",
+    "textMuted": "var(--color-charcoal-700)",
+    "textOnDark": "var(--color-white)",
+    "textAccentItalic": "var(--color-charcoal-400)"
+  },
+  "money": {
+    "font": "var(--font-sans)",
+    "feature": "var(--typo-tabular)"
   }
 }

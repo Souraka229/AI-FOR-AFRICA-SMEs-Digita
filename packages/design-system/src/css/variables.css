@@ -1,0 +1,68 @@
+:root {
+  --color-terracotta-600: #c1502e;
+  --color-terracotta-700: #a04226;
+  --color-charcoal-900: #211b17;
+  --color-charcoal-800: #2c241f;
+  --color-charcoal-700: #5c4f45;
+  --color-charcoal-400: #8a7d73;
+  --color-sand-50: #fbf4ec;
+  --color-sand-100: #f3e7d8;
+  --color-ink-950: #0a0908;
+  --color-white: #ffffff;
+  --color-green-600: #1f7a53;
+  --color-amber-600: #b8791c;
+  --color-red-600: #c43b3b;
+  --color-orange-600: #d7472f;
+
+  --action-primary: var(--color-terracotta-600);
+  --action-primary-hover: var(--color-terracotta-700);
+  --status-payment-confirmed: var(--color-green-600);
+  --status-payment-pending: var(--color-amber-600);
+  --status-payment-failed: var(--color-red-600);
+  --status-order-urgent: var(--color-orange-600);
+
+  --surface-canvas-dark: var(--color-ink-950);
+  --surface-canvas-light: var(--color-sand-50);
+  --surface-card: var(--color-white);
+  --text-primary: var(--color-charcoal-900);
+  --text-muted: var(--color-charcoal-700);
+  --text-on-dark: var(--color-white);
+  --text-accent-italic: var(--color-charcoal-400);
+
+  --font-sans: var(--font-geist-sans), "Geist", "Geist Sans", system-ui, sans-serif;
+  --font-serif: var(--font-newsreader), "Newsreader", Georgia, serif;
+  --tracking-tight: -0.03em;
+  --typo-tabular: "tnum" 1;
+
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 48px;
+  --space-8: 64px;
+
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-pill: 9999px;
+
+  --shadow-card: 0 1px 0 rgba(33, 27, 23, 0.06), 0 8px 24px rgba(33, 27, 23, 0.06);
+
+  --stroke-wordmark: rgba(255, 255, 255, 0.22);
+  --spotlight: var(--color-terracotta-600);
+}
+
+html,
+body {
+  margin: 0;
+  min-height: 100%;
+}
+
+body {
+  font-family: var(--font-sans);
+  font-feature-settings: "kern" 1;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}

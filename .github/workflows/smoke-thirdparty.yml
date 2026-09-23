@@ -7,7 +7,7 @@ on:
       - "THIRDPARTY.md"
       - ".github/workflows/smoke-thirdparty.yml"
   push:
-    branches: [main]
+    branches: [main, "integration/**"]
     paths:
       - "docker-compose.yml"
       - "THIRDPARTY.md"

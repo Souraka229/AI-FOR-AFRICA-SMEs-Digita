@@ -26,7 +26,7 @@ jobs:
       - name: Install and build web
         run: |
           pnpm install --frozen-lockfile --ignore-scripts
-          pnpm --filter @afrosite/web build
+          pnpm --filter web build
 
       - name: Upload web build
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2

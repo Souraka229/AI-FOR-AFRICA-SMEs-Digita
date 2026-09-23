@@ -1,6 +1,8 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
+@import "@afrosite/design-system/css/variables.css";
+@import "@afrosite/design-system/css/components.css";
 
 @custom-variant dark (&:is(.dark *));
 
@@ -265,3 +267,253 @@
     repeating-linear-gradient(45deg, var(--lattice) 0 1px, transparent 1px 10px),
     repeating-linear-gradient(-45deg, var(--lattice) 0 1px, transparent 1px 10px);
 }
+
+
+/* Landing collaborateur : direction visuelle Afro-site, greffée sur la charte SaaS. */
+.landing {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background:
+    radial-gradient(circle at 20% 0%, rgba(193, 80, 46, 0.13), transparent 30rem),
+    var(--background);
+  color: var(--foreground);
+}
+
+.landing__hero {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  max-width: 920px;
+  padding: var(--space-7, 48px) var(--space-6, 32px) var(--space-6, 32px);
+}
+
+.landing__eyebrow,
+.landing__kit-label {
+  margin: 0 0 var(--space-3, 12px);
+  color: var(--muted-foreground);
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.landing__title {
+  margin: 0;
+  max-width: 14ch;
+  font-family: var(--font-sans);
+  font-size: clamp(2.75rem, 7vw, 5.25rem);
+  font-weight: 600;
+  line-height: 0.96;
+  letter-spacing: -0.05em;
+}
+
+.landing__accent {
+  font-family: var(--font-newsreader), Georgia, serif;
+  font-style: italic;
+  font-weight: 400;
+  color: var(--brand);
+  letter-spacing: -0.03em;
+}
+
+.landing__lede {
+  margin: var(--space-5, 24px) 0 0;
+  max-width: 34rem;
+  color: var(--muted-foreground);
+  font-size: 1.05rem;
+  line-height: 1.55;
+}
+
+.landing__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3, 12px);
+  margin-top: var(--space-5, 24px);
+}
+
+.landing__action,
+.landing__kit-link {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.75rem;
+  border-radius: 0.7rem;
+  padding: 0.65rem 1rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: transform 160ms ease, opacity 160ms ease;
+}
+
+.landing__action:hover,
+.landing__kit-link:hover {
+  transform: translateY(-1px);
+  opacity: 0.88;
+}
+
+.landing__action--primary {
+  background: var(--primary);
+  color: var(--primary-foreground);
+}
+
+.landing__action--secondary {
+  border: 1px solid var(--border);
+  color: var(--foreground);
+}
+
+.landing__kit {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: var(--space-4, 16px);
+  margin: var(--space-7, 48px) var(--space-6, 32px) 0;
+}
+
+.landing__kit-copy {
+  min-height: 3rem;
+  color: var(--muted-foreground);
+  line-height: 1.45;
+}
+
+.landing__kit-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2, 8px);
+  align-items: center;
+  min-height: 2rem;
+}
+
+.landing__kit-link {
+  margin-top: var(--space-4, 16px);
+  padding: 0;
+  min-height: 2rem;
+  color: var(--primary);
+}
+
+.landing__prompt {
+  display: grid;
+  gap: var(--space-3, 12px);
+  margin-top: var(--space-6, 32px);
+  max-width: 36rem;
+}
+
+.wordmark {
+  position: relative;
+  overflow: hidden;
+  margin-top: auto;
+  padding: 0 var(--space-4, 16px) var(--space-3, 12px);
+  user-select: none;
+}
+
+.wordmark__layer {
+  display: block;
+  width: 100%;
+  margin: 0;
+  font-family: var(--font-sans);
+  font-size: clamp(4.5rem, 22vw, 16rem);
+  font-weight: 600;
+  line-height: 0.78;
+  letter-spacing: -0.06em;
+  text-align: center;
+}
+
+.wordmark__stroke {
+  color: transparent;
+  -webkit-text-stroke: 1.5px var(--stroke-wordmark, rgba(193, 80, 46, 0.35));
+  text-stroke: 1.5px var(--stroke-wordmark, rgba(193, 80, 46, 0.35));
+}
+
+.wordmark__fill {
+  position: absolute;
+  inset: 0;
+  padding: 0 var(--space-4, 16px) var(--space-3, 12px);
+  color: transparent;
+  background-repeat: no-repeat;
+  -webkit-background-clip: text;
+  background-clip: text;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 200ms ease;
+}
+
+.wordmark:hover .wordmark__fill,
+.wordmark:focus-within .wordmark__fill {
+  opacity: 1;
+}
+
+
+.mesh {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+  opacity: 0.62;
+}
+
+.mesh__blob {
+  position: absolute;
+  width: min(44vw, 34rem);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  filter: blur(56px);
+  opacity: 0.34;
+}
+
+.mesh__blob--a { top: -12%; left: -8%; background: #c1502e; }
+.mesh__blob--b { top: 18%; right: -12%; background: #d89b3c; }
+.mesh__blob--c { bottom: -18%; left: 24%; background: #a83f1f; }
+.mesh__blob--d { bottom: 8%; right: 12%; background: #f5e9d9; }
+
+.landing > *:not(.mesh) {
+  position: relative;
+  z-index: 1;
+}
+
+.hero3d {
+  width: min(100%, 34rem);
+  height: clamp(12rem, 28vw, 20rem);
+  margin: 0 var(--space-6, 32px);
+  pointer-events: auto;
+}
+
+@media (min-width: 900px) {
+  .landing__hero {
+    max-width: 62rem;
+  }
+
+  .landing__hero,
+  .hero3d {
+    margin-left: max(var(--space-6, 32px), calc((100vw - 62rem) / 2));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero3d {
+    display: none;
+  }
+}
+
+
+.refs {
+  min-height: 100vh;
+  padding: 0 28px 12vh;
+  background: var(--surface-canvas-light, #fbf4ec);
+}
+
+.refs__nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 22px 0;
+  font-size: 14px;
+  color: var(--text-muted, #5c4f45);
+}
+
+.refs__nav a { color: var(--text-primary, #211b17); text-decoration: none; }
+.refs__title { margin: 4vh 0 8px; font-size: clamp(2rem, 5vw, 3.4rem); font-weight: 500; letter-spacing: -0.035em; }
+.refs__lede { margin: 0 0 40px; max-width: 36rem; color: var(--text-muted, #5c4f45); line-height: 1.55; }
+.refs__grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 18px; margin: 0; padding: 0; list-style: none; }
+.refs__grid figure { margin: 0; overflow: hidden; border-radius: 16px; background: #fff; box-shadow: 0 8px 24px rgba(33, 27, 23, 0.06); }
+.refs__grid img { display: block; width: 100%; height: 180px; object-fit: cover; object-position: top; background: #eceae6; }
+.refs__grid figcaption { display: flex; flex-direction: column; gap: 4px; padding: 12px 14px 16px; }
+.refs__grid strong { font-size: 14px; font-weight: 500; }
+.refs__grid span { font-size: 13px; color: var(--text-muted, #5c4f45); }

@@ -14,5 +14,10 @@ export { hasAfrositeApi, fetchApiLedger } from "@/lib/pay/api-provider";
 export function getPaymentProvider(): PaymentProvider {
   if (hasGeniusPaySandboxKeys()) return new GeniusPayProvider();
   if (hasAfrositeApi()) return new ApiPaymentProvider();
+  if (process.env.AFROSITE_ENV === "production") {
+    throw new Error(
+      "Configuration paiement manquante : AFROSITE_API_URL ou Genius Pay doit être configuré en production.",
+    );
+  }
   return new DemoPaymentProvider();
 }
