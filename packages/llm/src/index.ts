@@ -51,15 +51,15 @@ export type StructuredCallOptions<T> = LlmCallOptions & {
 };
 
 const DEFAULT_MODELS: Record<ModelCapability, string> = {
-  light: "openai/gpt-5.6-luna",
+  light: "openai/gpt-5-mini",
   reasoning: "anthropic/claude-sonnet-5",
-  code: "openai/gpt-6-astra",
+  code: "openai/gpt-5",
 };
 
 const PRICE_USD_PER_MILLION: Record<string, { input: number; output: number }> = {
-  "openai/gpt-5.6-luna": { input: 0.2, output: 1.2 },
+  "openai/gpt-5-mini": { input: 0.25, output: 2 },
   "anthropic/claude-sonnet-5": { input: 2, output: 10 },
-  "openai/gpt-6-astra": { input: 10, output: 50 },
+  "openai/gpt-5": { input: 1.25, output: 10 },
 };
 const USD_TO_XOF_ESTIMATE = 600;
 
